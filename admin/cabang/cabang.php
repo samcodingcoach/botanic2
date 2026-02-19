@@ -191,84 +191,88 @@ if ($apiData && $apiData['success']) {
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
         <!-- Modal Content -->
         <div
-            class="relative bg-white dark:bg-background-dark w-full max-w-lg mx-4 rounded-xl shadow-2xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            class="relative bg-white dark:bg-background-dark w-full max-w-lg mx-4 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header (Fixed) -->
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
                 <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tambah Cabang Baru</h3>
                 <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 btn-close-modal">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <form class="p-6 space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
-                            Cabang</label>
-                        <input
-                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                            placeholder="Contoh: Jakarta Selatan" type="text" />
-                    </div>
-                    <div class="col-span-2">
-                        <label
-                            class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat</label>
-                        <textarea
-                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm h-24"
-                            placeholder="Alamat lengkap kantor cabang..."></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kode
-                            Cabang</label>
-                        <input
-                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                            placeholder="JKT-005" type="text" />
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">HP /
-                            Telepon</label>
-                        <input
-                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                            placeholder="0812-xxxx-xxxx" type="text" />
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">GPS
-                            (Koordinat)</label>
-                        <input
-                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                            placeholder="-6.2088, 106.8456" type="text" />
-                    </div>
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Foto
-                            Cabang</label>
-                        <div
-                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 dark:border-slate-700 border-dashed rounded-lg">
-                            <div class="space-y-1 text-center">
-                                <span class="material-symbols-outlined text-slate-400 text-3xl">image</span>
-                                <div class="flex text-sm text-slate-600 dark:text-slate-400">
-                                    <label
-                                        class="relative cursor-pointer bg-white dark:bg-background-dark rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none"
-                                        for="file-upload">
-                                        <span>Upload a file</span>
-                                        <input class="sr-only" id="file-upload" name="file-upload" type="file" />
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
+            <!-- Scrollable Content -->
+            <div class="overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
+                <form class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
+                                Cabang</label>
+                            <input
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="Contoh: Jakarta Selatan" type="text" />
+                        </div>
+                        <div class="col-span-2">
+                            <label
+                                class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat</label>
+                            <textarea
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm h-20"
+                                placeholder="Alamat lengkap kantor cabang..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kode
+                                Cabang</label>
+                            <input
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="JKT-005" type="text" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">HP /
+                                Telepon</label>
+                            <input
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="0812-xxxx-xxxx" type="text" />
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">GPS
+                                (Koordinat)</label>
+                            <input
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="-6.2088, 106.8456" type="text" />
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Foto
+                                Cabang</label>
+                            <div
+                                class="mt-1 flex justify-center px-4 py-4 border-2 border-slate-300 dark:border-slate-700 border-dashed rounded-lg">
+                                <div class="space-y-1 text-center">
+                                    <span class="material-symbols-outlined text-slate-400 text-3xl">image</span>
+                                    <div class="flex text-sm text-slate-600 dark:text-slate-400">
+                                        <label
+                                            class="relative cursor-pointer bg-white dark:bg-background-dark rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none"
+                                            for="file-upload">
+                                            <span>Upload file</span>
+                                            <input class="sr-only" id="file-upload" name="file-upload" type="file" />
+                                        </label>
+                                    </div>
+                                    <p class="text-xs text-slate-500">PNG, JPG up to 10MB</p>
                                 </div>
-                                <p class="text-xs text-slate-500">PNG, JPG up to 10MB</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="pt-4 flex items-center justify-end gap-3">
-                    <button
-                        class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors btn-close-modal"
-                        type="button">
-                        Batal
-                    </button>
-                    <button
-                        class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all"
-                        type="submit">
-                        Simpan
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <!-- Footer (Fixed) -->
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 flex-shrink-0 bg-white dark:bg-background-dark">
+                <button
+                    class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors btn-close-modal"
+                    type="button">
+                    Batal
+                </button>
+                <button
+                    class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all"
+                    type="submit">
+                    Simpan
+                </button>
+            </div>
         </div>
     </div>
 
