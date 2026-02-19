@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Panel - Manajemen Cabang</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b774d",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#171b17",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-item-active {
+            background-color: rgba(75, 119, 77, 0.1);
+            color: #4b774d;
+            border-right: 4px solid #4b774d;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside
+            class="w-64 bg-white dark:bg-background-dark border-r border-slate-200 dark:border-slate-800 flex flex-col">
+            <div class="p-6 flex items-center gap-3">
+                <div class="bg-primary p-1.5 rounded-lg">
+                    <span class="material-symbols-outlined text-white">account_balance</span>
+                </div>
+                <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Botanic</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 sidebar-item-active rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">storefront</span>
+                    <span class="text-sm font-medium">Cabang</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Settings</span>
+                </a>
+            </nav>
+            <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
+                <div
+                    class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                        JD</div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-sm font-semibold truncate">Jane Doe</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Administrator</p>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-background-light dark:bg-background-dark">
+            <!-- Header -->
+            <header
+                class="bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Manajemen Cabang</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl leading-none">search</span>
+                        <input
+                            class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm w-64"
+                            placeholder="Cari cabang..." type="text" />
+                    </div>
+
+                </div>
+            </header>
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-y-auto p-8 space-y-8">
+                <!-- Title and CTA -->
+                <div class="flex items-end justify-between">
+                    <div>
+                        <h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Daftar Cabang</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Kelola informasi operasional seluruh kantor
+                            cabang secara terpusat.</p>
+                    </div>
+                    <button
+                        class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm">
+                        <span class="material-symbols-outlined">add</span>
+                        <span>Tambah Cabang</span>
+                    </button>
+                </div>
+                <!-- Stats Summary -->
+
+                <!-- Table Container -->
+                <div
+                    class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Foto</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Cabang</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Alamat</th>
+
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        HP</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">
+                                        GPS</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Created</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Row 1 -->
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div
+                                            class="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                                            <img class="w-full h-full object-cover"
+                                                data-alt="Office branch building front view"
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1qMRUZNvMLwpBZZ9miNpSvoRkmZ176qi-MDweO-Ifj-Un5UTLvo1QTtg_OFkRjsMB-N8-1_7B75ovfipyMwX6KR7Y6PDBdkaq7Q5aMmSfJLe5agqeRV5jGdG9Kx0sz19259SyAa3XG1uRkdZAzNPuYhH1KdWFVLJ5ww6giYjAJCDHKDDGbiIh5aJcaj1GujsVWsGShpW05QdxBOyxqXgQ_S3JrC7Ljw8abaA2v91TFt4PsUPqUKxHyUuHFOukJxQZLn1O4U53MF2k" />
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="font-semibold text-slate-900 dark:text-white">Jakarta Pusat</div>
+                                        <div class="text-xs text-slate-500">BC-01</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-slate-600 dark:text-slate-400 max-w-xs truncate">Jl.
+                                            Jenderal Sudirman No. 10, Jakarta Pusat</div>
+                                    </td>
+
+                                    <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">0812-3456-789</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1"
+                                            data-location="Jakarta" href="#">
+                                            <span class="material-symbols-outlined text-xl">map</span>
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-slate-500">12 Okt 2023</td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+                                            <span class="material-symbols-outlined text-xl">edit_square</span>
+                                        </button>
+                                        <button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination Footer -->
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Showing 4 of 124 results</p>
+                        <div class="flex items-center gap-2">
+                            <button
+                                class="p-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-400 disabled:opacity-50"
+                                disabled="">
+                                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                            </button>
+                            <button
+                                class="px-3 py-1 rounded border border-primary bg-primary text-white text-xs font-bold">1</button>
+                            <button
+                                class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-600 dark:text-slate-300 text-xs font-bold">2</button>
+                            <button
+                                class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-600 dark:text-slate-300 text-xs font-bold">3</button>
+                            <button
+                                class="p-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-400">
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
