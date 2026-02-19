@@ -78,50 +78,9 @@ if ($apiData && $apiData['success']) {
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
-    <!-- Mobile Sidebar Overlay -->
-    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 md:hidden"
-        onclick="toggleSidebar()"></div>
-
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <aside id="sidebar"
-            class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-background-dark border-r border-slate-200 dark:border-slate-800 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div class="p-6 flex items-center gap-3">
-                <div class="bg-primary p-1.5 rounded-lg">
-                    <span class="material-symbols-outlined text-white">account_balance</span>
-                </div>
-                <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Botanic</h1>
-            </div>
-            <nav class="flex-1 px-4 space-y-1 mt-4">
-                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                    href="#">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="text-sm font-medium">Dashboard</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 sidebar-item-active rounded-lg transition-colors" href="#">
-                    <span class="material-symbols-outlined">storefront</span>
-                    <span class="text-sm font-medium">Cabang</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                    href="#">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="text-sm font-medium">Settings</span>
-                </a>
-            </nav>
-            <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
-                <div
-                    class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
-                    <div
-                        class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                        JD</div>
-                    <div class="flex-1 overflow-hidden">
-                        <p class="text-sm font-semibold truncate">Jane Doe</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Administrator</p>
-                    </div>
-                    <span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
-                </div>
-            </div>
-        </aside>
+        <?php include __DIR__ . '/../sidebar.php'; ?>
         <!-- Main Content -->
         <main class="flex-1 flex flex-col overflow-hidden bg-background-light dark:bg-background-dark">
             <!-- Header -->
@@ -160,7 +119,7 @@ if ($apiData && $apiData['success']) {
                             kantor
                             cabang secara terpusat.</p>
                     </div>
-                    <button
+                    <button id="btnTambahCabang"
                         class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm w-full sm:w-auto justify-center">
                         <span class="material-symbols-outlined">add</span>
                         <span>Tambah Cabang</span>
@@ -226,7 +185,123 @@ if ($apiData && $apiData['success']) {
         </main>
     </div>
 
+    <!-- Add Branch Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="add-branch-modal">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <!-- Modal Content -->
+        <div
+            class="relative bg-white dark:bg-background-dark w-full max-w-lg mx-4 rounded-xl shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tambah Cabang Baru</h3>
+                <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 btn-close-modal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
+                            Cabang</label>
+                        <input
+                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                            placeholder="Contoh: Jakarta Selatan" type="text" />
+                    </div>
+                    <div class="col-span-2">
+                        <label
+                            class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat</label>
+                        <textarea
+                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm h-24"
+                            placeholder="Alamat lengkap kantor cabang..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kode
+                            Cabang</label>
+                        <input
+                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                            placeholder="JKT-005" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">HP /
+                            Telepon</label>
+                        <input
+                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                            placeholder="0812-xxxx-xxxx" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">GPS
+                            (Koordinat)</label>
+                        <input
+                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                            placeholder="-6.2088, 106.8456" type="text" />
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Foto
+                            Cabang</label>
+                        <div
+                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 dark:border-slate-700 border-dashed rounded-lg">
+                            <div class="space-y-1 text-center">
+                                <span class="material-symbols-outlined text-slate-400 text-3xl">image</span>
+                                <div class="flex text-sm text-slate-600 dark:text-slate-400">
+                                    <label
+                                        class="relative cursor-pointer bg-white dark:bg-background-dark rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none"
+                                        for="file-upload">
+                                        <span>Upload a file</span>
+                                        <input class="sr-only" id="file-upload" name="file-upload" type="file" />
+                                    </label>
+                                    <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-slate-500">PNG, JPG up to 10MB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3">
+                    <button
+                        class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors btn-close-modal"
+                        type="button">
+                        Batal
+                    </button>
+                    <button
+                        class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all"
+                        type="submit">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        // Modal functions
+        const modal = document.getElementById('add-branch-modal');
+        const btnTambah = document.getElementById('btnTambahCabang');
+        const btnClose = document.querySelectorAll('.btn-close-modal');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        // Event listeners
+        if (btnTambah) {
+            btnTambah.addEventListener('click', openModal);
+        }
+
+        btnClose.forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+
+        // Close modal when clicking on backdrop
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal.querySelector('.absolute')) {
+                closeModal();
+            }
+        });
+
         // Data from PHP
         const allData = <?php echo json_encode($cabangList); ?>;
         const totalCount = <?php echo json_encode($totalCount); ?>;
@@ -235,20 +310,6 @@ if ($apiData && $apiData['success']) {
         const itemsPerPage = 10;
         let filteredData = [...allData];
         let totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isClosed = sidebar.classList.contains('-translate-x-full');
-
-            if (isClosed) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.add('active');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.remove('active');
-            }
-        }
 
         function toggleSearch() {
             const searchInput = document.getElementById('searchInput');
