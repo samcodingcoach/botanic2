@@ -1,0 +1,474 @@
+<?php
+// Fetch data from API
+$apiUrl = 'http://localhost/botanic/api/cabang/list.php';
+$apiResponse = file_get_contents($apiUrl);
+$apiData = json_decode($apiResponse, true);
+
+$cabangList = [];
+$totalCount = 0;
+$message = '';
+
+if ($apiData && $apiData['success']) {
+    $cabangList = $apiData['data'];
+    $totalCount = $apiData['count'];
+    $message = $apiData['message'];
+}
+?>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Panel - Manajemen Cabang</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b774d",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#171b17",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-item-active {
+            background-color: rgba(75, 119, 77, 0.1);
+            color: #4b774d;
+            border-right: 4px solid #4b774d;
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 md:hidden"
+        onclick="toggleSidebar()"></div>
+
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar"
+            class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-background-dark border-r border-slate-200 dark:border-slate-800 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="p-6 flex items-center gap-3">
+                <div class="bg-primary p-1.5 rounded-lg">
+                    <span class="material-symbols-outlined text-white">account_balance</span>
+                </div>
+                <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Botanic</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 sidebar-item-active rounded-lg transition-colors" href="#">
+                    <span class="material-symbols-outlined">storefront</span>
+                    <span class="text-sm font-medium">Cabang</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Settings</span>
+                </a>
+            </nav>
+            <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
+                <div
+                    class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                        JD</div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-sm font-semibold truncate">Jane Doe</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Administrator</p>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-background-light dark:bg-background-dark">
+            <!-- Header -->
+            <header
+                class="bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <!-- Hamburger Menu (Mobile) -->
+                    <button onclick="toggleSidebar()"
+                        class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Manajemen Cabang</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative hidden sm:block">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl leading-none">search</span>
+                        <input id="searchInput"
+                            class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm w-64"
+                            placeholder="Cari cabang..." type="text" onkeyup="filterData()" />
+                    </div>
+                    <button class="sm:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        onclick="toggleSearch()">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                </div>
+            </header>
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">
+                <!-- Title and CTA -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Daftar
+                            Cabang</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola informasi operasional seluruh
+                            kantor
+                            cabang secara terpusat.</p>
+                    </div>
+                    <button
+                        class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm w-full sm:w-auto justify-center">
+                        <span class="material-symbols-outlined">add</span>
+                        <span>Tambah Cabang</span>
+                    </button>
+                </div>
+
+                <!-- Table Container -->
+                <div
+                    class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                    <!-- Desktop Table -->
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Foto</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Cabang</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Alamat</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        HP</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">
+                                        GPS</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        Created</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Mobile Card View -->
+                    <div id="mobileView" class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+                        <!-- Cards will be loaded here -->
+                    </div>
+                    <!-- No Data State -->
+                    <div id="noData" class="hidden p-8 text-center">
+                        <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600 mb-4">store</span>
+                        <p class="text-slate-500 dark:text-slate-400">Tidak ada data cabang</p>
+                    </div>
+                    <!-- Pagination Footer -->
+                    <div id="paginationContainer"
+                        class="hidden bg-slate-50 dark:bg-slate-800/50 px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 dark:border-slate-800">
+                        <p id="showingText" class="text-xs text-slate-500 dark:text-slate-400">Showing 0 of 0 results</p>
+                        <div class="flex items-center gap-2" id="paginationButtons">
+                            <!-- Pagination buttons will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data from PHP
+        const allData = <?php echo json_encode($cabangList); ?>;
+        const totalCount = <?php echo json_encode($totalCount); ?>;
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let filteredData = [...allData];
+        let totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('active');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('active');
+            }
+        }
+
+        function toggleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.classList.toggle('hidden');
+            if (!searchInput.classList.contains('hidden')) {
+                searchInput.focus();
+            }
+        }
+
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            filteredData = allData.filter(item => {
+                return (
+                    (item.nama_cabang && item.nama_cabang.toLowerCase().includes(searchTerm)) ||
+                    (item.kode_cabang && item.kode_cabang.toLowerCase().includes(searchTerm)) ||
+                    (item.alamat && item.alamat.toLowerCase().includes(searchTerm))
+                );
+            });
+            currentPage = 1;
+            totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            renderTable();
+            renderMobileView();
+            renderPagination();
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+        }
+
+        function getImageUrl(foto) {
+            if (!foto || foto === '') {
+                return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"%3E%3Crect fill="%23e2e8f0" width="40" height="40"/%3E%3Ctext fill="%2394a3b8" font-family="sans-serif" font-size="20" text-anchor="middle" x="20" y="25"%3E🏢%3C/text%3E%3C/svg%3E';
+            }
+            return '../../images/' + foto;
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredData.slice(start, end);
+
+            if (pageData.length === 0) {
+                tableBody.innerHTML = '';
+                return;
+            }
+
+            tableBody.innerHTML = pageData.map(item => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
+                            <img class="w-full h-full object-cover" src="${getImageUrl(item.foto)}" alt="${item.nama_cabang || 'Cabang'}" />
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="font-semibold text-slate-900 dark:text-white">${item.nama_cabang || '-'}</div>
+                        <div class="text-xs text-slate-500">${item.kode_cabang || '-'}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-slate-600 dark:text-slate-400 max-w-xs truncate">${item.alamat || '-'}</div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${item.hp || '-'}</td>
+                    <td class="px-6 py-4 text-center">
+                        ${item.gps ? `
+                        <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1" href="https://www.google.com/maps?q=${item.gps}" target="_blank">
+                            <span class="material-symbols-outlined text-xl">map</span>
+                        </a>` : '<span class="text-slate-400">-</span>'}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-500">${formatDate(item.created_date)}</td>
+                    <td class="px-6 py-4 text-right space-x-2">
+                        <button class="p-1.5 text-slate-400 hover:text-primary transition-colors" title="Edit">
+                            <span class="material-symbols-outlined text-xl">edit_square</span>
+                        </button>
+                        <button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors" title="Hapus">
+                            <span class="material-symbols-outlined text-xl">delete</span>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderMobileView() {
+            const mobileView = document.getElementById('mobileView');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredData.slice(start, end);
+
+            if (pageData.length === 0) {
+                mobileView.innerHTML = '';
+                return;
+            }
+
+            mobileView.innerHTML = pageData.map(item => `
+                <div class="p-4 space-y-3">
+                    <div class="flex items-start gap-3">
+                        <div class="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex-shrink-0">
+                            <img class="w-full h-full object-cover" src="${getImageUrl(item.foto)}" alt="${item.nama_cabang || 'Cabang'}" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-semibold text-slate-900 dark:text-white">${item.nama_cabang || '-'}</div>
+                            <div class="text-xs text-slate-500">${item.kode_cabang || '-'}</div>
+                        </div>
+                        <div class="flex gap-1">
+                            <button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Edit">
+                                <span class="material-symbols-outlined text-xl">edit_square</span>
+                            </button>
+                            <button class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Hapus">
+                                <span class="material-symbols-outlined text-xl">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                        ${item.alamat ? `
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-sm mt-0.5">location_on</span>
+                            <span>${item.alamat}</span>
+                        </div>` : ''}
+                        ${item.hp ? `
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">phone</span>
+                            <span>${item.hp}</span>
+                        </div>` : ''}
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                            <span>${formatDate(item.created_date)}</span>
+                        </div>
+                    </div>
+                    ${item.gps ? `
+                    <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1 text-sm" href="https://www.google.com/maps?q=${item.gps}" target="_blank">
+                        <span class="material-symbols-outlined text-sm">map</span>
+                        <span>Lihat di Peta</span>
+                    </a>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderPagination() {
+            const paginationContainer = document.getElementById('paginationContainer');
+            const showingText = document.getElementById('showingText');
+            const paginationButtons = document.getElementById('paginationButtons');
+            const noData = document.getElementById('noData');
+
+            if (filteredData.length === 0) {
+                paginationContainer.classList.add('hidden');
+                noData.classList.remove('hidden');
+                document.getElementById('tableBody').innerHTML = '';
+                document.getElementById('mobileView').innerHTML = '';
+                return;
+            }
+
+            noData.classList.add('hidden');
+            paginationContainer.classList.remove('hidden');
+
+            const start = (currentPage - 1) * itemsPerPage + 1;
+            const end = Math.min(currentPage * itemsPerPage, filteredData.length);
+            showingText.textContent = `Showing ${start}-${end} of ${filteredData.length} results`;
+
+            let buttons = '';
+            
+            // Previous button
+            buttons += `
+                <button onclick="changePage(${currentPage - 1})" 
+                    class="p-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-400 disabled:opacity-50"
+                    ${currentPage === 1 ? 'disabled' : ''}>
+                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                </button>
+            `;
+
+            // Page numbers
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) {
+                    buttons += `
+                        <button class="px-3 py-1 rounded border border-primary bg-primary text-white text-xs font-bold">${i}</button>
+                    `;
+                } else {
+                    buttons += `
+                        <button onclick="changePage(${i})" 
+                            class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-600 dark:text-slate-300 text-xs font-bold">${i}</button>
+                    `;
+                }
+            }
+
+            // Next button
+            buttons += `
+                <button onclick="changePage(${currentPage + 1})" 
+                    class="p-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-400 disabled:opacity-50"
+                    ${currentPage === totalPages ? 'disabled' : ''}>
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
+            `;
+
+            paginationButtons.innerHTML = buttons;
+        }
+
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTable();
+            renderMobileView();
+            renderPagination();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTable();
+            renderMobileView();
+            renderPagination();
+        });
+    </script>
+</body>
+
+</html>
