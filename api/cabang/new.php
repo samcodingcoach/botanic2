@@ -59,9 +59,20 @@ $stmt->close();
 // Handle image upload
 $fotoName = null;
 $uploadDir = __DIR__ . '/../../images/';
+$maxFileSize = 1 * 1024 * 1024; // 1MB in bytes
 
 // Check for file in form-data
 if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+    // Validate file size
+    if ($_FILES['foto']['size'] > $maxFileSize) {
+        $response = [
+            "success" => false,
+            "message" => "Ukuran file terlalu besar. Maksimal 1MB."
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     // Create directory if not exists
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);

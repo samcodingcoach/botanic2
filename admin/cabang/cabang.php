@@ -296,10 +296,14 @@ if ($apiData && $apiData['success']) {
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Foto
                                 Cabang</label>
                             <div
-                                class="mt-1 flex justify-center px-4 py-4 border-2 border-slate-300 dark:border-slate-700 border-dashed rounded-lg">
-                                <div class="space-y-1 text-center">
+                                class="mt-1 flex items-center gap-4 px-4 py-4 border-2 border-slate-300 dark:border-slate-700 border-dashed rounded-lg">
+                                <!-- Preview Image -->
+                                <div id="fotoPreview" class="hidden w-20 h-20 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600 flex-shrink-0 bg-slate-100 dark:bg-slate-800">
+                                    <img id="previewImg" src="" alt="Preview" class="w-full h-full object-cover" />
+                                </div>
+                                <div class="space-y-1 text-center flex-1">
                                     <span class="material-symbols-outlined text-slate-400 text-3xl">image</span>
-                                    <div class="flex text-sm text-slate-600 dark:text-slate-400">
+                                    <div class="flex text-sm text-slate-600 dark:text-slate-400 justify-center">
                                         <label
                                             class="relative cursor-pointer bg-white dark:bg-background-dark rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none"
                                             for="foto">
@@ -307,9 +311,11 @@ if ($apiData && $apiData['success']) {
                                             <input class="sr-only" id="foto" name="foto" type="file" accept="image/*" />
                                         </label>
                                     </div>
-                                    <p class="text-xs text-slate-500">PNG, JPG up to 10MB</p>
+                                    <p class="text-xs text-slate-500">PNG, JPG max 1MB</p>
+                                    <p id="fileName" class="text-xs text-slate-400 truncate max-w-[200px]"></p>
                                 </div>
                             </div>
+                            <p id="fotoError" class="text-xs text-red-500 mt-1 hidden"></p>
                         </div>
                     </div>
                 </form>
@@ -468,6 +474,62 @@ if ($apiData && $apiData['success']) {
                 this.classList.remove('border-red-500');
             });
         });
+
+        // Image Preview and Validation
+        const fotoInput = document.getElementById('foto');
+        const fotoPreview = document.getElementById('fotoPreview');
+        const previewImg = document.getElementById('previewImg');
+        const fileName = document.getElementById('fileName');
+        const fotoError = document.getElementById('fotoError');
+        const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+
+        if (fotoInput) {
+            fotoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                
+                // Reset error
+                fotoError.classList.add('hidden');
+                fotoInput.classList.remove('border-red-500');
+                
+                if (!file) {
+                    fotoPreview.classList.add('hidden');
+                    fileName.textContent = '';
+                    return;
+                }
+
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    fotoError.textContent = 'Tipe file tidak valid. Gunakan JPG, PNG, GIF, atau WEBP.';
+                    fotoError.classList.remove('hidden');
+                    fotoInput.classList.add('border-red-500');
+                    fotoInput.value = ''; // Clear input
+                    fotoPreview.classList.add('hidden');
+                    fileName.textContent = '';
+                    return;
+                }
+
+                // Validate file size (1MB)
+                if (file.size > maxSize) {
+                    fotoError.textContent = 'Ukuran file terlalu besar. Maksimal 1MB.';
+                    fotoError.classList.remove('hidden');
+                    fotoInput.classList.add('border-red-500');
+                    fotoInput.value = ''; // Clear input
+                    fotoPreview.classList.add('hidden');
+                    fileName.textContent = '';
+                    return;
+                }
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    fotoPreview.classList.remove('hidden');
+                    fileName.textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
 
         // Data from PHP
         const allData = <?php echo json_encode($cabangList); ?>;
