@@ -74,10 +74,64 @@ if ($apiData && $apiData['success']) {
                 display: none !important;
             }
         }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .toast-error {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .toast-icon {
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <!-- Toast Notification Container -->
+    <div id="toastContainer"></div>
+
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <?php include __DIR__ . '/../sidebar.php'; ?>
@@ -201,40 +255,40 @@ if ($apiData && $apiData['success']) {
             </div>
             <!-- Scrollable Content -->
             <div class="overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
-                <form class="space-y-4">
+                <form id="formTambahCabang" class="space-y-4" enctype="multipart/form-data">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
-                                Cabang</label>
-                            <input
+                                Cabang <span class="text-red-500">*</span></label>
+                            <input id="nama_cabang" name="nama_cabang"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                                placeholder="Contoh: Jakarta Selatan" type="text" />
+                                placeholder="Contoh: Jakarta Selatan" type="text" required />
                         </div>
                         <div class="col-span-2">
                             <label
-                                class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat</label>
-                            <textarea
+                                class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat <span class="text-red-500">*</span></label>
+                            <textarea id="alamat" name="alamat"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm h-20"
-                                placeholder="Alamat lengkap kantor cabang..."></textarea>
+                                placeholder="Alamat lengkap kantor cabang..." required></textarea>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kode
-                                Cabang</label>
-                            <input
+                                Cabang <span class="text-red-500">*</span></label>
+                            <input id="kode_cabang" name="kode_cabang"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                                placeholder="JKT-005" type="text" />
+                                placeholder="JKT-005" type="text" required />
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">HP /
-                                Telepon</label>
-                            <input
+                                Telepon <span class="text-red-500">*</span></label>
+                            <input id="hp" name="hp"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                                placeholder="0812-xxxx-xxxx" type="text" />
+                                placeholder="0812-xxxx-xxxx" type="text" required />
                         </div>
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">GPS
                                 (Koordinat)</label>
-                            <input
+                            <input id="gps" name="gps"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
                                 placeholder="-6.2088, 106.8456" type="text" />
                         </div>
@@ -248,9 +302,9 @@ if ($apiData && $apiData['success']) {
                                     <div class="flex text-sm text-slate-600 dark:text-slate-400">
                                         <label
                                             class="relative cursor-pointer bg-white dark:bg-background-dark rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none"
-                                            for="file-upload">
+                                            for="foto">
                                             <span>Upload file</span>
-                                            <input class="sr-only" id="file-upload" name="file-upload" type="file" />
+                                            <input class="sr-only" id="foto" name="foto" type="file" accept="image/*" />
                                         </label>
                                     </div>
                                     <p class="text-xs text-slate-500">PNG, JPG up to 10MB</p>
@@ -267,20 +321,55 @@ if ($apiData && $apiData['success']) {
                     type="button">
                     Batal
                 </button>
-                <button
-                    class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all"
-                    type="submit">
-                    Simpan
+                <button id="btnSimpan"
+                    class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all flex items-center gap-2"
+                    type="button">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span>Simpan</span>
                 </button>
             </div>
         </div>
     </div>
 
     <script>
+        // Toast Notification Function
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'check_circle' : 'error';
+            toast.innerHTML = `
+                <span class="material-symbols-outlined toast-icon">${icon}</span>
+                <span class="toast-message">${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Confirmation Dialog
+        function confirmSave() {
+            return new Promise((resolve) => {
+                const confirmed = confirm('Apakah Anda yakin ingin menyimpan data cabang ini?');
+                resolve(confirmed);
+            });
+        }
+
         // Modal functions
         const modal = document.getElementById('add-branch-modal');
         const btnTambah = document.getElementById('btnTambahCabang');
         const btnClose = document.querySelectorAll('.btn-close-modal');
+        const btnSimpan = document.getElementById('btnSimpan');
+        const formTambah = document.getElementById('formTambahCabang');
 
         function openModal() {
             modal.classList.remove('hidden');
@@ -288,6 +377,7 @@ if ($apiData && $apiData['success']) {
 
         function closeModal() {
             modal.classList.add('hidden');
+            formTambah.reset();
         }
 
         // Event listeners
@@ -304,6 +394,79 @@ if ($apiData && $apiData['success']) {
             if (e.target === modal.querySelector('.absolute')) {
                 closeModal();
             }
+        });
+
+        // Handle Save Button
+        if (btnSimpan) {
+            btnSimpan.addEventListener('click', async function() {
+                // Validate form
+                const requiredFields = ['nama_cabang', 'alamat', 'kode_cabang', 'hp'];
+                let isValid = true;
+                let emptyFields = [];
+
+                requiredFields.forEach(field => {
+                    const input = document.getElementById(field);
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        emptyFields.push(input.previousElementSibling.textContent.replace('*', '').trim());
+                        input.classList.add('border-red-500');
+                    } else {
+                        input.classList.remove('border-red-500');
+                    }
+                });
+
+                if (!isValid) {
+                    showToast('Harap isi semua field yang wajib diisi: ' + emptyFields.join(', '), 'error');
+                    return;
+                }
+
+                // Confirm before save
+                const confirmed = await confirmSave();
+                if (!confirmed) return;
+
+                // Show loading state
+                btnSimpan.disabled = true;
+                btnSimpan.innerHTML = '<span class="material-symbols-outlined spinner">sync</span><span>Menyimpan...</span>';
+
+                // Prepare FormData
+                const formData = new FormData(formTambah);
+
+                // Send to API
+                fetch('../../api/cabang/new.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Data cabang berhasil disimpan!', 'success');
+                        closeModal();
+                        // Refresh page after short delay
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showToast(data.message || 'Gagal menyimpan data', 'error');
+                        // Reset button
+                        btnSimpan.disabled = false;
+                        btnSimpan.innerHTML = '<span class="material-symbols-outlined text-sm">save</span><span>Simpan</span>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Terjadi kesalahan saat menyimpan data', 'error');
+                    // Reset button
+                    btnSimpan.disabled = false;
+                    btnSimpan.innerHTML = '<span class="material-symbols-outlined text-sm">save</span><span>Simpan</span>';
+                });
+            });
+        }
+
+        // Remove border highlight on input
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('border-red-500');
+            });
         });
 
         // Data from PHP
