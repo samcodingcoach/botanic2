@@ -27,6 +27,7 @@ if ($apiData && $apiData['success']) {
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -50,82 +51,7 @@ if ($apiData && $apiData['success']) {
             },
         }
     </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .sidebar-item-active {
-            background-color: rgba(75, 119, 77, 0.1);
-            color: #4b774d;
-            border-right: 4px solid #4b774d;
-        }
-
-        .sidebar-overlay {
-            display: none;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        @media (min-width: 768px) {
-            .sidebar-overlay {
-                display: none !important;
-            }
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateX(400px);
-            transition: transform 0.3s ease-in-out;
-            max-width: 400px;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast-success {
-            background-color: #10b981;
-            color: white;
-        }
-
-        .toast-error {
-            background-color: #ef4444;
-            color: white;
-        }
-
-        .toast-icon {
-            flex-shrink: 0;
-        }
-
-        .toast-message {
-            flex: 1;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-    </style>
+    
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
