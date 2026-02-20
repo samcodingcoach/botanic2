@@ -10,3 +10,9 @@ kode_cabang
 foto varchar(70)
 hp varchar(15)
 created_date
+
+table: tipe_kamar
+id_tipe int (11) AUTO_INCREMENT Primary
+nama_tipe varchar
+gambar text
+keterangan text

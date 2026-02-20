@@ -337,7 +337,109 @@ if ($apiData && $apiData['success']) {
         </div>
     </div>
 
+    <!-- Edit Branch Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="edit-branch-modal">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <!-- Modal Content -->
+        <div
+            class="relative bg-white dark:bg-background-dark w-full max-w-lg mx-4 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header (Fixed) -->
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Edit Cabang</h3>
+                <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 btn-close-edit-modal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Scrollable Content -->
+            <div class="overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
+                <form id="formEditCabang" class="space-y-4" enctype="multipart/form-data">
+                    <input type="hidden" id="edit_id_cabang" name="id_cabang" />
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
+                                Cabang <span class="text-red-500">*</span></label>
+                            <input id="edit_nama_cabang" name="nama_cabang"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="Contoh: Jakarta Selatan" type="text" required />
+                        </div>
+                        <div class="col-span-2">
+                            <label
+                                class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Alamat <span class="text-red-500">*</span></label>
+                            <textarea id="edit_alamat" name="alamat"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm h-20"
+                                placeholder="Alamat lengkap kantor cabang..." required></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kode
+                                Cabang <span class="text-red-500">*</span></label>
+                            <input id="edit_kode_cabang" name="kode_cabang"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="JKT-005" type="text" required />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">HP /
+                                Telepon <span class="text-red-500">*</span></label>
+                            <input id="edit_hp" name="hp"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="0812-xxxx-xxxx" type="text" required />
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">GPS
+                                (Koordinat)</label>
+                            <input id="edit_gps" name="gps"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                placeholder="-6.2088, 106.8456" type="text" />
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Foto
+                                Cabang</label>
+                            <div
+                                class="mt-1 flex items-center gap-4 px-4 py-4 border-2 border-slate-300 dark:border-slate-700 border-dashed rounded-lg">
+                                <!-- Preview Image -->
+                                <div id="edit_foto_preview_container" class="hidden w-20 h-20 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600 flex-shrink-0 bg-slate-100 dark:bg-slate-800">
+                                    <img id="edit_preview_img" src="" alt="Preview" class="w-full h-full object-cover" />
+                                </div>
+                                <div class="space-y-1 text-center flex-1">
+                                    <span class="material-symbols-outlined text-slate-400 text-3xl">image</span>
+                                    <div class="flex text-sm text-slate-600 dark:text-slate-400 justify-center">
+                                        <label
+                                            class="relative cursor-pointer bg-white dark:bg-background-dark rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none"
+                                            for="edit_foto">
+                                            <span>Upload file</span>
+                                            <input class="sr-only" id="edit_foto" name="foto" type="file" accept="image/*" />
+                                        </label>
+                                    </div>
+                                    <p class="text-xs text-slate-500">PNG, JPG max 1MB</p>
+                                    <p id="edit_file_name" class="text-xs text-slate-400 truncate max-w-[200px]"></p>
+                                </div>
+                            </div>
+                            <p id="edit_foto_error" class="text-xs text-red-500 mt-1 hidden"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Footer (Fixed) -->
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 flex-shrink-0 bg-white dark:bg-background-dark">
+                <button
+                    class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors btn-close-edit-modal"
+                    type="button">
+                    Batal
+                </button>
+                <button id="btnUpdate"
+                    class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all flex items-center gap-2"
+                    type="button">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span>Update</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Constants
+        const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+
         // Toast Notification Function
         function showToast(message, type = 'success') {
             const toastContainer = document.getElementById('toastContainer');
@@ -481,7 +583,6 @@ if ($apiData && $apiData['success']) {
         const previewImg = document.getElementById('previewImg');
         const fileName = document.getElementById('fileName');
         const fotoError = document.getElementById('fotoError');
-        const maxSize = 1 * 1024 * 1024; // 1MB in bytes
 
         if (fotoInput) {
             fotoInput.addEventListener('change', function(e) {
@@ -526,6 +627,209 @@ if ($apiData && $apiData['success']) {
                     previewImg.src = e.target.result;
                     fotoPreview.classList.remove('hidden');
                     fileName.textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Edit Modal Functions
+        const editModal = document.getElementById('edit-branch-modal');
+        const btnCloseEdit = document.querySelectorAll('.btn-close-edit-modal');
+        const btnUpdate = document.getElementById('btnUpdate');
+        const formEdit = document.getElementById('formEditCabang');
+        const editFotoInput = document.getElementById('edit_foto');
+        const editFotoPreview = document.getElementById('edit_foto_preview_container');
+        const editPreviewImg = document.getElementById('edit_preview_img');
+        const editFileName = document.getElementById('edit_file_name');
+        const editFotoError = document.getElementById('edit_foto_error');
+
+        function openEditModal(id, nama, kode, alamat, hp, gps, foto) {
+            document.getElementById('edit_id_cabang').value = id;
+            document.getElementById('edit_nama_cabang').value = nama;
+            document.getElementById('edit_kode_cabang').value = kode;
+            document.getElementById('edit_alamat').value = alamat;
+            document.getElementById('edit_hp').value = hp;
+            document.getElementById('edit_gps').value = gps;
+
+            // Show existing foto preview
+            if (foto && foto !== '') {
+                editPreviewImg.src = getImageUrl(foto);
+                editFotoPreview.classList.remove('hidden');
+                editFileName.textContent = foto;
+            } else {
+                editFotoPreview.classList.add('hidden');
+                editFileName.textContent = '';
+            }
+
+            editModal.classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            editModal.classList.add('hidden');
+            formEdit.reset();
+            editFotoPreview.classList.add('hidden');
+            editFileName.textContent = '';
+            editFotoError.classList.add('hidden');
+        }
+
+        // Event listeners for edit modal
+        btnCloseEdit.forEach(btn => {
+            btn.addEventListener('click', closeEditModal);
+        });
+
+        // Close modal when clicking on backdrop
+        editModal.addEventListener('click', function(e) {
+            if (e.target === editModal.querySelector('.absolute')) {
+                closeEditModal();
+            }
+        });
+
+        // Handle edit button clicks (desktop)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-edit-cabang')) {
+                const btn = e.target.closest('.btn-edit-cabang');
+                openEditModal(
+                    btn.dataset.id,
+                    btn.dataset.nama,
+                    btn.dataset.kode,
+                    btn.dataset.alamat,
+                    btn.dataset.hp,
+                    btn.dataset.gps,
+                    btn.dataset.foto
+                );
+            }
+            // Handle edit button clicks (mobile)
+            if (e.target.closest('.btn-edit-cabang-mobile')) {
+                const btn = e.target.closest('.btn-edit-cabang-mobile');
+                openEditModal(
+                    btn.dataset.id,
+                    btn.dataset.nama,
+                    btn.dataset.kode,
+                    btn.dataset.alamat,
+                    btn.dataset.hp,
+                    btn.dataset.gps,
+                    btn.dataset.foto
+                );
+            }
+        });
+
+        // Handle Update Button
+        if (btnUpdate) {
+            btnUpdate.addEventListener('click', async function() {
+                // Validate form
+                const requiredFields = ['edit_nama_cabang', 'edit_alamat', 'edit_kode_cabang', 'edit_hp'];
+                let isValid = true;
+                let emptyFields = [];
+
+                requiredFields.forEach(fieldId => {
+                    const input = document.getElementById(fieldId);
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        emptyFields.push(input.previousElementSibling.textContent.replace('*', '').trim());
+                        input.classList.add('border-red-500');
+                    } else {
+                        input.classList.remove('border-red-500');
+                    }
+                });
+
+                if (!isValid) {
+                    showToast('Harap isi semua field yang wajib diisi: ' + emptyFields.join(', '), 'error');
+                    return;
+                }
+
+                // Confirm before update
+                const confirmed = confirm('Apakah Anda yakin ingin mengupdate data cabang ini?');
+                if (!confirmed) return;
+
+                // Show loading state
+                btnUpdate.disabled = true;
+                btnUpdate.innerHTML = '<span class="material-symbols-outlined spinner">sync</span><span>Updating...</span>';
+
+                // Prepare FormData
+                const formData = new FormData(formEdit);
+
+                // Send to API
+                fetch('../../api/cabang/update.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Data cabang berhasil diupdate!', 'success');
+                        closeEditModal();
+                        // Refresh page after short delay
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showToast(data.message || 'Gagal mengupdate data', 'error');
+                        // Reset button
+                        btnUpdate.disabled = false;
+                        btnUpdate.innerHTML = '<span class="material-symbols-outlined text-sm">save</span><span>Update</span>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Terjadi kesalahan saat mengupdate data', 'error');
+                    // Reset button
+                    btnUpdate.disabled = false;
+                    btnUpdate.innerHTML = '<span class="material-symbols-outlined text-sm">save</span><span>Update</span>';
+                });
+            });
+        }
+
+        // Remove border highlight on input for edit form
+        document.querySelectorAll('#formEditCabang input, #formEditCabang textarea').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('border-red-500');
+            });
+        });
+
+        // Image Preview and Validation for Edit Form
+        if (editFotoInput) {
+            editFotoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+
+                // Reset error
+                editFotoError.classList.add('hidden');
+                editFotoInput.classList.remove('border-red-500');
+
+                if (!file) {
+                    editFotoPreview.classList.add('hidden');
+                    editFileName.textContent = '';
+                    return;
+                }
+
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    editFotoError.textContent = 'Tipe file tidak valid. Gunakan JPG, PNG, GIF, atau WEBP.';
+                    editFotoError.classList.remove('hidden');
+                    editFotoInput.classList.add('border-red-500');
+                    editFotoInput.value = ''; // Clear input
+                    editFotoPreview.classList.add('hidden');
+                    editFileName.textContent = '';
+                    return;
+                }
+
+                // Validate file size (1MB)
+                if (file.size > maxSize) {
+                    editFotoError.textContent = 'Ukuran file terlalu besar. Maksimal 1MB.';
+                    editFotoError.classList.remove('hidden');
+                    editFotoInput.classList.add('border-red-500');
+                    editFotoInput.value = ''; // Clear input
+                    editFotoPreview.classList.add('hidden');
+                    editFileName.textContent = '';
+                    return;
+                }
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    editPreviewImg.src = e.target.result;
+                    editFotoPreview.classList.remove('hidden');
+                    editFileName.textContent = file.name;
                 };
                 reader.readAsDataURL(file);
             });
@@ -612,7 +916,15 @@ if ($apiData && $apiData['success']) {
                     </td>
                     <td class="px-6 py-4 text-sm text-slate-500">${formatDate(item.created_date)}</td>
                     <td class="px-6 py-4 text-right space-x-2">
-                        <button class="p-1.5 text-slate-400 hover:text-primary transition-colors" title="Edit">
+                        <button class="p-1.5 text-slate-400 hover:text-primary transition-colors btn-edit-cabang" 
+                            data-id="${item.id_cabang}"
+                            data-nama="${item.nama_cabang || ''}"
+                            data-kode="${item.kode_cabang || ''}"
+                            data-alamat="${item.alamat || ''}"
+                            data-hp="${item.hp || ''}"
+                            data-gps="${item.gps || ''}"
+                            data-foto="${item.foto || ''}"
+                            title="Edit">
                             <span class="material-symbols-outlined text-xl">edit_square</span>
                         </button>
                         <button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors" title="Hapus">
@@ -645,7 +957,15 @@ if ($apiData && $apiData['success']) {
                             <div class="text-xs text-slate-500">${item.kode_cabang || '-'}</div>
                         </div>
                         <div class="flex gap-1">
-                            <button class="p-2 text-slate-400 hover:text-primary transition-colors" title="Edit">
+                            <button class="p-2 text-slate-400 hover:text-primary transition-colors btn-edit-cabang-mobile" 
+                                data-id="${item.id_cabang}"
+                                data-nama="${item.nama_cabang || ''}"
+                                data-kode="${item.kode_cabang || ''}"
+                                data-alamat="${item.alamat || ''}"
+                                data-hp="${item.hp || ''}"
+                                data-gps="${item.gps || ''}"
+                                data-foto="${item.foto || ''}"
+                                title="Edit">
                                 <span class="material-symbols-outlined text-xl">edit_square</span>
                             </button>
                             <button class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Hapus">
