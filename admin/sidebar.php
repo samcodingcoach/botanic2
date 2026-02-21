@@ -28,6 +28,11 @@
             <span class="text-sm font-medium">Tipe Kamar</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="/botanic/admin/cabangtipekamar/cabangtipekamar.php" data-page="cabangtipekamar">
+            <span class="material-symbols-outlined">hotel</span>
+            <span class="text-sm font-medium">Akomodasi</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
             href="#" data-page="settings">
             <span class="material-symbols-outlined">settings</span>
             <span class="text-sm font-medium">Settings</span>
@@ -70,9 +75,13 @@
 
         navItems.forEach(item => {
             const href = item.getAttribute('href');
-            if (href && href !== '#' && currentPage.includes(href.split('/').pop())) {
-                item.classList.add('bg-primary', 'text-white');
-                item.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-50', 'dark:hover:bg-slate-800');
+            if (href && href !== '#') {
+                const hrefPage = href.split('/').pop();
+                // Exact match for active state
+                if (currentPage === hrefPage) {
+                    item.classList.add('bg-primary', 'text-white');
+                    item.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-50', 'dark:hover:bg-slate-800');
+                }
             }
         });
     });
