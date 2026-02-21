@@ -49,3 +49,37 @@ tipe_kamar
 ON
 cabang_tipe.id_tipe = tipe_kamar.id_tipe
 ==================
+
+table: fasilitas
+id_fasilitas int primary key auto_increment
+id_cabang int
+nama_fasilitas varchar
+deskripsi text
+gambar1 text
+gambar2 text
+aktif tinyint
+status_free tinyint
+range_harga float
+created_at datetime
+
+# khusus list pakai dibawah ini
+
+SELECT
+f.id_fasilitas,
+f.id_cabang,
+c.nama_cabang,
+f.nama_fasilitas,
+f.deskripsi,
+f.gambar1,
+f.gambar2,
+f.aktif,
+f.status_free,
+f.range_harga,
+f.created_at
+FROM
+fasilitas f
+INNER JOIN
+cabang c
+ON
+f.id_cabang = c.id_cabang
+================================
