@@ -19,9 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Support both form-data and raw JSON body
 $inputData = [];
-if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
-    $rawInput = file_get_contents('php://input');
-    $inputData = json_decode($rawInput, true);
+// Always try to parse JSON body first
+$rawInput = file_get_contents('php://input');
+$jsonData = json_decode($rawInput, true);
+
+if ($jsonData !== null) {
+    $inputData = $jsonData;
 } else {
     $inputData = $_POST;
 }
