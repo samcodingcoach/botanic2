@@ -38,7 +38,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Admin Panel - Manajemen Cabang Tipe Kamar</title>
+    <title>Admin Panel - Manajemen Akomodasi</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
         rel="stylesheet" />
@@ -90,7 +90,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
                         class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
-                    <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Manajemen Cabang Tipe Kamar</h2>
+                    <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Manajemen Akomodasi</h2>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="relative hidden sm:block">
@@ -112,7 +112,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
                 <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
                     <div>
                         <h3 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Daftar
-                            Cabang Tipe Kamar</h3>
+                            Akomodasi</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Kelola informasi tipe kamar di setiap
                             cabang hotel.</p>
                     </div>
@@ -167,7 +167,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
                     <!-- No Data State -->
                     <div id="noData" class="hidden p-8 text-center">
                         <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600 mb-4">hotel</span>
-                        <p class="text-slate-500 dark:text-slate-400">Tidak ada data cabang tipe kamar</p>
+                        <p class="text-slate-500 dark:text-slate-400">Tidak ada data Akomodasi</p>
                     </div>
                     <!-- Pagination Footer -->
                     <div id="paginationContainer"
@@ -191,7 +191,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
             class="relative bg-white dark:bg-background-dark w-full max-w-lg mx-4 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <!-- Header (Fixed) -->
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tambah Cabang Tipe Baru</h3>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Tambah Akomodasi Baru</h3>
                 <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 btn-close-modal">
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -667,6 +667,15 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
             return '../../images/' + gambar;
         }
 
+        function normalizeUrl(url) {
+            if (!url) return '';
+            // If URL doesn't start with http:// or https://, add https://
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                return 'https://' + url;
+            }
+            return url;
+        }
+
         function renderTable() {
             const tableBody = document.getElementById('tableBody');
             const start = (currentPage - 1) * itemsPerPage;
@@ -696,7 +705,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
                     </td>
                     <td class="px-6 py-4">
                         ${item.link_youtube ? `
-                        <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1" href="${item.link_youtube}" target="_blank">
+                        <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1" href="${normalizeUrl(item.link_youtube)}" target="_blank" rel="noopener noreferrer">
                             <span class="material-symbols-outlined text-xl">play_circle</span>
                         </a>` : '<span class="text-slate-400">-</span>'}
                     </td>
@@ -775,7 +784,7 @@ if ($tipeKamarApiData && $tipeKamarApiData['success']) {
                         </div>
                     </div>` : ''}
                     ${item.link_youtube ? `
-                    <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1 text-sm" href="${item.link_youtube}" target="_blank">
+                    <a class="text-primary hover:text-primary/70 inline-flex items-center gap-1 text-sm" href="${normalizeUrl(item.link_youtube)}" target="_blank" rel="noopener noreferrer">
                         <span class="material-symbols-outlined text-sm">play_circle</span>
                         <span>Lihat YouTube</span>
                     </a>` : ''}
