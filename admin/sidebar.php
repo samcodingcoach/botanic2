@@ -12,18 +12,23 @@
         <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Botanic</h1>
     </div>
     <nav class="flex-1 px-4 space-y-1 mt-4">
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="dashboard.php">
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="dashboard.php" data-page="dashboard">
             <span class="material-symbols-outlined">dashboard</span>
             <span class="text-sm font-medium">Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 sidebar-item-active rounded-lg transition-colors"
-            href="cabang/cabang.php">
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="/botanic/admin/cabang/cabang.php" data-page="cabang">
             <span class="material-symbols-outlined">storefront</span>
             <span class="text-sm font-medium">Cabang</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="#">
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="/botanic/admin/tipekamar/tipekamar.php" data-page="tipekamar">
+            <span class="material-symbols-outlined">bed</span>
+            <span class="text-sm font-medium">Tipe Kamar</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="#" data-page="settings">
             <span class="material-symbols-outlined">settings</span>
             <span class="text-sm font-medium">Settings</span>
         </a>
@@ -57,4 +62,18 @@
             overlay.classList.remove('active');
         }
     }
+
+    // Highlight active sidebar item based on current page
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = window.location.pathname.split('/').pop() || 'dashboard.php';
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href !== '#' && currentPage.includes(href.split('/').pop())) {
+                item.classList.add('bg-primary', 'text-white');
+                item.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-50', 'dark:hover:bg-slate-800');
+            }
+        });
+    });
 </script>
