@@ -16,3 +16,36 @@ id_tipe int (11) AUTO_INCREMENT Primary
 nama_tipe varchar
 gambar text
 keterangan text
+
+table: cabang_tipe
+id_akomodasi int
+id_cabang int
+id_tipe int
+keterangan text
+created_date datetime
+link_youtube text
+
+# khusus list pakai ini
+
+SELECT
+cabang_tipe.id_akomodasi,
+cabang_tipe.id_cabang,
+cabang.nama_cabang,
+cabang_tipe.id_tipe,
+tipe_kamar.nama_tipe,
+tipe_kamar.gambar,
+tipe_kamar.keterangan,
+cabang_tipe.keterangan,
+cabang_tipe.created_date,
+cabang_tipe.link_youtube
+FROM
+cabang_tipe
+INNER JOIN
+cabang
+ON
+cabang_tipe.id_cabang = cabang.id_cabang
+INNER JOIN
+tipe_kamar
+ON
+cabang_tipe.id_tipe = tipe_kamar.id_tipe
+==================
