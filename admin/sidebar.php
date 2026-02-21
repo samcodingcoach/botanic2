@@ -33,6 +33,11 @@
             <span class="text-sm font-medium">Akomodasi</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="/botanic/admin/fasilitas/fasilitas.php" data-page="fasilitas">
+            <span class="material-symbols-outlined">pool</span>
+            <span class="text-sm font-medium">Fasilitas</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
             href="#" data-page="settings">
             <span class="material-symbols-outlined">settings</span>
             <span class="text-sm font-medium">Settings</span>
