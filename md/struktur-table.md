@@ -83,3 +83,11 @@ cabang c
 ON
 f.id_cabang = c.id_cabang
 ================================
+
+table : users
+id_users int
+username varchar
+password varchar enkripsi password dengan password_hash() dan password_verify()
+aktif tinyint
+created_at datetime
+last_login datetime
