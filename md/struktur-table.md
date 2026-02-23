@@ -91,3 +91,12 @@ password varchar enkripsi password dengan password_hash() dan password_verify()
 aktif tinyint
 created_at datetime
 last_login datetime
+
+cek login query
+SELECT
+u.id_users,
+u.username,
+u.`password`
+FROM
+users u
+where aktif = 1 and username = ? and `password` = ?
