@@ -109,6 +109,7 @@ id_guest int PK Auto Increment
 nama_lengkap varchar
 email varchar
 wa varchar
+password varchar
 kota varchar
 aktif tinyint
 total_point decimal
