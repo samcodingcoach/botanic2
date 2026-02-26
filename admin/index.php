@@ -67,9 +67,6 @@ $username = $_SESSION['username'] ?? '';
                 </div>
                 <div class="flex items-center gap-4">
                     <span id="displayUsername" class="text-sm text-slate-600 dark:text-slate-400"></span>
-                    <button id="btnLogout" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Logout">
-                        <span class="material-symbols-outlined text-slate-600 dark:text-slate-400">logout</span>
-                    </button>
                 </div>
             </header>
             <!-- Dashboard Content -->
@@ -84,21 +81,12 @@ $username = $_SESSION['username'] ?? '';
     </div>
 
     <script>
-        // Get username from sessionStorage
-        const username = sessionStorage.getItem('username') || '';
-        
+        // Get username from session (set by PHP)
+        const username = <?php echo json_encode($username); ?>;
+
         // Display username
         document.getElementById('displayUsername').textContent = username;
         document.getElementById('welcomeUsername').textContent = username;
-
-        // Handle logout
-        document.getElementById('btnLogout').addEventListener('click', function() {
-            sessionStorage.removeItem('id_users');
-            sessionStorage.removeItem('username');
-            localStorage.removeItem('id_users');
-            localStorage.removeItem('username');
-            window.location.href = 'login.php';
-        });
     </script>
 </body>
 

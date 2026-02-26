@@ -1,6 +1,15 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Determine base path for sidebar links
 $basePath = '/botanic/admin/';
+
+// Get user data from session
+$username = $_SESSION['username'] ?? 'User';
+$initials = strtoupper(substr($username, 0, 2));
 ?>
 <!-- Mobile Sidebar Overlay -->
 <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 md:hidden"
@@ -53,17 +62,21 @@ $basePath = '/botanic/admin/';
         </a>
     </nav>
     <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
-        <div
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
-            <div
-                class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                JD</div>
-            <div class="flex-1 overflow-hidden">
-                <p class="text-sm font-semibold truncate">Jane Doe</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Administrator</p>
+        <form id="logoutForm" action="<?php echo $basePath; ?>logout.php" method="POST">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                onclick="document.getElementById('logoutForm').submit();">
+                <div
+                    class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                    <?php echo htmlspecialchars($initials); ?></div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-sm font-semibold truncate"><?php echo htmlspecialchars($username); ?></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Administrator</p>
+                </div>
+                <button type="submit" class="text-slate-400 hover:text-red-500 transition-colors" title="Logout">
+                    <span class="material-symbols-outlined text-sm">logout</span>
+                </button>
             </div>
-            <span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
-        </div>
+        </form>
     </div>
 </aside>
 

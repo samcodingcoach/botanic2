@@ -100,3 +100,19 @@ u.`password`
 FROM
 users u
 where aktif = 1 and username = ? and `password` = ?
+
+=================================
+
+table: guest
+
+id_guest int PK Auto Increment
+nama_lengkap varchar
+email varchar
+wa varchar
+kota varchar
+aktif tinyint
+total_point decimal
+created_at datetime
+last_login datetime
+
+================================
