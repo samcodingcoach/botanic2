@@ -3,7 +3,8 @@ session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['id_users'])) {
-    // Check localStorage via JS redirect handled in client side
+    header('Location: login.php');
+    exit;
 }
 
 $username = $_SESSION['username'] ?? '';

@@ -4,6 +4,9 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
+// Start session for server-side authentication
+session_start();
+
 require_once __DIR__ . '/../../config/koneksi.php';
 
 $response = [];
@@ -102,6 +105,10 @@ $response = [
         "username" => $user['username']
     ]
 ];
+
+// Set server-side session
+$_SESSION['id_users'] = $user['id_users'];
+$_SESSION['username'] = $user['username'];
 
 echo json_encode($response);
 

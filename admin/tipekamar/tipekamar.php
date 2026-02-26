@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['id_users'])) {
+    header('Location: ../login.php');
+    exit;
+}
+
 // Fetch data from API
 $apiUrl = 'http://localhost/botanic/api/tipe_kamar/list.php';
 $apiResponse = file_get_contents($apiUrl);
