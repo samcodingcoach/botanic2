@@ -1,3 +1,7 @@
+<?php
+// Determine base path for sidebar links
+$basePath = '/botanic/admin/';
+?>
 <!-- Mobile Sidebar Overlay -->
 <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 md:hidden"
     onclick="toggleSidebar()"></div>
@@ -13,32 +17,32 @@
     </div>
     <nav class="flex-1 px-4 space-y-1 mt-4">
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="dashboard.php" data-page="dashboard">
+            href="<?php echo $basePath; ?>index.php" data-page="dashboard">
             <span class="material-symbols-outlined">dashboard</span>
             <span class="text-sm font-medium">Dashboard</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="/botanic/admin/users/users.php" data-page="users">
+            href="<?php echo $basePath; ?>users/users.php" data-page="users">
             <span class="material-symbols-outlined">people</span>
             <span class="text-sm font-medium">Users</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="/botanic/admin/cabang/cabang.php" data-page="cabang">
+            href="<?php echo $basePath; ?>cabang/cabang.php" data-page="cabang">
             <span class="material-symbols-outlined">storefront</span>
             <span class="text-sm font-medium">Cabang</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="/botanic/admin/tipekamar/tipekamar.php" data-page="tipekamar">
+            href="<?php echo $basePath; ?>tipekamar/tipekamar.php" data-page="tipekamar">
             <span class="material-symbols-outlined">bed</span>
             <span class="text-sm font-medium">Tipe Kamar</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="/botanic/admin/cabangtipekamar/cabangtipekamar.php" data-page="cabangtipekamar">
+            href="<?php echo $basePath; ?>cabangtipekamar/cabangtipekamar.php" data-page="cabangtipekamar">
             <span class="material-symbols-outlined">hotel</span>
             <span class="text-sm font-medium">Akomodasi</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            href="/botanic/admin/fasilitas/fasilitas.php" data-page="fasilitas">
+            href="<?php echo $basePath; ?>fasilitas/fasilitas.php" data-page="fasilitas">
             <span class="material-symbols-outlined">pool</span>
             <span class="text-sm font-medium">Fasilitas</span>
         </a>
@@ -80,7 +84,7 @@
 
     // Highlight active sidebar item based on current page
     document.addEventListener('DOMContentLoaded', function() {
-        const currentPage = window.location.pathname.split('/').pop() || 'dashboard.php';
+        const currentPage = window.location.pathname.split('/').pop() || 'index.php';
         const navItems = document.querySelectorAll('.nav-item');
 
         navItems.forEach(item => {
