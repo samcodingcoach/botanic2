@@ -117,3 +117,24 @@ created_at datetime
 last_login datetime
 
 ================================
+
+table: front_office
+id_fo int
+wa varchar
+id_cabang int
+aktif tinyint
+
+query khusus list.php pakai ini
+SELECT
+front_office.id_fo,
+front_office.wa,
+front_office.id_cabang,
+cabang.nama_cabang,
+front_office.aktif
+FROM
+front_office
+INNER JOIN
+cabang
+ON
+front_office.id_cabang = cabang.id_cabang
+=================================
