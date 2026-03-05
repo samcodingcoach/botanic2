@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+    <div class="relative flex h-full min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <!-- Top App Bar / Header -->
+        <div class="flex items-center p-4 pb-2 justify-between">
+            <div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start">
+            </div>
+        </div>
+        <!-- Logo/Hero Area -->
+        <div class="@container px-4 py-3">
+            <div
+                class="w-full bg-primary/10 dark:bg-primary/20 flex flex-col items-center justify-center overflow-hidden rounded-xl min-h-[180px] border border-primary/20">
+                <div class="bg-primary text-white p-4 rounded-xl shadow-lg mb-4">
+                    <span class="material-symbols-outlined text-5xl">shield_lock</span>
+                </div>
+                <p class="text-primary font-bold text-xl tracking-wider">SECUREAPP</p>
+            </div>
+        </div>
+        <!-- Login Title -->
+        <div class="px-4 pt-6 pb-2">
+            <h1 class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-bold leading-tight">Welcome Back
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Please enter your credentials to continue</p>
+        </div>
+        <!-- Form Section -->
+        <div class="flex flex-col gap-4 px-4 py-3">
+            <!-- Email Input -->
+            <label class="flex flex-col w-full">
+                <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold leading-normal pb-2">Email Address
+                </p>
+                <div class="relative">
+                    <input
+                        class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-14 placeholder:text-slate-400 p-[15px] focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                        placeholder="name@company.com" type="email" />
+                </div>
+            </label>
+            <!-- Password Input -->
+            <label class="flex flex-col w-full">
+                <div class="flex justify-between items-center pb-2">
+                    <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold leading-normal">Password</p>
+                    <a class="text-primary text-xs font-bold hover:underline" href="#">Forgot Password?</a>
+                </div>
+                <div class="flex w-full items-stretch rounded-lg group">
+                    <input
+                        id="password-input"
+                        class="form-input flex w-full min-w-0 flex-1 rounded-l-lg text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-14 placeholder:text-slate-400 p-[15px] border-r-0 focus:border-primary focus:ring-0 transition-colors"
+                        placeholder="••••••••" type="password" />
+                    <div
+                        class="text-slate-400 flex border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center pr-4 rounded-r-lg border-l-0 group-focus-within:border-primary">
+                        <span id="toggle-password" class="material-symbols-outlined cursor-pointer hover:text-primary">visibility</span>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <!-- Action Button -->
+        <div class="px-4 py-6">
+            <button
+                class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-md transition-all active:scale-[0.98]">
+                Sign In
+            </button>
+        </div>
+
+
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password-input');
+            const toggleBtn = document.getElementById('toggle-password');
+            
+            toggleBtn.addEventListener('click', function() {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                toggleBtn.textContent = isPassword ? 'visibility_off' : 'visibility';
+            });
+        });
+    </script>
+</body>
+
+</html>
