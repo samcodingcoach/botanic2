@@ -54,6 +54,63 @@
         body {
             min-height: max(884px, 100dvh);
         }
+
+        /* Account Dropdown Menu */
+        .account-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            min-width: 160px;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 50;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #334155;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.15s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f5f9;
+        }
+
+        .dropdown-menu a:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .dropdown-menu a:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+            color: #ef4444;
+        }
+
+        .dropdown-menu a:last-child:hover {
+            background-color: #fef2f2;
+        }
     </style>
 </head>
 
@@ -65,11 +122,24 @@
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary text-3xl">hotel</span>
-                    <h1 class="text-xl font-bold tracking-tight">StayFind</h1>
+                    <h1 class="text-xl font-bold tracking-tight">Botanic Groups</h1>
                 </div>
-                <button class="p-2 rounded-full hover:bg-primary/10">
-                    <span class="material-symbols-outlined">account_circle</span>
-                </button>
+                <!-- Account Dropdown -->
+                <div class="account-dropdown">
+                    <button id="account-btn" onclick="toggleDropdown()" class="p-2 rounded-full hover:bg-primary/10">
+                        <span class="material-symbols-outlined">account_circle</span>
+                    </button>
+                    <div id="dropdown-menu" class="dropdown-menu">
+                        <a href="#">
+                            <span class="material-symbols-outlined text-lg">person</span>
+                            <span>Account</span>
+                        </a>
+                        <a href="logout.php">
+                            <span class="material-symbols-outlined text-lg">logout</span>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="relative group">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
@@ -185,6 +255,23 @@
         <!-- Bottom Navigation Bar -->
 
     </div>
+
+    <script>
+        // Toggle account dropdown
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const dropdown = document.querySelector('.account-dropdown');
+            const menu = document.getElementById('dropdown-menu');
+            if (dropdown && !dropdown.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 
 </html>
