@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+    <!-- Background Screen: Hotel List Simulation -->
+    <div class="fixed inset-0 overflow-y-auto px-4 py-6">
+        <div class="max-w-md mx-auto space-y-6 opacity-40 grayscale-[20%]">
+            <div class="flex items-center justify-between mb-8">
+                <h1 class="text-2xl font-bold">Discover Hotels</h1>
+                <span class="material-symbols-outlined text-primary text-3xl">filter_list</span>
+            </div>
+            <!-- Hotel Card 1 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm">
+                <div class="h-48 w-full bg-cover bg-center" data-alt="Luxury hotel exterior with palm trees"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCWQA31TbwtwHXY9ej3VR0gFifBNEi5Hf3CBt3EaSUyYwoThIQwKAlvtbbfFZCyF6mODFsaOGvmxA0jxhTRdZ2DWhjpLo1vZm5orRBqIFZMzszh7gMtPTK8yXvAx3ni30lj4GwAame8lvk5_9qIu2vuErbTydmJCXDxAyrO8jwPLI_yERA-MbAxSb156qha64ZMdTJ4dK9XvmkioI90YueMzJIiDmNuuLAEpODQ0hfUi25nv8HP2jUhw3088W7OtvZFOJ_ZZSNgicp6')">
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg">Grand Plaza Resort</h3>
+                        <span class="text-primary font-bold">$240/nt</span>
+                    </div>
+                    <p class="text-slate-500 text-sm">Miami, Florida</p>
+                </div>
+            </div>
+            <!-- Hotel Card 2 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm">
+                <div class="h-48 w-full bg-cover bg-center" data-alt="Modern hotel room with mountain view"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqpMYh5JO7IGFLZQcIEbvNgP93O5e_y61_CxPtz7X3JrYxshjCu2qAGZDK5sBZbBbCoW_3w9CItb3ZSmEpKLG734A4P11Q8oI5GyxJZdQmNLLtSbALdmgJtp-VF6o-OwWZpd9a3PBvZvyEIzMdYuCOEbjmh8u1p78sckoEms03MXxOueZyaIjeWLaHvXcmbxpriWCwIXxlzGSr5_sfNBlmfNi3juoddQNE5XoP2wOL-OS58vwb9ZGPTK_yFk_i38JtqLikgF1mTa3x')">
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg">Mountain View Lodge</h3>
+                        <span class="text-primary font-bold">$185/nt</span>
+                    </div>
+                    <p class="text-slate-500 text-sm">Aspen, Colorado</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Backdrop Overlay -->
+    <div
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex flex-col justify-end sm:justify-center items-center">
+        <!-- Profile Bottom Sheet / Modal -->
+        <div
+            class="w-full bg-background-light dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[85vh]">
+            <!-- BottomSheetHandle for mobile feel -->
+            <div class="flex h-5 w-full items-center justify-center pt-2">
+                <div class="h-1.5 w-12 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+            </div>
+            <!-- Modal Header / Profile Info -->
+            <div class="flex items-center justify-between pt-4 pb-2 px-6">
+                <div class="text-left">
+                    <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">
+                        Profile Settings</h2>
+                    <p class="text-primary font-medium text-xs">Update your personal information</p>
+                </div>
+                <div
+                    class="flex items-center gap-2 p-2.5 rounded-lg bg-primary/5 dark:bg-primary/10 border border-primary/20">
+                    <span class="material-symbols-outlined text-primary text-sm">stars</span>
+                    <div class="text-right">
+                        <span class="font-bold text-slate-900 dark:text-slate-100 text-xs">12,450</span>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Points</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Form Content -->
+            <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+                <!-- Full Name -->
+                <div class="flex flex-col gap-1.5">
+                    <label
+                        class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Full
+                        Name</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">person</span>
+                        <input
+                            class="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-sm"
+                            placeholder="Enter your full name" type="text" value="Alex Johnson" />
+                    </div>
+                </div>
+                <!-- Email -->
+                <div class="flex flex-col gap-1.5">
+                    <label
+                        class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Email
+                        Address</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">mail</span>
+                        <input
+                            class="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-sm"
+                            placeholder="Email" type="email" value="alex.johnson@example.com" />
+                    </div>
+                </div>
+                <!-- Whatsapp -->
+                <div class="flex flex-col gap-1.5">
+                    <label
+                        class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Whatsapp
+                        Number</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">call</span>
+                        <input
+                            class="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-sm"
+                            placeholder="Whatsapp number" type="text" value="+1 (555) 000-1234" />
+                    </div>
+                </div>
+                <!-- City -->
+                <div class="flex flex-col gap-1.5">
+                    <label
+                        class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">City</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">location_on</span>
+                        <input
+                            class="w-full pl-11 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-sm"
+                            placeholder="Your City" type="text" value="New York" />
+                    </div>
+                </div>
+                <!-- Password -->
+                <div class="flex flex-col gap-1.5">
+                    <label
+                        class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Password</label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">lock</span>
+                        <input
+                            class="w-full pl-11 pr-12 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-sm"
+                            placeholder="••••••••" type="password" value="password123" id="password-input" />
+                        <button type="button" id="toggle-password" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer Action -->
+            <div class="p-4 bg-white dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800">
+                <button
+                    class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2 text-sm">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    Update Profile
+                </button>
+
+            </div>
+        </div>
+        <!-- Empty space for spacing on desktop -->
+        <div class="h-8 hidden sm:block"></div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password-input');
+            
+            if (toggleBtn && passwordInput) {
+                toggleBtn.addEventListener('click', function() {
+                    const isPassword = passwordInput.type === 'password';
+                    passwordInput.type = isPassword ? 'text' : 'password';
+                    this.querySelector('span').textContent = isPassword ? 'visibility_off' : 'visibility';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

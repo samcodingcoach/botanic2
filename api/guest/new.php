@@ -129,7 +129,7 @@ $query = "INSERT INTO guest (nama_lengkap, email, wa, password, kota, aktif, tot
 
 $stmt = $conn->prepare($query);
 $emailValue = !empty($email) ? $email : null;
-$stmt->bind_param("sssssdi", $nama_lengkap, $emailValue, $wa, $hashedPassword, $kota, $total_point, $aktif);
+$stmt->bind_param("ssssid", $nama_lengkap, $emailValue, $wa, $hashedPassword, $kota, $aktif, $total_point);
 
 if ($stmt->execute()) {
     $newId = $conn->insert_id;
