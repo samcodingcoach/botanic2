@@ -1,0 +1,42 @@
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: max(884px, 100dvh);
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid rgba(19, 91, 236, 0.1);
+    border-radius: 50%;
+    border-top-color: #135bec;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Room Card Styles */
+.room-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* YouTube Embed Container */
+.youtube-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+}
+
+.youtube-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

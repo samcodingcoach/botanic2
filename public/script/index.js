@@ -239,8 +239,9 @@ async function loadBranches() {
         if (result.success && result.data && result.data.length > 0) {
             container.innerHTML = result.data.map(branch => `
                 <div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 branch-card" data-name="${branch.nama_cabang.toLowerCase()}">
-                    <div class="relative h-48 w-full bg-slate-200 dark:bg-slate-800 bg-center bg-cover"
-                        style="background-image: url('../images/${branch.foto || 'default-branch.jpg'}');">
+                    <div class="relative h-48 w-full bg-slate-200 dark:bg-slate-800 bg-center bg-cover cursor-pointer"
+                        style="background-image: url('../images/${branch.foto || 'default-branch.jpg'}');"
+                        onclick="window.location.href='kamar.php?id_cabang=${branch.id_cabang}'">
                         <div class="absolute bottom-3 left-3 px-2 py-1 bg-primary text-white text-xs font-bold rounded">
                             ${branch.kode_cabang || 'N/A'}
                         </div>
