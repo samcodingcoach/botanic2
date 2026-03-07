@@ -1,0 +1,125 @@
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: max(884px, 100dvh);
+}
+
+/* Account Dropdown Menu */
+.account-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    min-width: 160px;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 50;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #334155;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f5f9;
+}
+
+.dropdown-menu a:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.dropdown-menu a:last-child {
+    border-radius: 0 0 0.5rem 0.5rem;
+    color: #ef4444;
+}
+
+.dropdown-menu a:last-child:hover {
+    background-color: #fef2f2;
+}
+
+/* Profile Modal Styles */
+.profile-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.profile-modal.active {
+    display: flex;
+}
+
+.profile-modal-content {
+    width: 100%;
+    background: #f6f6f8;
+    border-radius: 1.5rem 1.5rem 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    max-height: 85vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.dark .profile-modal-content {
+    background: #101622;
+}
+
+@media (min-width: 640px) {
+    .profile-modal {
+        align-items: center;
+    }
+    .profile-modal-content {
+        border-radius: 1.5rem;
+        max-height: 85vh;
+    }
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid rgba(19, 91, 236, 0.1);
+    border-radius: 50%;
+    border-top-color: #135bec;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Logout Modal */
+#logout-modal .profile-modal-content {
+    max-width: 100%;
+}
+
+@media (min-width: 640px) {
+    #logout-modal .profile-modal-content {
+        max-width: 100%;
+    }
+}
