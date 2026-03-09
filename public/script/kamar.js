@@ -99,6 +99,9 @@ function createRoomCard(room) {
         `;
     }
 
+    const descriptionText = room.keterangan_akomodasi || room.keterangan_tipe || 'No description available';
+    const truncatedText = truncateText(descriptionText, 200);
+
     card.innerHTML = `
         <div class="w-full aspect-[16/9] bg-center bg-no-repeat bg-cover"
             style="background-image: url('../images/${room.gambar || 'default-room.jpg'}');">
@@ -117,14 +120,16 @@ function createRoomCard(room) {
                     Available
                 </span>
             </div>
-            <div class="relative">
-                <p class="description text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    ${truncateText(room.keterangan_akomodasi || room.keterangan_tipe || 'No description available', 200)}
-                </p>
-                <button class="read-more-btn text-primary text-xs font-semibold mt-2 hover:text-primary/80" onclick="toggleReadMore(this)" data-full="${escapeHtml(room.keterangan_akomodasi || room.keterangan_tipe || 'No description available')}">
+            ${room.keterangan_akomodasi ? `
+            <div class="text-slate-600 dark:text-slate-300 text-sm keterangan-akomodasi">
+                <p class="description leading-relaxed">${truncatedText}</p>
+                ${descriptionText.length > 200 ? `
+                <button class="read-more-btn text-primary text-xs font-semibold mt-2 hover:text-primary/80" onclick="toggleReadMore(this)" data-full="${escapeHtml(descriptionText)}">
                     Read more
                 </button>
+                ` : ''}
             </div>
+            ` : ''}
             ${room.link_youtube ? `
             <div class="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-800">
                 <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Video Room Tour</p>
@@ -231,6 +236,7 @@ function clearSearch() {
 }
 
 // Filter rooms based on search - filters cards in main container
+// Search only in: nama_tipe and keterangan_akomodasi (exact phrase, bukan per kata)
 window.filterRooms = function(searchTerm) {
     console.log('filterRooms called with:', searchTerm);
     console.log('allRoomsData count:', allRoomsData.length);
@@ -250,11 +256,11 @@ window.filterRooms = function(searchTerm) {
 
     // If no search term, show all cards
     if (!searchTerm || !searchTerm.trim()) {
-        // Remove no-results message
+        // Remove no-results message and search info
         const noResultsMsg = container.querySelector('.no-results-message');
-        if (noResultsMsg) {
-            noResultsMsg.remove();
-        }
+        const searchInfo = container.querySelector('.search-info');
+        if (noResultsMsg) noResultsMsg.remove();
+        if (searchInfo) searchInfo.remove();
 
         // Show all cards and re-render to remove highlights
         cards.forEach(card => {
@@ -277,34 +283,44 @@ window.filterRooms = function(searchTerm) {
         return;
     }
 
-    const searchLower = searchTerm.toLowerCase();
+    const searchLower = searchTerm.toLowerCase().trim();
     let visibleCount = 0;
+    const matchedRoomTypes = []; // Track matched room type names
 
     cards.forEach(card => {
         const namaTipe = card.dataset.namaTipe || '';
-        const keteranganTipe = card.dataset.keteranganTipe || '';
+        // Don't search in keterangan_tipe, only nama_tipe and keterangan_akomodasi
         const keteranganAkomodasi = card.dataset.keteranganAkomodasi || '';
 
-        const matchesSearch = namaTipe.includes(searchLower) ||
-                              keteranganTipe.includes(searchLower) ||
-                              keteranganAkomodasi.includes(searchLower);
+        // Exact phrase match - cari kalimat lengkap
+        const matchesNamaTipe = namaTipe.includes(searchLower);
+        const matchesKeteranganAkomodasi = keteranganAkomodasi.includes(searchLower);
+        
+        const matchesSearch = matchesNamaTipe || matchesKeteranganAkomodasi;
 
         if (matchesSearch) {
             card.classList.remove('hidden');
             card.style.display = '';
             visibleCount++;
-
-            // Highlight matching text
-            const namaTipeEl = card.querySelector('.nama-tipe');
-            const keteranganTipeEl = card.querySelector('.keterangan-tipe');
-
-            if (namaTipeEl && namaTipeEl.textContent.toLowerCase().includes(searchLower)) {
-                namaTipeEl.innerHTML = highlightText(namaTipeEl.textContent, searchTerm);
+            
+            // Track matched room type (without duplicates)
+            const roomTypeName = card.querySelector('.nama-tipe')?.textContent?.trim() || 'Unknown';
+            if (!matchedRoomTypes.includes(roomTypeName)) {
+                matchedRoomTypes.push(roomTypeName);
             }
-            if (keteranganTipeEl && keteranganTipeEl.textContent.toLowerCase().includes(searchLower)) {
-                const iconHtml = '<span class="material-symbols-outlined text-xs">room</span> ';
-                const textContent = keteranganTipeEl.textContent.replace(/^\s*room\s*/i, '').trim();
-                keteranganTipeEl.innerHTML = iconHtml + highlightText(textContent, searchTerm);
+
+            // Highlight exact phrase match
+            const namaTipeEl = card.querySelector('.nama-tipe');
+            const keteranganAkomodasiEl = card.querySelector('.keterangan-akomodasi');
+
+            if (namaTipeEl && matchesNamaTipe) {
+                const regex = new RegExp(`(${searchLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                namaTipeEl.innerHTML = namaTipeEl.textContent.replace(regex, '<span class="highlight-text">$1</span>');
+            }
+            
+            if (keteranganAkomodasiEl && matchesKeteranganAkomodasi) {
+                const regex = new RegExp(`(${searchLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                keteranganAkomodasiEl.innerHTML = keteranganAkomodasiEl.textContent.replace(regex, '<span class="highlight-text">$1</span>');
             }
         } else {
             card.classList.add('hidden');
@@ -312,26 +328,42 @@ window.filterRooms = function(searchTerm) {
         }
     });
 
-    // Show "no results" message
-    let noResultsMsg = container.querySelector('.no-results-message');
+    // Remove existing search info and no-results message
+    const existingSearchInfo = container.querySelector('.search-info');
+    const noResultsMsg = container.querySelector('.no-results-message');
+    if (existingSearchInfo) existingSearchInfo.remove();
+    if (noResultsMsg) noResultsMsg.remove();
+
+    // Show search info or no results message
     if (visibleCount === 0) {
-        if (!noResultsMsg) {
-            noResultsMsg = document.createElement('div');
-            noResultsMsg.className = 'no-results-message flex flex-col items-center justify-center py-12';
-            noResultsMsg.innerHTML = `
-                <span class="material-symbols-outlined text-slate-400 text-5xl mb-4">search_off</span>
-                <p class="text-slate-500 dark:text-slate-400">No rooms found matching "${searchTerm}"</p>
-                <p class="text-slate-400 dark:text-slate-500 text-sm mt-2">Try different keywords</p>
-            `;
-            container.appendChild(noResultsMsg);
-        }
-    } else {
-        if (noResultsMsg) {
-            noResultsMsg.remove();
-        }
+        const newNoResultsMsg = document.createElement('div');
+        newNoResultsMsg.className = 'no-results-message flex flex-col items-center justify-center py-12';
+        newNoResultsMsg.innerHTML = `
+            <span class="material-symbols-outlined text-slate-400 text-5xl mb-4">search_off</span>
+            <p class="text-slate-500 dark:text-slate-400">No rooms found matching "${searchTerm}"</p>
+            <p class="text-slate-400 dark:text-slate-500 text-sm mt-2">Try different keywords</p>
+        `;
+        container.appendChild(newNoResultsMsg);
+    } else if (visibleCount > 0) {
+        // Show search info with matched room types
+        const searchInfoEl = document.createElement('div');
+        searchInfoEl.className = 'search-info flex items-center justify-between bg-slate-100 dark:bg-slate-800 rounded-lg px-4 py-3 mb-4';
+        searchInfoEl.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                    <span class="font-bold text-primary">${visibleCount}</span> item${visibleCount > 1 ? 's' : ''} found
+                </p>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+                ${matchedRoomTypes.join(', ')}
+            </p>
+        `;
+        container.insertBefore(searchInfoEl, container.firstChild);
     }
 
     console.log(`Showing ${visibleCount} of ${cards.length} rooms`);
+    console.log(`Matched room types: ${matchedRoomTypes.join(', ')}`);
 };
 
 // Initialize search - input event listener and Escape key
