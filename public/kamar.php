@@ -67,7 +67,7 @@ if ($id_cabang <= 0) {
         }
     </style>
     <link rel="stylesheet" href="css/kamar.css" />
-</head>
+</head>   
 
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
     <div class="relative flex h-full min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
