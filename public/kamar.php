@@ -60,31 +60,36 @@ if ($id_cabang <= 0) {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        
+        /* Floating header shadow on scroll */
+        #main-header.scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
     </style>
     <link rel="stylesheet" href="css/kamar.css" />
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
     <div class="relative flex h-full min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
-        <!-- Header -->
-        <div class="flex items-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 pb-2 justify-between sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700">
+        <!-- Floating Header -->
+        <header id="main-header" class="fixed top-0 left-0 right-0 flex items-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 pb-2 justify-between z-50 border-b border-slate-200 dark:border-slate-700 transition-shadow duration-300">
             <a href="index.php" class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center cursor-pointer">
                 <span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
             </a>
-            
+
             <!-- Branch name - hides when search is active -->
             <h2 id="branch-name" class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate px-4 transition-all duration-300">
                 Loading...
             </h2>
-            
+
             <!-- Search container - expands to replace branch name -->
             <div id="search-container" class="flex-1 max-w-md transition-all duration-300 ease-in-out hidden">
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         id="search-input"
-                        placeholder="Search features..." 
+                        placeholder="Search features..."
                         class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50"
                         autocomplete="off"
                     />
@@ -93,12 +98,15 @@ if ($id_cabang <= 0) {
                     </button>
                 </div>
             </div>
-            
+
             <!-- Search toggle button -->
             <button id="search-btn" onclick="toggleSearch()" class="flex cursor-pointer items-center justify-center rounded-xl h-12 w-12 bg-transparent text-slate-900 dark:text-slate-100 p-0 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0">
                 <span class="material-symbols-outlined text-2xl font-bold">search</span>
             </button>
-        </div>
+        </header>
+
+        <!-- Spacer for fixed header -->
+        <div class="h-[73px] shrink-0"></div>
 
         <!-- Main Content -->
         <main class="flex-1 pb-24 px-4 space-y-6 mt-4" id="rooms-container">
@@ -125,6 +133,16 @@ if ($id_cabang <= 0) {
         // Store id_cabang for JS to use - MUST be before kamar.js
         window.ID_CABANG = <?php echo $id_cabang; ?>;
         console.log('ID_CABANG set to:', window.ID_CABANG);
+        
+        // Floating header shadow on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
     </script>
     <script src="script/kamar.js"></script>
 </body>
