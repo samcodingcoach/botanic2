@@ -75,9 +75,37 @@ if ($id_cabang <= 0) {
                 Loading...
             </h2>
             <div class="flex w-12 items-center justify-end">
-                <button class="flex cursor-pointer items-center justify-center rounded-xl h-12 bg-transparent text-slate-900 dark:text-slate-100 p-0">
+                <button id="search-btn" onclick="openSearchModal()" class="flex cursor-pointer items-center justify-center rounded-xl h-12 bg-transparent text-slate-900 dark:text-slate-100 p-0 pointer-events-auto relative z-10">
                     <span class="material-symbols-outlined text-2xl font-bold">search</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Search Modal -->
+        <div id="search-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden" style="display: none;" onclick="if(event.target === this) closeSearchModal()">
+            <div class="absolute top-0 left-0 right-0 bg-white dark:bg-slate-900 shadow-lg">
+                <div class="flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700">
+                    <span class="material-symbols-outlined text-slate-400">search</span>
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Search room type..." 
+                        class="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400"
+                        autocomplete="off"
+                        oninput="filterRooms(this.value)"
+                    />
+                    <button id="clear-search" onclick="clearSearch()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="p-2 bg-primary/5 dark:bg-primary/10">
+                    <p class="text-xs text-slate-600 dark:text-slate-400 px-2">
+                        <span class="font-semibold">Search by:</span> Nama Tipe, Keterangan (1), Keterangan Akomodasi
+                    </p>
+                </div>
+            </div>
+            <div class="pt-[130px] px-4" id="search-results-container">
+                <!-- Search results will be shown here -->
             </div>
         </div>
 
@@ -124,11 +152,61 @@ if ($id_cabang <= 0) {
         </div>
     </div>
 
-    <script src="script/kamar.js"></script>
     <script>
-        // Store id_cabang for JS to use
+        // Store id_cabang for JS to use - MUST be before kamar.js
         window.ID_CABANG = <?php echo $id_cabang; ?>;
+        console.log('ID_CABANG set to:', window.ID_CABANG);
+        
+        // Immediate function for onclick handler
+        function openSearchModal() {
+            const modal = document.getElementById('search-modal');
+            const searchInput = document.getElementById('search-input');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.style.display = 'block';
+            }
+            if (searchInput) {
+                setTimeout(() => searchInput.focus(), 100);
+            }
+        }
+        
+        function closeSearchModal() {
+            const modal = document.getElementById('search-modal');
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results-container');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            if (resultsContainer) {
+                resultsContainer.innerHTML = '';
+            }
+        }
+        
+        function clearSearch() {
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results-container');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            if (resultsContainer) {
+                resultsContainer.innerHTML = '';
+            }
+            if (searchInput) {
+                searchInput.focus();
+            }
+        }
+        
+        // Basic filter function - will be enhanced by kamar.js
+        function filterRooms(searchTerm) {
+            console.log('Search:', searchTerm);
+            // This will be overridden by kamar.js with full functionality
+        }
     </script>
+    <script src="script/kamar.js"></script>
 </body>
 
 </html>
