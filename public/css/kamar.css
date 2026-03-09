@@ -41,68 +41,39 @@ body {
     height: 100%;
 }
 
-/* Search Modal Styles */
-#search-modal {
-    animation: fadeIn 0.2s ease-out;
+/* Search animations */
+#search-container {
+    animation: fadeIn 0.3s ease-out;
 }
 
-#search-modal .absolute {
-    animation: slideDown 0.3s ease-out;
+#search-container.hidden {
+    display: none !important;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: translateX(20px);
     }
     to {
         opacity: 1;
+        transform: translateX(0);
     }
 }
 
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-#search-input::placeholder {
-    color: rgb(148, 163, 184);
-}
-
-#search-results-container .room-card {
-    animation: fadeInUp 0.2s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.highlight-text {
-    background-color: rgba(255, 255, 0, 0.3);
-    padding: 1px 2px;
-    border-radius: 2px;
-}
-
-#search-btn {
-    pointer-events: auto !important;
-    z-index: 10;
-    position: relative;
-}
-
-#search-modal {
+#branch-name.hidden {
     display: none !important;
 }
 
-#search-modal:not(.hidden) {
-    display: block !important;
+/* Highlight text for search */
+.highlight-text {
+    background-color: rgba(255, 255, 0, 0.4);
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: inherit;
+}
+
+/* Hidden utility */
+.hidden {
+    display: none !important;
 }

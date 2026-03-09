@@ -71,42 +71,33 @@ if ($id_cabang <= 0) {
             <a href="index.php" class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center cursor-pointer">
                 <span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
             </a>
-            <h2 id="branch-name" class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate px-4">
+            
+            <!-- Branch name - hides when search is active -->
+            <h2 id="branch-name" class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate px-4 transition-all duration-300">
                 Loading...
             </h2>
-            <div class="flex w-12 items-center justify-end">
-                <button id="search-btn" onclick="openSearchModal()" class="flex cursor-pointer items-center justify-center rounded-xl h-12 bg-transparent text-slate-900 dark:text-slate-100 p-0 pointer-events-auto relative z-10">
-                    <span class="material-symbols-outlined text-2xl font-bold">search</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Search Modal -->
-        <div id="search-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden" style="display: none;" onclick="if(event.target === this) closeSearchModal()">
-            <div class="absolute top-0 left-0 right-0 bg-white dark:bg-slate-900 shadow-lg">
-                <div class="flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700">
-                    <span class="material-symbols-outlined text-slate-400">search</span>
+            
+            <!-- Search container - expands to replace branch name -->
+            <div id="search-container" class="flex-1 max-w-md transition-all duration-300 ease-in-out hidden">
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
                     <input 
                         type="text" 
                         id="search-input"
-                        placeholder="Search room type..." 
-                        class="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400"
+                        placeholder="Search features..." 
+                        class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50"
                         autocomplete="off"
-                        oninput="filterRooms(this.value)"
                     />
-                    <button id="clear-search" onclick="clearSearch()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-                        <span class="material-symbols-outlined">close</span>
+                    <button id="clear-search" onclick="clearSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1">
+                        <span class="material-symbols-outlined text-lg">close</span>
                     </button>
                 </div>
-                <div class="p-2 bg-primary/5 dark:bg-primary/10">
-                    <p class="text-xs text-slate-600 dark:text-slate-400 px-2">
-                        <span class="font-semibold">Search by:</span> Nama Tipe, Keterangan (1), Keterangan Akomodasi
-                    </p>
-                </div>
             </div>
-            <div class="pt-[130px] px-4" id="search-results-container">
-                <!-- Search results will be shown here -->
-            </div>
+            
+            <!-- Search toggle button -->
+            <button id="search-btn" onclick="toggleSearch()" class="flex cursor-pointer items-center justify-center rounded-xl h-12 w-12 bg-transparent text-slate-900 dark:text-slate-100 p-0 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0">
+                <span class="material-symbols-outlined text-2xl font-bold">search</span>
+            </button>
         </div>
 
         <!-- Main Content -->
@@ -156,55 +147,6 @@ if ($id_cabang <= 0) {
         // Store id_cabang for JS to use - MUST be before kamar.js
         window.ID_CABANG = <?php echo $id_cabang; ?>;
         console.log('ID_CABANG set to:', window.ID_CABANG);
-        
-        // Immediate function for onclick handler
-        function openSearchModal() {
-            const modal = document.getElementById('search-modal');
-            const searchInput = document.getElementById('search-input');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.style.display = 'block';
-            }
-            if (searchInput) {
-                setTimeout(() => searchInput.focus(), 100);
-            }
-        }
-        
-        function closeSearchModal() {
-            const modal = document.getElementById('search-modal');
-            const searchInput = document.getElementById('search-input');
-            const resultsContainer = document.getElementById('search-results-container');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            }
-            if (searchInput) {
-                searchInput.value = '';
-            }
-            if (resultsContainer) {
-                resultsContainer.innerHTML = '';
-            }
-        }
-        
-        function clearSearch() {
-            const searchInput = document.getElementById('search-input');
-            const resultsContainer = document.getElementById('search-results-container');
-            if (searchInput) {
-                searchInput.value = '';
-            }
-            if (resultsContainer) {
-                resultsContainer.innerHTML = '';
-            }
-            if (searchInput) {
-                searchInput.focus();
-            }
-        }
-        
-        // Basic filter function - will be enhanced by kamar.js
-        function filterRooms(searchTerm) {
-            console.log('Search:', searchTerm);
-            // This will be overridden by kamar.js with full functionality
-        }
     </script>
     <script src="script/kamar.js"></script>
 </body>
