@@ -118,29 +118,7 @@ if ($id_cabang <= 0) {
             </div>
         </main>
 
-        <!-- Bottom Navigation Bar -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-700 px-2 py-2 flex items-center justify-around z-50">
-            <button class="flex flex-col items-center gap-1 p-2 text-primary">
-                <span class="material-symbols-outlined text-[26px] fill-1">bed</span>
-                <span class="text-[10px] font-semibold">Room</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 p-2 text-slate-400">
-                <span class="material-symbols-outlined text-[26px]">pool</span>
-                <span class="text-[10px] font-medium">Facility</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 p-2 text-slate-400">
-                <span class="material-symbols-outlined text-[26px]">concierge</span>
-                <span class="text-[10px] font-medium">Receptionist</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 p-2 text-slate-400">
-                <span class="material-symbols-outlined text-[26px]">cleaning_services</span>
-                <span class="text-[10px] font-medium">Housekeeping</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 p-2 text-slate-400">
-                <span class="material-symbols-outlined text-[26px]">more_horiz</span>
-                <span class="text-[10px] font-medium">More</span>
-            </button>
-        </div>
+        <?php include __DIR__ . '/navbar.php'; ?>
     </div>
 
     <script>
