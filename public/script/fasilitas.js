@@ -97,13 +97,13 @@ function createFacilityCard(facility, index) {
         priceClass = 'bg-primary/10 text-primary dark:bg-primary/20';
     }
 
-    // Build images array
+    // Build images array - always include both images if they exist
     const images = [];
     if (facility.gambar1) images.push(facility.gambar1);
-    if (facility.gambar2 && facility.gambar2 !== facility.gambar1) images.push(facility.gambar2);
-    
+    if (facility.gambar2) images.push(facility.gambar2);
+
     // Generate slider dots
-    const dotsHtml = images.map((_, i) => 
+    const dotsHtml = images.map((_, i) =>
         `<span class="w-2 h-2 rounded-full ${i === 0 ? 'bg-white' : 'bg-white/50'} shadow-md"></span>`
     ).join('');
 
