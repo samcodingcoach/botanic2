@@ -9,27 +9,61 @@ require_once __DIR__ . '/../../config/koneksi.php';
 $response = [];
 
 try {
-    $query = "SELECT
-        f.id_fasilitas,
-        f.id_cabang,
-        c.nama_cabang,
-        f.nama_fasilitas,
-        f.deskripsi,
-        f.gambar1,
-        f.gambar2,
-        f.aktif,
-        f.status_free,
-        f.range_harga,
-        f.created_at
-    FROM
-        fasilitas f
-    INNER JOIN
-        cabang c
-    ON
-        f.id_cabang = c.id_cabang
-    ORDER BY f.id_fasilitas DESC";
+    // Check if id_cabang is provided in GET parameters
+    if (isset($_GET['id_cabang']) && !empty($_GET['id_cabang'])) {
+        $id_cabang = (int) $_GET['id_cabang'];
 
-    $result = $conn->query($query);
+        $query = "SELECT
+            f.id_fasilitas,
+            f.id_cabang,
+            c.nama_cabang,
+            f.nama_fasilitas,
+            f.deskripsi,
+            f.gambar1,
+            f.gambar2,
+            f.aktif,
+            f.status_free,
+            f.range_harga,
+            f.created_at
+        FROM
+            fasilitas f
+        INNER JOIN
+            cabang c
+        ON
+            f.id_cabang = c.id_cabang
+        WHERE
+            f.id_cabang = ?
+        ORDER BY f.id_fasilitas DESC";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $id_cabang);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+    } else {
+        // Get all facilities if no id_cabang specified
+        $query = "SELECT
+            f.id_fasilitas,
+            f.id_cabang,
+            c.nama_cabang,
+            f.nama_fasilitas,
+            f.deskripsi,
+            f.gambar1,
+            f.gambar2,
+            f.aktif,
+            f.status_free,
+            f.range_harga,
+            f.created_at
+        FROM
+            fasilitas f
+        INNER JOIN
+            cabang c
+        ON
+            f.id_cabang = c.id_cabang
+        ORDER BY f.id_fasilitas DESC";
+
+        $result = $conn->query($query);
+    }
 
     if ($result) {
         $data = [];
