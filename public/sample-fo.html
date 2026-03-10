@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Receptionist Contacts by Branch</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <header
+            class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-slate-800">
+            <div class="flex size-10 shrink-0 items-center justify-start cursor-pointer">
+                <span class="material-symbols-outlined text-slate-900 dark:text-slate-100">arrow_back_ios</span>
+            </div>
+            <h1
+                class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">
+                Receptionist Contacts</h1>
+            <div class="flex w-10 items-center justify-end">
+                <button
+                    class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                    <span class="material-symbols-outlined text-slate-900 dark:text-slate-100">search</span>
+                </button>
+            </div>
+        </header>
+        <main class="flex-1 overflow-y-auto pb-24">
+            <div class="px-4 py-2">
+
+            </div>
+            <div class="space-y-4 px-4">
+                <div
+                    class="flex gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 items-center">
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0"
+                        data-alt="Modern luxury hotel building exterior in downtown area"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFgJq0fwwqhv0UAA1JSYofmyjwubkAzxTLsJVhr68ctHA0wueMbM7oOFpceTZPTB4uItvgOOrht5raaR6c7evVypEHjxHy6D6l1J4wdXVwkr6UmiYNR5-2LRz3SiQhgPqRYAXVffS_IcynNhN1eb8nO0sNI_Q0YbO7BKm7nKFntr26ZDBiD_S7DTgb4DFrwOn_72pYahygw50ZQpM2mGwklsf3b21ogGtHoQIGvXaeb8tBM-fuKIANqrZ6xLOgLd507wLrD4dgQoId");'>
+                    </div>
+                    <div class="flex flex-1 flex-col justify-center min-w-0">
+                        <p class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Downtown Grand
+                            Hotel</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs truncate">WhatsApp Call</p>
+                        <p class="text-primary text-sm font-medium mt-1">+1 (555) 010-1234</p>
+                    </div>
+                    <div class="shrink-0">
+                        <button onclick="openCallModal('+15550101234')"
+                            class="flex size-11 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/30">
+                            <span class="material-symbols-outlined">call</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-6 mt-4">
+                <div
+                    class="bg-primary/10 dark:bg-primary/5 border border-primary/20 p-4 rounded-xl flex items-start gap-3">
+                    <span class="material-symbols-outlined text-primary">info</span>
+                    <div>
+                        <p class="text-primary font-semibold text-sm">Emergency Assistance</p>
+                        <p class="text-slate-600 dark:text-slate-400 text-xs mt-1">For urgent medical or safety
+                            concerns, please contact local emergency services immediately or use the SOS button in your
+                            room.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- WhatsApp Call Confirmation Modal -->
+    <div id="call-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden" onclick="closeCallModal()">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all" onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Confirm WhatsApp Call</h3>
+                    <button onclick="closeCallModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                
+                <!-- Modal Content -->
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-green-500 text-3xl">call</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-2">
+                        You are about to initiate a WhatsApp call to:
+                    </p>
+                    <p id="modal-phone-number" class="text-primary font-bold text-lg mb-4">
+                        +1 (555) 010-1234
+                    </p>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs">
+                        This will open WhatsApp and start a call with the receptionist.
+                    </p>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="flex gap-3 p-4 bg-slate-50 dark:bg-slate-800/50">
+                    <button onclick="closeCallModal()" class="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        Cancel
+                    </button>
+                    <button onclick="confirmCall()" class="flex-1 px-4 py-3 text-sm font-bold text-white bg-green-500 hover:bg-green-600 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">call</span>
+                        Call Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhoneNumber = '';
+
+        function openCallModal(phoneNumber) {
+            currentPhoneNumber = phoneNumber;
+            const modal = document.getElementById('call-modal');
+            const modalPhone = document.getElementById('modal-phone-number');
+            
+            // Format phone number for display
+            const formattedNumber = phoneNumber.replace(/(\+\d{1})(\d{3})(\d{3})(\d{4})/, '$1 ($2) $3-$4');
+            modalPhone.textContent = formattedNumber;
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeCallModal() {
+            const modal = document.getElementById('call-modal');
+            modal.classList.add('hidden');
+            currentPhoneNumber = '';
+        }
+
+        function confirmCall() {
+            if (currentPhoneNumber) {
+                // Remove all non-numeric characters except +
+                const cleanNumber = currentPhoneNumber.replace(/[^\d+]/g, '');
+                // Open WhatsApp with phone number
+                window.open(`https://wa.me/${cleanNumber}`, '_blank');
+                closeCallModal();
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCallModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
