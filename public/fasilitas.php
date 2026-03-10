@@ -76,14 +76,26 @@ if ($id_cabang <= 0) {
 
         // Open image preview modal
         function openImagePreview(imageUrl, altText) {
+            console.log('Opening preview:', imageUrl, altText);
             const modal = document.getElementById('image-preview-modal');
             const modalImage = document.getElementById('modal-image');
             const modalAlt = document.getElementById('modal-alt');
             
-            modalImage.style.backgroundImage = `url("${imageUrl}")`;
+            // Set image with proper URL format
+            const fullUrl = imageUrl.startsWith('../') ? imageUrl : '../images/' + imageUrl;
+            console.log('Full URL:', fullUrl);
+            
+            modalImage.src = fullUrl;
+            modalImage.alt = altText || '';
             modalAlt.textContent = altText || '';
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            
+            // Handle image load error
+            modalImage.onerror = function() {
+                console.error('Failed to load image:', fullUrl);
+                modalAlt.textContent = 'Failed to load image';
+            };
         }
 
         // Close image preview modal
@@ -142,12 +154,13 @@ if ($id_cabang <= 0) {
                 class="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all z-10">
                 <span class="material-symbols-outlined text-white text-3xl">close</span>
             </button>
-            <!-- Image -->
-            <div id="modal-image" class="max-w-full max-h-full bg-center bg-contain bg-no-repeat"
-                style="max-width: 90vw; max-height: 90vh;"></div>
+            <!-- Image Container -->
+            <div class="relative max-w-full max-h-full flex items-center justify-center" style="max-width: 90vw; max-height: 90vh;">
+                <img id="modal-image" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg" />
+            </div>
             <!-- Alt text -->
             <p id="modal-alt"
-                class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-center text-sm font-medium max-w-md">
+                class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-center text-sm font-medium max-w-md bg-black/50 px-4 py-2 rounded-lg">
             </p>
         </div>
     </div>

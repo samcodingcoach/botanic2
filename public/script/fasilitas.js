@@ -112,8 +112,9 @@ function createFacilityCard(facility, index) {
         <div class="min-w-full h-full snap-start relative">
             <div class="w-full h-full bg-center bg-cover cursor-pointer"
                 data-alt="${facility.nama_fasilitas}"
+                data-image="../images/${img}"
                 style='background-image: url("../images/${img}")'
-                onclick="openImagePreview(this.style.backgroundImage.slice(5, -2), this.dataset.alt)">
+                onclick="openImagePreview(this.dataset.image, this.dataset.alt)">
             </div>
         </div>
     `).join('');
