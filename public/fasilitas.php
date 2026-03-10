@@ -62,6 +62,14 @@ if ($id_cabang <= 0) {
         #main-header.scrolled {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
+        
+        /* Highlight text for search */
+        .highlight-text {
+            background-color: rgba(255, 255, 0, 0.4);
+            padding: 1px 4px;
+            border-radius: 2px;
+            color: inherit;
+        }
     </style>
     <script>
         // Slider navigation function
@@ -114,12 +122,33 @@ if ($id_cabang <= 0) {
             <a href="index.php" class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center cursor-pointer">
                 <span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
             </a>
+
+            <!-- Branch name - hides when search is active -->
             <h2 id="branch-name" class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate px-4 transition-all duration-300">
                 Loading...
             </h2>
-            <div class="flex w-12 items-center justify-end">
-                <span class="material-symbols-outlined text-2xl font-bold text-slate-400">search</span>
+
+            <!-- Search container - expands to replace branch name -->
+            <div id="search-container" class="flex-1 max-w-md transition-all duration-300 ease-in-out hidden">
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search facilities..."
+                        class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        autocomplete="off"
+                    />
+                    <button id="clear-search" onclick="clearSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1">
+                        <span class="material-symbols-outlined text-lg">close</span>
+                    </button>
+                </div>
             </div>
+
+            <!-- Search toggle button -->
+            <button id="search-btn" onclick="toggleSearch()" class="flex cursor-pointer items-center justify-center rounded-xl h-12 w-12 bg-transparent text-slate-900 dark:text-slate-100 p-0 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0">
+                <span class="material-symbols-outlined text-2xl font-bold">search</span>
+            </button>
         </header>
 
         <!-- Spacer for fixed header -->

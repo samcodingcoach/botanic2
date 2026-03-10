@@ -75,6 +75,9 @@ async function loadFacilities() {
 function createFacilityCard(facility, index) {
     const card = document.createElement('div');
     card.className = 'facility-card bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 mx-4';
+    // Add data attributes for search
+    card.dataset.namaFasilitas = (facility.nama_fasilitas || '').toLowerCase();
+    card.dataset.deskripsi = (facility.deskripsi || '').toLowerCase();
 
     // Determine status labels
     const activeLabel = facility.aktif == 1 ? 'Active' : 'Inactive';
@@ -178,6 +181,168 @@ function createFacilityCard(facility, index) {
     return card;
 }
 
+// Toggle search - expand/collapse search input
+window.toggleSearch = function() {
+    const searchContainer = document.getElementById('search-container');
+    const branchName = document.getElementById('branch-name');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    
+    if (!searchContainer || !branchName || !searchInput) return;
+    
+    const isExpanded = !searchContainer.classList.contains('hidden');
+    
+    if (isExpanded) {
+        // Close search - show branch name, hide search input
+        searchContainer.classList.add('hidden');
+        branchName.classList.remove('hidden');
+        searchInput.value = '';
+        filterFacilities('');
+        searchBtn.innerHTML = '<span class="material-symbols-outlined text-2xl font-bold">search</span>';
+    } else {
+        // Open search - hide branch name, show search input
+        branchName.classList.add('hidden');
+        searchContainer.classList.remove('hidden');
+        setTimeout(() => searchInput.focus(), 100);
+        searchBtn.innerHTML = '<span class="material-symbols-outlined text-2xl font-bold">close</span>';
+    }
+};
+
+// Clear search
+window.clearSearch = function() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+    }
+    filterFacilities('');
+};
+
+// Filter facilities based on search - searches in nama_fasilitas and deskripsi
+window.filterFacilities = function(searchTerm) {
+    console.log('filterFacilities called with:', searchTerm);
+    console.log('allFacilitiesData count:', allFacilitiesData.length);
+
+    const container = document.getElementById('facilities-container');
+    const cards = container.querySelectorAll('.facility-card');
+    const clearBtn = document.getElementById('clear-search');
+
+    // Show/hide clear button
+    if (clearBtn) {
+        if (searchTerm && searchTerm.trim()) {
+            clearBtn.classList.remove('hidden');
+        } else {
+            clearBtn.classList.add('hidden');
+        }
+    }
+
+    // If no search term, show all cards
+    if (!searchTerm || !searchTerm.trim()) {
+        // Remove no-results message
+        const noResultsMsg = container.querySelector('.no-results-message');
+        if (noResultsMsg) noResultsMsg.remove();
+
+        // Show all cards and re-render to remove highlights
+        cards.forEach(card => {
+            card.classList.remove('hidden');
+            card.style.display = '';
+        });
+
+        if (allFacilitiesData.length > 0) {
+            // Re-render all cards
+            const existingCards = container.querySelectorAll('.facility-card');
+            existingCards.forEach(card => card.remove());
+
+            allFacilitiesData.forEach((facility, index) => {
+                const card = createFacilityCard(facility, index);
+                container.appendChild(card);
+            });
+        }
+        return;
+    }
+
+    const searchLower = searchTerm.toLowerCase().trim();
+    let visibleCount = 0;
+    const matchedFacilities = [];
+
+    cards.forEach(card => {
+        const namaFasilitas = card.dataset.namaFasilitas || '';
+        const deskripsi = card.dataset.deskripsi || '';
+
+        const matchesSearch = namaFasilitas.includes(searchLower) || deskripsi.includes(searchLower);
+
+        if (matchesSearch) {
+            card.classList.remove('hidden');
+            card.style.display = '';
+            visibleCount++;
+            
+            // Track matched facility name
+            const facilityName = card.querySelector('h3')?.textContent?.trim() || 'Unknown';
+            if (!matchedFacilities.includes(facilityName)) {
+                matchedFacilities.push(facilityName);
+            }
+
+            // Highlight matching text
+            const namaFasilitasEl = card.querySelector('h3');
+            const deskripsiEl = card.querySelector('.description-text');
+
+            if (namaFasilitasEl && namaFasilitasEl.textContent.toLowerCase().includes(searchLower)) {
+                namaFasilitasEl.innerHTML = highlightText(namaFasilitasEl.textContent, searchTerm);
+            }
+            if (deskripsiEl && deskripsiEl.textContent.toLowerCase().includes(searchLower)) {
+                deskripsiEl.innerHTML = highlightText(deskripsiEl.textContent, searchTerm);
+            }
+        } else {
+            card.classList.add('hidden');
+            card.style.display = 'none';
+        }
+    });
+
+    // Remove existing search info and no-results message
+    const existingSearchInfo = container.querySelector('.search-info');
+    const noResultsMsg = container.querySelector('.no-results-message');
+    if (existingSearchInfo) existingSearchInfo.remove();
+    if (noResultsMsg) noResultsMsg.remove();
+
+    // Show search info or no results message
+    if (visibleCount === 0) {
+        const newNoResultsMsg = document.createElement('div');
+        newNoResultsMsg.className = 'no-results-message flex flex-col items-center justify-center py-12 mx-4';
+        newNoResultsMsg.innerHTML = `
+            <span class="material-symbols-outlined text-slate-400 text-5xl mb-4">search_off</span>
+            <p class="text-slate-500 dark:text-slate-400">No facilities found matching "${searchTerm}"</p>
+            <p class="text-slate-400 dark:text-slate-500 text-sm mt-2">Try different keywords</p>
+        `;
+        container.appendChild(newNoResultsMsg);
+    } else if (visibleCount > 0) {
+        // Show search info with matched facility names
+        const searchInfoEl = document.createElement('div');
+        searchInfoEl.className = 'search-info flex items-center justify-between bg-slate-100 dark:bg-slate-800 rounded-lg px-4 py-3 mb-4 mx-4';
+        searchInfoEl.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                <p class="text-sm text-slate-700 dark:text-slate-300">
+                    <span class="font-bold text-primary">${visibleCount}</span> item${visibleCount > 1 ? 's' : ''} found
+                </p>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+                ${matchedFacilities.join(', ')}
+            </p>
+        `;
+        container.insertBefore(searchInfoEl, container.firstChild);
+    }
+
+    console.log(`Showing ${visibleCount} of ${cards.length} facilities`);
+    console.log(`Matched facilities: ${matchedFacilities.join(', ')}`);
+};
+
+// Highlight text function
+function highlightText(text, searchTerm) {
+    if (!searchTerm) return text;
+    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span class="highlight-text">$1</span>');
+}
+
 // Toggle read more / show less
 window.toggleReadMore = function(button) {
     const descriptionText = button.previousElementSibling;
@@ -202,6 +367,23 @@ window.escapeHtml = function(text) {
     div.textContent = text;
     return div.innerHTML;
 };
+
+// Initialize search on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            filterFacilities(e.target.value);
+        });
+        
+        // Close search on Escape key
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                toggleSearch();
+            }
+        });
+    }
+});
 
 // Load facilities on page load
 document.addEventListener('DOMContentLoaded', loadFacilities);
