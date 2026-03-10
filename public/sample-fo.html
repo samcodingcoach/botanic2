@@ -65,18 +65,19 @@
                     class="flex gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 items-center">
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0"
                         data-alt="Modern luxury hotel building exterior in downtown area"
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFgJq0fwwqhv0UAA1JSYofmyjwubkAzxTLsJVhr68ctHA0wueMbM7oOFpceTZPTB4uItvgOOrht5raaR6c7evVypEHjxHy6D6l1J4wdXVwkr6UmiYNR5-2LRz3SiQhgPqRYAXVffS_IcynNhN1eb8nO0sNI_Q0YbO7BKm7nKFntr26ZDBiD_S7DTgb4DFrwOn_72pYahygw50ZQpM2mGwklsf3b21ogGtHoQIGvXaeb8tBM-fuKIANqrZ6xLOgLd507wLrD4dgQoId");'>
+                        style='background-image: url("/* {foto} */");'>
                     </div>
                     <div class="flex flex-1 flex-col justify-center min-w-0">
-                        <p class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Downtown Grand
-                            Hotel</p>
+                        <p class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">
+                            <!-- {nama_cabang} --></p>
                         <p class="text-slate-500 dark:text-slate-400 text-xs truncate">WhatsApp Call</p>
-                        <p class="text-primary text-sm font-medium mt-1">+1 (555) 010-1234</p>
+                        <p class="text-sm font-medium mt-1" style="color: #25D366;"><!-- {wa} --></p>
                     </div>
                     <div class="shrink-0">
-                        <button onclick="openCallModal('+15550101234')"
-                            class="flex size-11 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/30">
-                            <span class="material-symbols-outlined">call</span>
+                        <button onclick="openCallModal('<!-- {wa} -->')"
+                            class="flex size-11 items-center justify-center rounded-full shadow-lg"
+                            style="background-color: #25D366;">
+                            <span class="material-symbols-outlined text-white">call</span>
                         </button>
                     </div>
                 </div>
@@ -102,19 +103,22 @@
     <!-- WhatsApp Call Confirmation Modal -->
     <div id="call-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden" onclick="closeCallModal()">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all" onclick="event.stopPropagation()">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all"
+                onclick="event.stopPropagation()">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
                     <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Confirm WhatsApp Call</h3>
-                    <button onclick="closeCallModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                    <button onclick="closeCallModal()"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
-                
+
                 <!-- Modal Content -->
                 <div class="p-6 text-center">
-                    <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mx-auto mb-4">
-                        <span class="material-symbols-outlined text-green-500 text-3xl">call</span>
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                        style="background-color: rgba(37, 211, 102, 0.1);">
+                        <span class="material-symbols-outlined text-3xl" style="color: #25D366;">call</span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-2">
                         You are about to initiate a WhatsApp call to:
@@ -126,14 +130,17 @@
                         This will open WhatsApp and start a call with the receptionist.
                     </p>
                 </div>
-                
+
                 <!-- Modal Footer -->
                 <div class="flex gap-3 p-4 bg-slate-50 dark:bg-slate-800/50">
-                    <button onclick="closeCallModal()" class="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <button onclick="closeCallModal()"
+                        class="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
                         Cancel
                     </button>
-                    <button onclick="confirmCall()" class="flex-1 px-4 py-3 text-sm font-bold text-white bg-green-500 hover:bg-green-600 rounded-lg transition-colors flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-sm">call</span>
+                    <button onclick="confirmCall()"
+                        class="flex-1 px-4 py-3 text-sm font-bold text-white rounded-lg transition-colors flex items-center justify-center gap-2 hover:opacity-90"
+                        style="background-color: #25D366;">
+                        <span class="material-symbols-outlined text-sm text-white">call</span>
                         Call Now
                     </button>
                 </div>
@@ -148,11 +155,11 @@
             currentPhoneNumber = phoneNumber;
             const modal = document.getElementById('call-modal');
             const modalPhone = document.getElementById('modal-phone-number');
-            
+
             // Format phone number for display
             const formattedNumber = phoneNumber.replace(/(\+\d{1})(\d{3})(\d{3})(\d{4})/, '$1 ($2) $3-$4');
             modalPhone.textContent = formattedNumber;
-            
+
             modal.classList.remove('hidden');
         }
 
