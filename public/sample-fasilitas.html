@@ -83,7 +83,7 @@
                 <span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
             </div>
             <h2 class="text-slate-900 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">
-                <!-- {nama_cabang} --> Facilities
+                Facilities of <!-- {nama_cabang} -->
             </h2>
             <div class="flex w-12 items-center justify-end">
                 <button
@@ -104,15 +104,13 @@
                         class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar h-full scroll-smooth">
                         <div class="min-w-full h-full snap-start relative">
                             <div class="w-full h-full bg-center bg-cover cursor-pointer"
-                                data-alt="Luxury blue infinity pool overlooking ocean"
-                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD6FKMiYLev_GdPvaVuKBwDiPEXYQmnavmC5Ar2m2d42LzxNLWClaAcj88_wcTNZBQgSJiZ-4p0rBSWljP0hdN2WVC5ZuD8k7D-wjmS3ax_ep_VbxtLz-rUulZ4BT-vpvEW5N7gmhX1ghGxcEdjpq9A8Rt8AQwYXeIhk6U8POJI-ZPlYjc-JKE2mdP_iOH8oD16quinMIwD2iA10fipDCHTFFWIfhI3tKWDjGGNlaJiQd4y1LtR0udL0_HJfoMg3uANPl3P71u3A588");'
+                                data-alt="<!-- {nama_fasilitas} -->" style='background-image: url("/* {gambar1} */");'
                                 onclick="openImagePreview(this.style.backgroundImage.slice(5, -2), this.dataset.alt)">
                             </div>
                         </div>
                         <div class="min-w-full h-full snap-start relative">
-                            <div class="w-full h-full bg-center bg-cover cursor-pointer"
-                                data-alt="Close up of pool lounge chairs"
-                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlDri97GW3T-3zDYSkAO9OE2fyODiAy3PWxz1ambDMVbDUmIe8bnpXEhG2c4lEx2TF4BFiHPp7_PG0VZQNxPKDEeBm3k4ZX-_AD-Hm8eQBUqwPXg_LBcOsEyTUA0kP2eBraISakYvqNJnP03Au5qtWkfqCG82qElhXoHzAlho6JjHv912wymB328vXR3kYGdHMXAA-T8dJ5UYD7aZaQ6NwdxyYPapk2c9U8tyfUraq_N-ixOHzAAYdu8HIs7rnDnsp6Y_ayuRIgfDl");'
+                            <div class="w-full h-full bg-center bg-cover cursor-pointer" data-alt="{nama_fasilitas}"
+                                style='background-image: url("/* {gambar2} */");'
                                 onclick="openImagePreview(this.style.backgroundImage.slice(5, -2), this.dataset.alt)">
                             </div>
                         </div>
@@ -135,7 +133,7 @@
                 <!-- Card Content -->
                 <div class="p-4">
                     <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-lg font-bold">Infinity Pool</h3>
+                        <h3 class="text-lg font-bold"><!-- {nama_fasilitas} --></h3>
                         <div class="flex gap-2">
                             <span
                                 class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Active</span>
@@ -144,13 +142,9 @@
                         </div>
                     </div>
                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-                        Enjoy a breathtaking view of the city skyline or the horizon while you swim in our
-                        temperature-controlled pool.
+                        <!--  {deskripsi} -->
                     </p>
-                    <button
-                        class="w-full py-2.5 bg-primary text-white rounded-lg font-semibold text-sm transition-opacity active:opacity-80">
-                        View Details &amp; Schedule
-                    </button>
+
                 </div>
             </div>
 
