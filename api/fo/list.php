@@ -10,17 +10,18 @@ $response = [];
 
 try {
     $query = "SELECT
-              front_office.id_fo,
-              front_office.wa,
-              front_office.id_cabang,
-              cabang.nama_cabang,
+              front_office.id_fo, 
+              cabang.nama_cabang, 
+              cabang.foto, 
+              front_office.wa, 
+              front_office.id_cabang, 
               front_office.aktif
               FROM
               front_office
               INNER JOIN
               cabang
-              ON
-              front_office.id_cabang = cabang.id_cabang
+              ON 
+                  front_office.id_cabang = cabang.id_cabang
               ORDER BY front_office.id_fo ASC";
 
     $result = $conn->query($query);
