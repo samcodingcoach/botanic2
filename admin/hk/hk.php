@@ -488,23 +488,62 @@ if ($cabangApiData && $cabangApiData['success']) {
 
         // Load data into table
         let filteredData = []; // Start with empty data
-        const allData = <?php echo json_encode($hkList); ?>; // Store all data for filtering
-
-        function filterByCabang() {
-            const filterCabang = document.getElementById('filterCabang').value;
-            
-            if (filterCabang === '') {
-                filteredData = []; // Empty if no branch selected
-            } else {
-                filteredData = allData.filter(hk => hk.id_cabang == filterCabang);
-            }
-            
-            loadData();
-        }
+        let allData = []; // Store all data for filtering
+        const initialData = <?php echo json_encode($hkList); ?>; // Initial data from PHP
 
         // Pagination variables
         let currentPage = 1;
         const itemsPerPage = 10;
+
+        // Reload table data from API
+        async function reloadTableData() {
+            console.log('Reloading table data...');
+            const filterCabang = document.getElementById('filterCabang').value;
+            console.log('Selected cabang:', filterCabang);
+            
+            if (!filterCabang) {
+                // If no branch selected, just reset to empty
+                filteredData = [];
+                allData = [];
+                loadData();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost/botanic/api/hk/list.php?id_cabang=${filterCabang}`);
+                const result = await response.json();
+                console.log('API result:', result);
+                
+                if (result.success) {
+                    allData = result.data;
+                    filteredData = allData.filter(hk => hk.id_cabang == filterCabang);
+                    console.log('Filtered data:', filteredData.length, 'items');
+                    currentPage = 1; // Reset to first page
+                    loadData();
+                    console.log('Table reloaded successfully');
+                } else {
+                    console.error('API returned error:', result.message);
+                    showToast('Gagal memuat data: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error reloading data:', error);
+                showToast('Error reloading data: ' + error.message, 'error');
+            }
+        }
+
+        function filterByCabang() {
+            const filterCabang = document.getElementById('filterCabang').value;
+            console.log('Filter changed to cabang:', filterCabang);
+            
+            if (!filterCabang) {
+                filteredData = [];
+                allData = [];
+                loadData();
+            } else {
+                // Always fetch fresh data from API when filter changes
+                reloadTableData();
+            }
+        }
 
         function loadData() {
             const tableBody = document.getElementById('tableBody');
@@ -760,39 +799,6 @@ if ($cabangApiData && $cabangApiData['success']) {
             
             editModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-        }
-
-        // Reload table data from API
-        async function reloadTableData() {
-            console.log('Reloading table data...');
-            const filterCabang = document.getElementById('filterCabang').value;
-            console.log('Selected cabang:', filterCabang);
-            
-            if (!filterCabang) {
-                // If no branch selected, just reset to empty
-                filteredData = [];
-                loadData();
-                return;
-            }
-            
-            try {
-                const response = await fetch(`http://localhost/botanic/api/hk/list.php?id_cabang=${filterCabang}`);
-                const result = await response.json();
-                console.log('API result:', result);
-                
-                if (result.success) {
-                    allData = result.data;
-                    filteredData = allData.filter(hk => hk.id_cabang == filterCabang);
-                    console.log('Filtered data:', filteredData.length, 'items');
-                    currentPage = 1; // Reset to first page
-                    loadData();
-                    console.log('Table reloaded successfully');
-                } else {
-                    console.error('API returned error:', result.message);
-                }
-            } catch (error) {
-                console.error('Error reloading data:', error);
-            }
         }
 
         // Submit Add
