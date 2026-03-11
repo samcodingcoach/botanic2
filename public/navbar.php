@@ -20,9 +20,9 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
     
     <!-- Receptionist -->
     <a href="receptionist.php<?php echo isset($_GET['id_cabang']) ? '?id_cabang=' . $id_cabang : ''; ?>" 
-       class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary transition-colors">
-        <span class="material-symbols-outlined text-[26px]">concierge</span>
-        <span class="text-[10px] font-medium">Receptionist</span>
+       class="flex flex-col items-center gap-1 p-2 <?php echo $currentPage === 'receptionist' ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
+        <span class="material-symbols-outlined text-[26px] <?php echo $currentPage === 'receptionist' ? 'fill-1' : ''; ?>">concierge</span>
+        <span class="text-[10px] <?php echo $currentPage === 'receptionist' ? 'font-semibold' : 'font-medium'; ?>">Receptionist</span>
     </a>
     
     <!-- Housekeeping -->
