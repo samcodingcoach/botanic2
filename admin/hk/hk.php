@@ -402,6 +402,38 @@ if ($cabangApiData && $cabangApiData['success']) {
         </div>
     </div>
 
+    <!-- WhatsApp Popup Modal -->
+    <div id="whatsapp-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden" onclick="closeWhatsAppModal()">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-background-dark rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all" onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">WhatsApp Number</h3>
+                    <button onclick="closeWhatsAppModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-3xl" style="color: #25D366;">call</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-1">Housekeeping</p>
+                    <p id="wa-modal-name" class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4"></p>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 mb-4">
+                        <p id="wa-modal-phone" class="text-xl font-bold text-slate-900 dark:text-slate-100"></p>
+                    </div>
+                    <a id="wa-call-link" href="#" target="_blank"
+                        class="flex items-center justify-center gap-2 w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-colors">
+                        <span class="material-symbols-outlined">phone</span>
+                        Call via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Toggle sidebar for mobile
         function toggleSidebar() {
@@ -525,7 +557,11 @@ if ($cabangApiData && $cabangApiData['success']) {
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="text-sm text-slate-700 dark:text-slate-300">${escapeHtml(hk.wa)}</span>
+                        <button onclick="showWhatsApp('${escapeHtml(hk.wa)}', '${escapeHtml(hk.nama_lengkap)}')"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 transition-colors" title="Show WhatsApp Number">
+                            <span class="material-symbols-outlined text-lg">call</span>
+                            <span class="text-sm font-medium">Show</span>
+                        </button>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center">
                         <button onclick="toggleAktif(${hk.id_hk}, ${hk.aktif})"
@@ -537,14 +573,11 @@ if ($cabangApiData && $cabangApiData['success']) {
                         <div class="flex items-center justify-end gap-1">
                             <button onclick='openEditModal(${JSON.stringify(hk)})'
                                 class="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit">
-                                <span class="material-symbols-outlined text-lg">edit</span>
+                                <span class="material-symbols-outlined text-xl">edit_square</span>
                             </button>
                             <button onclick="deleteData(${hk.id_hk}, '${escapeHtml(hk.nama_lengkap)}')"
                                 class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete">
-                                <span class="material-symbols-outlined text-lg">delete</span>
-                            </button>
-                            <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors" title="More">
-                                <span class="material-symbols-outlined text-lg">more_vert</span>
+                                <span class="material-symbols-outlined text-xl">delete</span>
                             </button>
                         </div>
                     </td>
@@ -569,9 +602,12 @@ if ($cabangApiData && $cabangApiData['success']) {
                         </button>
                     </div>
                     <div class="space-y-2 text-sm">
-                        <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                            <span class="material-symbols-outlined text-base">call</span>
-                            <span>${escapeHtml(hk.wa)}</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="showWhatsApp('${escapeHtml(hk.wa)}', '${escapeHtml(hk.nama_lengkap)}')"
+                                class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 transition-colors" title="Show WhatsApp Number">
+                                <span class="material-symbols-outlined text-base">call</span>
+                                <span>Show</span>
+                            </button>
                         </div>
                         <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                             <span class="material-symbols-outlined text-base">${hk.jenis_kelamin == 1 ? 'male' : 'female'}</span>
@@ -813,8 +849,17 @@ if ($cabangApiData && $cabangApiData['success']) {
         });
 
         // Submit Edit
-        document.getElementById('btnUpdate').addEventListener('click', async () => {
+        document.getElementById('btnUpdate').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
             const form = document.getElementById('formEditHK');
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
             const formData = new FormData(form);
 
             try {
@@ -822,17 +867,31 @@ if ($cabangApiData && $cabangApiData['success']) {
                     method: 'POST',
                     body: formData
                 });
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text);
+                    showToast('Server error: Response bukan JSON', 'error');
+                    return;
+                }
+                
                 const result = await response.json();
+                console.log('Update result:', result);
 
                 if (result.success) {
                     showToast('Housekeeping berhasil diupdate', 'success');
                     editModal.classList.add('hidden');
                     document.body.style.overflow = '';
-                    setTimeout(() => location.reload(), 1500);
+                    
+                    // Reload data from API instead of page reload
+                    await reloadTableData();
                 } else {
                     showToast(result.message || 'Gagal mengupdate housekeeping', 'error');
                 }
             } catch (error) {
+                console.error('Error:', error);
                 showToast('Terjadi kesalahan: ' + error.message, 'error');
             }
         });
@@ -890,17 +949,52 @@ if ($cabangApiData && $cabangApiData['success']) {
                     method: 'POST',
                     body: formData
                 });
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text);
+                    showToast('Server error: Response bukan JSON', 'error');
+                    return;
+                }
+                
                 const result = await response.json();
+                console.log('Toggle result:', result);
 
                 if (result.success) {
                     showToast('Status berhasil diubah', 'success');
-                    setTimeout(() => location.reload(), 1000);
+                    // Reload table data
+                    await reloadTableData();
                 } else {
                     showToast(result.message || 'Gagal mengubah status', 'error');
                 }
             } catch (error) {
+                console.error('Error:', error);
                 showToast('Terjadi kesalahan: ' + error.message, 'error');
             }
+        }
+
+        // Show WhatsApp popup
+        function showWhatsApp(phoneNumber, name) {
+            const modal = document.getElementById('whatsapp-modal');
+            const modalName = document.getElementById('wa-modal-name');
+            const modalPhone = document.getElementById('wa-modal-phone');
+            const callLink = document.getElementById('wa-call-link');
+            
+            modalName.textContent = name;
+            modalPhone.textContent = phoneNumber;
+            callLink.href = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`;
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close WhatsApp modal
+        function closeWhatsAppModal() {
+            const modal = document.getElementById('whatsapp-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
         }
 
         // Toast notification container with higher z-index
