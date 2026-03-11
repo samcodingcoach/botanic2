@@ -149,6 +149,9 @@ if ($cabangApiData && $cabangApiData['success']) {
                                 <tr
                                     class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
                                     <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">
+                                        #</th>
+                                    <th
                                         class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                         Kode HK</th>
                                     <th
@@ -182,8 +185,16 @@ if ($cabangApiData && $cabangApiData['success']) {
                     </div>
                     <!-- No Data State -->
                     <div id="noData" class="hidden p-8 text-center">
-                       
+
                         <p class="text-slate-500 dark:text-slate-400">Pilih cabang untuk menampilkan data housekeeping</p>
+                    </div>
+                    <!-- Pagination Footer -->
+                    <div id="paginationContainer"
+                        class="hidden bg-slate-50 dark:bg-slate-800/50 px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 dark:border-slate-800">
+                        <p id="showingText" class="text-xs text-slate-500 dark:text-slate-400">Showing 0 of 0 results</p>
+                        <div class="flex items-center gap-2" id="paginationButtons">
+                            <!-- Pagination buttons will be loaded here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -210,10 +221,10 @@ if ($cabangApiData && $cabangApiData['success']) {
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kode
-                                Housekeeping <span class="text-red-500">*</span></label>
-                            <input id="kode_hk" name="kode_hk"
-                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                                placeholder="HK-001" type="text" required />
+                                Housekeeping</label>
+                            <input id="kode_hk" name="kode_hk" readonly
+                                class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm cursor-not-allowed opacity-75"
+                                placeholder="Auto-generated" type="text" />
                         </div>
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Cabang
@@ -459,28 +470,46 @@ if ($cabangApiData && $cabangApiData['success']) {
             loadData();
         }
 
+        // Pagination variables
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
         function loadData() {
             const tableBody = document.getElementById('tableBody');
             const mobileView = document.getElementById('mobileView');
             const noData = document.getElementById('noData');
+            const paginationContainer = document.getElementById('paginationContainer');
 
             // Show no data state if filteredData is empty
             if (!filteredData || filteredData.length === 0) {
                 noData.classList.remove('hidden');
+                paginationContainer.classList.add('hidden');
                 tableBody.innerHTML = '';
                 mobileView.innerHTML = '';
                 return;
             }
 
             noData.classList.add('hidden');
+            paginationContainer.classList.remove('hidden');
             tableBody.innerHTML = '';
             mobileView.innerHTML = '';
 
-            filteredData.forEach(hk => {
+            // Calculate pagination
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
+            const paginatedData = filteredData.slice(startIndex, endIndex);
+
+            paginatedData.forEach((hk, index) => {
+                const rowIndex = startIndex + index + 1;
+                
                 // Desktop row
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors';
                 row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">${rowIndex}</span>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="text-sm font-bold text-slate-900 dark:text-slate-100">${escapeHtml(hk.kode_hk)}</span>
                     </td>
@@ -505,7 +534,7 @@ if ($cabangApiData && $cabangApiData['success']) {
                         </button>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right">
-                        <div class="flex items-center justify-end gap-2">
+                        <div class="flex items-center justify-end gap-1">
                             <button onclick='openEditModal(${JSON.stringify(hk)})'
                                 class="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit">
                                 <span class="material-symbols-outlined text-lg">edit</span>
@@ -513,6 +542,9 @@ if ($cabangApiData && $cabangApiData['success']) {
                             <button onclick="deleteData(${hk.id_hk}, '${escapeHtml(hk.nama_lengkap)}')"
                                 class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete">
                                 <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                            <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors" title="More">
+                                <span class="material-symbols-outlined text-lg">more_vert</span>
                             </button>
                         </div>
                     </td>
@@ -525,7 +557,10 @@ if ($cabangApiData && $cabangApiData['success']) {
                 card.innerHTML = `
                     <div class="flex items-start justify-between mb-3">
                         <div>
-                            <h4 class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(hk.nama_lengkap)}</h4>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs font-bold text-slate-400">#${rowIndex}</span>
+                                <h4 class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(hk.nama_lengkap)}</h4>
+                            </div>
                             <p class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(hk.kode_hk)} • ${escapeHtml(hk.jabatan)}</p>
                         </div>
                         <button onclick="toggleAktif(${hk.id_hk}, ${hk.aktif})"
@@ -558,6 +593,52 @@ if ($cabangApiData && $cabangApiData['success']) {
                 `;
                 mobileView.appendChild(card);
             });
+
+            // Update pagination info
+            updatePagination(totalPages);
+        }
+
+        function updatePagination(totalPages) {
+            const showingText = document.getElementById('showingText');
+            const paginationButtons = document.getElementById('paginationButtons');
+            const startIndex = (currentPage - 1) * itemsPerPage + 1;
+            const endIndex = Math.min(currentPage * itemsPerPage, filteredData.length);
+
+            showingText.textContent = `Showing ${startIndex}-${endIndex} of ${filteredData.length} results`;
+
+            paginationButtons.innerHTML = '';
+
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1 ${currentPage === 1 ? 'bg-slate-100 text-slate-400 cursor-not-allowed dark:bg-slate-800' : 'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'}`;
+            prevBtn.innerHTML = '<span class="material-symbols-outlined text-base">chevron_left</span>Previous';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => { if (currentPage > 1) { currentPage--; loadData(); } };
+            paginationButtons.appendChild(prevBtn);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${i === currentPage ? 'bg-primary text-white' : 'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'}`;
+                    pageBtn.textContent = i;
+                    pageBtn.onclick = () => { currentPage = i; loadData(); };
+                    paginationButtons.appendChild(pageBtn);
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    const dots = document.createElement('span');
+                    dots.className = 'px-2 text-slate-400';
+                    dots.textContent = '...';
+                    paginationButtons.appendChild(dots);
+                }
+            }
+
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1 ${currentPage === totalPages ? 'bg-slate-100 text-slate-400 cursor-not-allowed dark:bg-slate-800' : 'bg-white text-slate-700 hover:bg-slate-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'}`;
+            nextBtn.innerHTML = 'Next<span class="material-symbols-outlined text-base">chevron_right</span>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => { if (currentPage < totalPages) { currentPage++; loadData(); } };
+            paginationButtons.appendChild(nextBtn);
         }
 
         // Escape HTML
@@ -645,9 +726,51 @@ if ($cabangApiData && $cabangApiData['success']) {
             document.body.style.overflow = 'hidden';
         }
 
+        // Reload table data from API
+        async function reloadTableData() {
+            console.log('Reloading table data...');
+            const filterCabang = document.getElementById('filterCabang').value;
+            console.log('Selected cabang:', filterCabang);
+            
+            if (!filterCabang) {
+                // If no branch selected, just reset to empty
+                filteredData = [];
+                loadData();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost/botanic/api/hk/list.php?id_cabang=${filterCabang}`);
+                const result = await response.json();
+                console.log('API result:', result);
+                
+                if (result.success) {
+                    allData = result.data;
+                    filteredData = allData.filter(hk => hk.id_cabang == filterCabang);
+                    console.log('Filtered data:', filteredData.length, 'items');
+                    currentPage = 1; // Reset to first page
+                    loadData();
+                    console.log('Table reloaded successfully');
+                } else {
+                    console.error('API returned error:', result.message);
+                }
+            } catch (error) {
+                console.error('Error reloading data:', error);
+            }
+        }
+
         // Submit Add
-        document.getElementById('btnSimpan').addEventListener('click', async () => {
+        document.getElementById('btnSimpan').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
             const form = document.getElementById('formTambahHK');
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
             const formData = new FormData(form);
 
             try {
@@ -655,17 +778,36 @@ if ($cabangApiData && $cabangApiData['success']) {
                     method: 'POST',
                     body: formData
                 });
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text);
+                    showToast('Server error: Response bukan JSON', 'error');
+                    return;
+                }
+                
                 const result = await response.json();
+                console.log('Submit result:', result);
 
                 if (result.success) {
                     showToast('Housekeeping berhasil ditambahkan', 'success');
                     addModal.classList.add('hidden');
                     document.body.style.overflow = '';
-                    setTimeout(() => location.reload(), 1500);
+                    
+                    // Reload data from API instead of page reload
+                    await reloadTableData();
+                    
+                    // Reset form
+                    form.reset();
+                    document.getElementById('kode_hk').value = '';
+                    document.getElementById('id_cabang').value = '';
                 } else {
                     showToast(result.message || 'Gagal menambahkan housekeeping', 'error');
                 }
             } catch (error) {
+                console.error('Error:', error);
                 showToast('Terjadi kesalahan: ' + error.message, 'error');
             }
         });
@@ -709,15 +851,28 @@ if ($cabangApiData && $cabangApiData['success']) {
                     },
                     body: JSON.stringify({ id_hk: id })
                 });
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text);
+                    showToast('Server error: Response bukan JSON', 'error');
+                    return;
+                }
+                
                 const result = await response.json();
+                console.log('Delete result:', result);
 
                 if (result.success) {
                     showToast('Housekeeping berhasil dihapus', 'success');
-                    setTimeout(() => location.reload(), 1500);
+                    // Reload table data instead of page reload
+                    await reloadTableData();
                 } else {
                     showToast(result.message || 'Gagal menghapus housekeeping', 'error');
                 }
             } catch (error) {
+                console.error('Error:', error);
                 showToast('Terjadi kesalahan: ' + error.message, 'error');
             }
         }
@@ -748,11 +903,12 @@ if ($cabangApiData && $cabangApiData['success']) {
             }
         }
 
-        // Toast notification
+        // Toast notification container with higher z-index
+        const toastContainer = document.getElementById('toastContainer');
+        
         function showToast(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full ${
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full z-[9999] ${
                 type === 'success' 
                     ? 'bg-green-500 text-white' 
                     : 'bg-red-500 text-white'
@@ -764,7 +920,7 @@ if ($cabangApiData && $cabangApiData['success']) {
                 </div>
             `;
             
-            container.appendChild(toast);
+            toastContainer.appendChild(toast);
             
             setTimeout(() => {
                 toast.classList.remove('translate-x-full');
