@@ -61,6 +61,11 @@ $initials = strtoupper(substr($username, 0, 2));
             <span class="text-sm font-medium">Resepsionis</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="<?php echo $basePath; ?>hk/hk.php" data-page="hk">
+            <span class="material-symbols-outlined">cleaning_services</span>
+            <span class="text-sm font-medium">Housekeeping</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
             href="<?php echo $basePath; ?>guest/guest.php" data-page="guest">
             <span class="material-symbols-outlined">person</span>
             <span class="text-sm font-medium">Guest</span>
