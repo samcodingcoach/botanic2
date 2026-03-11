@@ -138,3 +138,35 @@ cabang
 ON
 front_office.id_cabang = cabang.id_cabang
 =================================
+
+table: hk
+
+id_hk int 11
+kode_hk varchar 25
+id_cabang int 11
+jabatan varchar 20
+nama_lengkap varchar 50
+jenis_kelamin tinyint 4
+wa varchar 16
+aktif tinyint 4
+created_date datetime
+
+query list.php
+SELECT
+hk.id_hk,
+hk.kode_hk,
+cabang.nama_cabang,
+hk.id_cabang,
+hk.jabatan,
+hk.nama_lengkap,
+hk.jenis_kelamin,
+hk.wa,
+hk.aktif,
+hk.created_date
+FROM
+cabang
+INNER JOIN
+hk
+ON
+cabang.id_cabang = hk.id_cabang
+=================================
