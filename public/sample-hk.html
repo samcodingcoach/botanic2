@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Housekeeping Service Chat</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header -->
+        <header
+            class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-slate-800">
+            <div class="flex size-10 shrink-0 items-center justify-start cursor-pointer">
+                <span class="material-symbols-outlined text-slate-900 dark:text-slate-100">arrow_back_ios</span>
+            </div>
+            <h1
+                class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">
+                Housekeeping</h1>
+
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto pb-24">
+            <div class="px-4 py-4">
+                <h2 class="text-xl font-bold mb-1">Available Staff</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Contact our team for immediate assistance or
+                    cleaning requests.</p>
+            </div>
+            <div class="space-y-4 px-4">
+                <!-- Staff Item 1 (Male) -->
+                <div
+                    class="flex gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 items-center">
+                    <div class="shrink-0 relative">
+                        <div
+                            class="size-14 rounded-full bg-slate-200 dark:bg-slate-700 border-2 border-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-slate-400 dark:text-slate-500">person</span>
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 size-3 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full">
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold truncate">Michael Chen</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">badge</span> Housekeeping Supervisor
+                        </p>
+                    </div>
+                    <div class="shrink-0">
+                        <button
+                            class="flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chat</span>
+                            <span>Chat</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Staff Item 2 (Female) -->
+                <div
+                    class="flex gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 items-center">
+                    <div class="shrink-0 relative">
+                        <div
+                            class="size-14 rounded-full bg-pink-200 dark:bg-pink-900 border-2 border-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-pink-400 dark:text-pink-500">person</span>
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 size-3 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full">
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold truncate">Sarah Johnson</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">badge</span> Room Attendant
+                        </p>
+                    </div>
+                    <div class="shrink-0">
+                        <button
+                            class="flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chat</span>
+                            <span>Chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+
+</html>
