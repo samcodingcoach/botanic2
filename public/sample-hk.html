@@ -42,16 +42,22 @@
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
     <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
         <!-- Header -->
-        <header
-            class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-slate-800">
-            <div class="flex size-10 shrink-0 items-center justify-start cursor-pointer">
-                <span class="material-symbols-outlined text-slate-900 dark:text-slate-100">arrow_back_ios</span>
+        <div
+            class="flex items-center bg-white/80 backdrop-blur-md p-4 pb-2 justify-between sticky top-0 z-50 border-b border-slate-200">
+            <div class="text-slate-900 flex size-12 shrink-0 items-center cursor-pointer">
+                <span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
             </div>
-            <h1
-                class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">
-                Housekeeping</h1>
+            <h2 class="text-slate-900 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">
+                Housekeeping Service
+            </h2>
+            <div class="flex w-12 items-center justify-end">
+                <button
+                    class="flex cursor-pointer items-center justify-center rounded-xl h-12 bg-transparent text-slate-900 p-0">
+                    <span class="material-symbols-outlined text-2xl font-bold">search</span>
+                </button>
+            </div>
+        </div>
 
-        </header>
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pb-24">
