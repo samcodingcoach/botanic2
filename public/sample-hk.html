@@ -75,14 +75,17 @@
                             class="size-14 rounded-full bg-slate-200 dark:bg-slate-700 border-2 border-primary/20 flex items-center justify-center">
                             <span class="material-symbols-outlined text-slate-400 dark:text-slate-500">person</span>
                         </div>
+                        <!-- jika 1 itu pria, jika 0 itu wanita -->
                         <div
                             class="absolute bottom-0 right-0 size-3 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full">
                         </div>
+
+                        <!-- jika aktif hijau, jika tidak aktif merah, jika sedang sibuk kuning, jika offline abu-abu, warna diambil dari database sesuai status staff yang bersangkutan -->
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-bold truncate">Michael Chen</p>
+                        <p class="font-bold truncate">Michael Chen <!-- {nama_lengkap} --></p>
                         <p class="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-1">
-                            <span class="material-symbols-outlined text-xs">badge</span> Housekeeping Supervisor
+                            <span class="material-symbols-outlined text-xs">badge</span> <!-- {jabatan} -->
                         </p>
                     </div>
                     <div class="shrink-0">
@@ -91,6 +94,8 @@
                             <span class="material-symbols-outlined text-sm">chat</span>
                             <span>Chat</span>
                         </button>
+                        <!--  tombol diatas mengambil nomor wa dari database untuk chat langsung dengan staff yang bersangkutan  -->
+
                     </div>
                 </div>
                 <!-- Staff Item 2 (Female) -->
