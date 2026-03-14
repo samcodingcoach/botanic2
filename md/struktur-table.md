@@ -170,3 +170,39 @@ hk
 ON
 cabang.id_cabang = hk.id_cabang
 =================================
+
+table: halaman
+id_halaman int primary key auto_increment
+id_users int
+id_cabang int
+nama_halaman varchar
+link text
+username varchar
+created_date datetime
+logo text
+aktif tinyint
+
+query list.php
+SELECT
+halaman.id_halaman,
+halaman.id_users,
+users.username,
+halaman.id_cabang,
+cabang.nama_cabang,
+halaman.nama_halaman,
+halaman.link,
+halaman.username as username_halaman,
+halaman.created_date,
+halaman.logo,
+halaman.aktif
+FROM
+halaman
+INNER JOIN
+users
+ON
+halaman.id_users = users.id_users
+INNER JOIN
+cabang
+ON
+halaman.id_cabang = cabang.id_cabang
+=================================
