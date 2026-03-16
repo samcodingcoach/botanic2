@@ -405,6 +405,33 @@ if ($cabangApiData && $cabangApiData['success']) {
         </div>
     </div>
 
+    <!-- Image Preview Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="image-preview-modal">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeImagePreview()"></div>
+        <!-- Modal Content -->
+        <div class="relative bg-white dark:bg-background-dark w-full max-w-2xl mx-4 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Preview Logo</h3>
+                <button onclick="closeImagePreview()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <!-- Image Container -->
+            <div class="p-6 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
+                <img id="preview-image-full" src="" alt="Logo Preview" class="max-w-full max-h-[60vh] object-contain rounded-lg" />
+            </div>
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 flex-shrink-0 bg-white dark:bg-background-dark">
+                <button onclick="closeImagePreview()"
+                    class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Constants
         const maxSize = 1 * 1024 * 1024; // 1MB in bytes
@@ -885,7 +912,7 @@ if ($cabangApiData && $cabangApiData['success']) {
             tableBody.innerHTML = pageData.map(item => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                     <td class="px-6 py-4">
-                        <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
+                        <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 cursor-pointer hover:ring-2 hover:ring-primary transition-all" onclick="openImagePreview('${getImageUrl(item.logo)}', '${item.nama_halaman || 'Halaman'}')">
                             <img class="w-full h-full object-cover" src="${getImageUrl(item.logo)}" alt="${item.nama_halaman || 'Halaman'}" />
                         </div>
                     </td>
@@ -966,7 +993,7 @@ if ($cabangApiData && $cabangApiData['success']) {
             mobileView.innerHTML = pageData.map(item => `
                 <div class="p-4 space-y-3">
                     <div class="flex items-start gap-3">
-                        <div class="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex-shrink-0">
+                        <div class="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-primary transition-all" onclick="openImagePreview('${getImageUrl(item.logo)}', '${item.nama_halaman || 'Halaman'}')">
                             <img class="w-full h-full object-cover" src="${getImageUrl(item.logo)}" alt="${item.nama_halaman || 'Halaman'}" />
                         </div>
                         <div class="flex-1 min-w-0">
@@ -1135,7 +1162,7 @@ if ($cabangApiData && $cabangApiData['success']) {
                     if (data.success) {
                         const cabangSelect = document.getElementById('id_cabang');
                         const editCabangSelect = document.getElementById('edit_id_cabang');
-                        
+
                         data.data.forEach(cabang => {
                             const option = document.createElement('option');
                             option.value = cabang.id_cabang;
@@ -1146,6 +1173,21 @@ if ($cabangApiData && $cabangApiData['success']) {
                     }
                 })
                 .catch(error => console.error('Error loading cabang:', error));
+        }
+
+        // Image Preview Modal Functions
+        function openImagePreview(imageSrc, imageName) {
+            const modal = document.getElementById('image-preview-modal');
+            const previewImage = document.getElementById('preview-image-full');
+            
+            previewImage.src = imageSrc;
+            previewImage.alt = imageName;
+            modal.classList.remove('hidden');
+        }
+
+        function closeImagePreview() {
+            const modal = document.getElementById('image-preview-modal');
+            modal.classList.add('hidden');
         }
 
         // Initialize page
