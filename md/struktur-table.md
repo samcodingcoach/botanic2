@@ -215,7 +215,7 @@ jenis_area varchar
 alamat text
 gps varchar
 jarak varchar
-foto text
+foto text <- ini foto ukuran harus 512x512 dan tersimpan di images/near/
 aktif varchar
 created_date datetime
 
