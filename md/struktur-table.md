@@ -206,3 +206,37 @@ cabang
 ON
 halaman.id_cabang = cabang.id_cabang
 =================================
+
+table: near_area
+id_area int PK Auto Increment
+id_cabang int
+nama_area varchar
+jenis_area varchar
+alamat text
+gps varchar
+jarak varchar
+foto text
+aktif varchar
+created_date datetime
+
+query list.php
+SELECT
+near_area.id_area,
+near_area.id_cabang,
+cabang.nama_cabang,
+near_area.nama_area,
+near_area.jenis_area,
+near_area.alamat,
+near_area.gps,
+near_area.jarak,
+near_area.foto,
+near_area.aktif,
+near_area.created_date
+FROM
+near_area
+INNER JOIN
+cabang
+ON
+near_area.id_cabang = cabang.id_cabang
+
+=======================
