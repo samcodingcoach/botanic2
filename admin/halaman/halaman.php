@@ -7,6 +7,10 @@ if (!isset($_SESSION['id_users'])) {
     exit;
 }
 
+// Get logged-in user data
+$id_users_logged = $_SESSION['id_users'];
+$username_logged = $_SESSION['username'] ?? '';
+
 // Fetch data from API
 $apiUrl = 'http://localhost/botanic/api/halaman/list.php';
 $apiResponse = file_get_contents($apiUrl);
@@ -218,6 +222,7 @@ if ($cabangApiData && $cabangApiData['success']) {
             <!-- Scrollable Content -->
             <div class="overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
                 <form id="formTambahHalaman" class="space-y-4" enctype="multipart/form-data">
+                    <input type="hidden" id="id_users" name="id_users" value="<?php echo htmlspecialchars($id_users_logged); ?>" />
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
@@ -227,14 +232,6 @@ if ($cabangApiData && $cabangApiData['success']) {
                                 placeholder="Contoh: Website Utama" type="text" required />
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">User <span class="text-red-500">*</span></label>
-                            <select id="id_users" name="id_users"
-                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                                required>
-                                <option value="">Pilih User</option>
-                            </select>
-                        </div>
-                        <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Cabang <span class="text-red-500">*</span></label>
                             <select id="id_cabang" name="id_cabang"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
@@ -242,10 +239,10 @@ if ($cabangApiData && $cabangApiData['success']) {
                                 <option value="">Pilih Cabang</option>
                             </select>
                         </div>
-                        <div class="col-span-2">
+                        <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Username Halaman <span class="text-red-500">*</span></label>
                             <input id="username_halaman" name="username_halaman"
-                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm font-mono text-primary dark:text-primary font-semibold"
                                 placeholder="username_halaman" type="text" required />
                         </div>
                         <div class="col-span-2">
@@ -326,6 +323,7 @@ if ($cabangApiData && $cabangApiData['success']) {
                 <form id="formEditHalaman" class="space-y-4" enctype="multipart/form-data">
                     <input type="hidden" id="edit_id_halaman" name="id_halaman" />
                     <input type="hidden" name="created_date" />
+                    <input type="hidden" id="edit_id_users" name="id_users" value="<?php echo htmlspecialchars($id_users_logged); ?>" />
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nama
@@ -335,14 +333,6 @@ if ($cabangApiData && $cabangApiData['success']) {
                                 placeholder="Contoh: Website Utama" type="text" required />
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">User <span class="text-red-500">*</span></label>
-                            <select id="edit_id_users" name="id_users"
-                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
-                                required>
-                                <option value="">Pilih User</option>
-                            </select>
-                        </div>
-                        <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Cabang <span class="text-red-500">*</span></label>
                             <select id="edit_id_cabang" name="id_cabang"
                                 class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
@@ -350,10 +340,10 @@ if ($cabangApiData && $cabangApiData['success']) {
                                 <option value="">Pilih Cabang</option>
                             </select>
                         </div>
-                        <div class="col-span-2">
+                        <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Username Halaman <span class="text-red-500">*</span></label>
                             <input id="edit_username_halaman" name="username_halaman"
-                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm font-mono text-primary dark:text-primary font-semibold"
                                 placeholder="username_halaman" type="text" required />
                         </div>
                         <div class="col-span-2">
@@ -487,7 +477,7 @@ if ($cabangApiData && $cabangApiData['success']) {
         if (btnSimpan) {
             btnSimpan.addEventListener('click', async function() {
                 // Validate form
-                const requiredFields = ['nama_halaman', 'id_users', 'id_cabang', 'username_halaman', 'link'];
+                const requiredFields = ['nama_halaman', 'id_cabang', 'username_halaman', 'link'];
                 let isValid = true;
                 let emptyFields = [];
 
@@ -622,10 +612,9 @@ if ($cabangApiData && $cabangApiData['success']) {
         const editFileName = document.getElementById('edit_file_name');
         const editLogoError = document.getElementById('edit_logo_error');
 
-        function openEditModal(id, namaHalaman, idUsers, idCabang, usernameHalaman, link, aktif, logo, createdDate) {
+        function openEditModal(id, namaHalaman, idCabang, usernameHalaman, link, aktif, logo, createdDate) {
             document.getElementById('edit_id_halaman').value = id;
             document.getElementById('edit_nama_halaman').value = namaHalaman;
-            document.getElementById('edit_id_users').value = idUsers;
             document.getElementById('edit_id_cabang').value = idCabang;
             document.getElementById('edit_username_halaman').value = usernameHalaman;
             document.getElementById('edit_link').value = link;
@@ -672,7 +661,6 @@ if ($cabangApiData && $cabangApiData['success']) {
                 openEditModal(
                     btn.dataset.id,
                     btn.dataset.namaHalaman,
-                    btn.dataset.idUsers,
                     btn.dataset.idCabang,
                     btn.dataset.usernameHalaman,
                     btn.dataset.link,
@@ -687,7 +675,6 @@ if ($cabangApiData && $cabangApiData['success']) {
                 openEditModal(
                     btn.dataset.id,
                     btn.dataset.namaHalaman,
-                    btn.dataset.idUsers,
                     btn.dataset.idCabang,
                     btn.dataset.usernameHalaman,
                     btn.dataset.link,
@@ -702,7 +689,7 @@ if ($cabangApiData && $cabangApiData['success']) {
         if (btnUpdate) {
             btnUpdate.addEventListener('click', async function() {
                 // Validate form
-                const requiredFields = ['edit_nama_halaman', 'edit_id_users', 'edit_id_cabang', 'edit_username_halaman', 'edit_link'];
+                const requiredFields = ['edit_nama_halaman', 'edit_id_cabang', 'edit_username_halaman', 'edit_link'];
                 let isValid = true;
                 let emptyFields = [];
 
@@ -934,7 +921,6 @@ if ($cabangApiData && $cabangApiData['success']) {
                         <button class="p-1.5 text-slate-400 hover:text-primary transition-colors btn-edit-halaman"
                             data-id="${item.id_halaman}"
                             data-nama-halaman="${item.nama_halaman || ''}"
-                            data-id-users="${item.id_users || ''}"
                             data-id-cabang="${item.id_cabang || ''}"
                             data-username-halaman="${item.username_halaman || ''}"
                             data-link="${item.link || ''}"
@@ -991,7 +977,6 @@ if ($cabangApiData && $cabangApiData['success']) {
                             <button class="p-2 text-slate-400 hover:text-primary transition-colors btn-edit-halaman-mobile"
                                 data-id="${item.id_halaman}"
                                 data-nama-halaman="${item.nama_halaman || ''}"
-                                data-id-users="${item.id_users || ''}"
                                 data-id-cabang="${item.id_cabang || ''}"
                                 data-username-halaman="${item.username_halaman || ''}"
                                 data-link="${item.link || ''}"
@@ -1142,27 +1127,8 @@ if ($cabangApiData && $cabangApiData['success']) {
             });
         }
 
-        // Load users and cabang data for dropdowns
-        function loadDropdownData() {
-            // Load users
-            fetch('http://localhost/botanic/api/users/list.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const usersSelect = document.getElementById('id_users');
-                        const editUsersSelect = document.getElementById('edit_id_users');
-                        data.data.forEach(user => {
-                            const option = document.createElement('option');
-                            option.value = user.id_users;
-                            option.textContent = user.username;
-                            usersSelect.appendChild(option.cloneNode(true));
-                            editUsersSelect.appendChild(option);
-                        });
-                    }
-                })
-                .catch(error => console.error('Error loading users:', error));
-
-            // Load cabang for modal dropdowns (filter already loaded via PHP)
+        // Load cabang data for modal dropdowns
+        function loadCabangData() {
             fetch('http://localhost/botanic/api/cabang/list.php')
                 .then(response => response.json())
                 .then(data => {
@@ -1184,7 +1150,7 @@ if ($cabangApiData && $cabangApiData['success']) {
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            loadDropdownData();
+            loadCabangData();
             renderTable();
             renderMobileView();
             renderPagination();

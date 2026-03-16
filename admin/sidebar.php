@@ -18,13 +18,13 @@ $initials = strtoupper(substr($username, 0, 2));
 <!-- Sidebar -->
 <aside id="sidebar"
     class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-background-dark border-r border-slate-200 dark:border-slate-800 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
-    <div class="p-6 flex items-center gap-3">
+    <div class="p-6 flex items-center gap-3 shrink-0">
         <div class="bg-primary p-1.5 rounded-lg">
             <span class="material-symbols-outlined text-white">account_balance</span>
         </div>
         <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Botanic</h1>
     </div>
-    <nav class="flex-1 px-4 space-y-1 mt-4">
+    <nav class="flex-1 px-4 space-y-1 mt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
             href="<?php echo $basePath; ?>index.php" data-page="dashboard">
             <span class="material-symbols-outlined">dashboard</span>
@@ -81,7 +81,7 @@ $initials = strtoupper(substr($username, 0, 2));
             <span class="text-sm font-medium">Settings</span>
         </a>
     </nav>
-    <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
+    <div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800 shrink-0">
         <form id="logoutForm" action="<?php echo $basePath; ?>logout.php" method="POST">
             <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
                 onclick="document.getElementById('logoutForm').submit();">
@@ -99,6 +99,41 @@ $initials = strtoupper(substr($username, 0, 2));
         </form>
     </div>
 </aside>
+
+<style>
+    /* Ensure sidebar nav can scroll properly */
+    #sidebar nav {
+        max-height: calc(100vh - 200px);
+        min-height: 200px;
+    }
+    
+    /* Custom scrollbar for sidebar nav */
+    #sidebar nav::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #sidebar nav::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    #sidebar nav::-webkit-scrollbar-thumb {
+        background-color: rgba(148, 163, 184, 0.5);
+        border-radius: 3px;
+    }
+    
+    #sidebar nav::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(148, 163, 184, 0.8);
+    }
+    
+    /* Dark mode scrollbar */
+    .dark #sidebar nav::-webkit-scrollbar-thumb {
+        background-color: rgba(75, 119, 77, 0.5);
+    }
+    
+    .dark #sidebar nav::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(75, 119, 77, 0.8);
+    }
+</style>
 
 <script>
     function toggleSidebar() {
