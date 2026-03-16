@@ -76,6 +76,11 @@ $initials = strtoupper(substr($username, 0, 2));
             <span class="text-sm font-medium">Guest</span>
         </a>
         <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            href="<?php echo $basePath; ?>nearme/nearme.php" data-page="nearme">
+            <span class="material-symbols-outlined">near_me</span>
+            <span class="text-sm font-medium">Near Area</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
             href="#" data-page="settings">
             <span class="material-symbols-outlined">settings</span>
             <span class="text-sm font-medium">Settings</span>
