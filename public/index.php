@@ -135,7 +135,10 @@ $userType = $isUser ? 'User' : 'Guest';
 
             <!-- Follow Us Section -->
             <section id="follow-us-section" class="mt-8 mb-4 hidden">
-                <h2 class="text-lg font-bold mb-4 px-0">Follow us</h2>
+                <div class="flex items-center justify-between mb-4 px-0">
+                    <h2 class="text-lg font-bold">Follow us</h2>
+                    <span id="halaman-count" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mr-2">0 Pages</span>
+                </div>
                 <div class="relative">
                     <!-- Gradient Overlay Left -->
                     <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background-light dark:from-background-dark to-transparent pointer-events-none z-10"></div>

@@ -340,6 +340,7 @@ async function loadBranches() {
 async function loadHalaman() {
     const section = document.getElementById('follow-us-section');
     const container = document.getElementById('halaman-container');
+    const countLabel = document.getElementById('halaman-count');
 
     try {
         const response = await fetch('../api/halaman/list.php?aktif=1');
@@ -347,6 +348,8 @@ async function loadHalaman() {
 
         if (result.success && result.data && result.data.length > 0) {
             section.classList.remove('hidden');
+            const count = result.data.length;
+            countLabel.textContent = count + ' Page' + (count !== 1 ? 's' : '');
             container.innerHTML = result.data.map(item => {
                 const escapedLink = item.link.replace(/'/g, "\\'");
                 return `
