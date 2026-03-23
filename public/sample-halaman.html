@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hotel Listing - StayFind</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+
+        /* Hide scrollbar for horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+
+        <main class="flex-1 px-4 py-2 space-y-4">
+
+            <section class="mt-8 mb-4">
+                <h2 class="text-lg font-bold mb-4 px-0">Follow us</h2>
+                <div class="relative">
+                    <!-- Gradient Overlay Left -->
+                    <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background-light dark:from-background-dark to-transparent pointer-events-none z-10"></div>
+                    <!-- Gradient Overlay Right -->
+                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background-light dark:from-background-dark to-transparent pointer-events-none z-10"></div>
+                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 px-2">
+                        <a class="shrink-0 block transition-transform active:scale-95" href="#">
+                            <img alt="Instagram"
+                                class="rounded-[10px] w-[240px] h-[89px] object-cover shadow-sm border border-slate-200 dark:border-slate-800"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6CkNjmhhB4ij9BRGBwDYstELJEg3rzUwQh34S0X8zyQGEYk4CZAi34cWhsBCxDHGFCiqDKKAn05nyyZQPO1kt9yoh93S-xhpbVH5JA_rxbW0nRPKPoyhhdsQlp2H4skcZkuXvnTBdkqsiLrmxzYF10s8hDv77yUUcDeuT1lN_faTpB37uQsTVT_s3bsni7Npp7mfbl7GhfF99wcTQhWdClh4_I9QB-8flPu4HaTV6NCSQOWw38ifpOC3iwW1-cUp77Jg3gwkuJgNB" />
+                        </a>
+                        <a class="shrink-0 block transition-transform active:scale-95" href="#">
+                            <img alt="Facebook"
+                                class="rounded-[10px] w-[240px] h-[89px] object-cover shadow-sm border border-slate-200 dark:border-slate-800"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIMZ4wzDJyn-rfIRpsjwa3_qKHwLLl-00aAF_4DcxlcGmMLlVYiE9HG7hBakMv5l7C6Nc8CKR7g9x7I25JJIWM4NXy_ySEGODdF3-Q2qWPAn5SKDAtdfjqeipfsaa8XDlPMcmvpqxVgZHQk5BRUiMFZwhhfy7vxZl0k-tgVmCG_CTlfQGsCkw-2Qotbo0Ygda4A-SuuZrIk4liSCdO1L3klgxCjWYwHial0K2C_yvVQFdFfI5AuO4M8aTTykEB7FJdrSe4Fw98ArOv" />
+                        </a>
+                        <a class="shrink-0 block transition-transform active:scale-95" href="#">
+                            <img alt="Twitter"
+                                class="rounded-[10px] w-[240px] h-[89px] object-cover shadow-sm border border-slate-200 dark:border-slate-800"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIf7O4PmrEHAJ8L5OkngAzCybib0aDzkbKYoUrxJ9rPZESfWRTv0AZjJp_sNu-vYj4UYenAhFeOiJ-qfZ17yhtGPvm8pujqVVKXfSioK4HXPP5rgIosVNK5fDPYkxT3R9sr6BLbRUEgoJxS1RXDEqkO3_K7yhOmSP0Sg_GaR2Mj1pnJ0pUP0RQnr9wxqGVKXQlChmcvb18lq1JecdFy_1b_mf7sC-RBfaaqzMoG0_e0ZgRaE8MGBcyJbbK9YNtXmVXFG4PsNs4rqRS" />
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <div class="h-20"></div> <!-- Spacer for Bottom Nav -->
+        </main>
+        <!-- Bottom Navigation Bar -->
+
+    </div>
+</body>
+
+</html>
