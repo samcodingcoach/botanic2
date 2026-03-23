@@ -7,29 +7,32 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Concierge - Near Me</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+    <style>
         body {
-            font-family: 'Manrope', sans-serif;
-            -webkit-font-smoothing: antialiased;
+            min-height: max(884px, 100dvh);
         }
 
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
+        /* Hide scrollbar for horizontal scroll */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -45,63 +48,17 @@
             theme: {
                 extend: {
                     colors: {
-                        "tertiary-fixed": "#ffdbcf",
-                        "primary-container": "#0052cc",
-                        "secondary-fixed-dim": "#b4c5fb",
-                        "surface-container-high": "#e6e8e9",
-                        "surface-tint": "#0c56d0",
-                        "outline": "#737685",
-                        "secondary-container": "#b6c8fe",
-                        "surface": "#f8fafb",
-                        "on-tertiary-fixed": "#380d00",
-                        "on-tertiary-fixed-variant": "#812800",
-                        "background": "#f8fafb",
-                        "error": "#ba1a1a",
-                        "on-secondary-fixed": "#021945",
-                        "error-container": "#ffdad6",
-                        "outline-variant": "#c3c6d6",
-                        "inverse-primary": "#b2c5ff",
-                        "tertiary-container": "#a33500",
-                        "surface-container": "#eceeef",
-                        "on-tertiary": "#ffffff",
-                        "on-surface-variant": "#434654",
-                        "surface-container-highest": "#e1e3e4",
-                        "primary": "#0052CC",
-                        "on-primary-fixed-variant": "#0040a2",
-                        "inverse-on-surface": "#eff1f2",
-                        "on-tertiary-container": "#ffc6b2",
-                        "surface-variant": "#e1e3e4",
-                        "on-background": "#191c1d",
-                        "tertiary-fixed-dim": "#ffb59b",
-                        "on-primary-container": "#c4d2ff",
-                        "surface-dim": "#d8dadb",
-                        "tertiary": "#7b2600",
-                        "surface-container-low": "#f2f4f5",
-                        "surface-container-lowest": "#ffffff",
-                        "on-error-container": "#93000a",
-                        "on-primary": "#ffffff",
-                        "inverse-surface": "#2e3132",
-                        "on-secondary": "#ffffff",
-                        "on-secondary-container": "#415382",
-                        "on-error": "#ffffff",
-                        "surface-bright": "#f8fafb",
-                        "on-primary-fixed": "#001848",
-                        "secondary-fixed": "#dae2ff",
-                        "primary-fixed": "#dae2ff",
-                        "primary-fixed-dim": "#b2c5ff",
-                        "on-secondary-fixed-variant": "#344573",
-                        "on-surface": "#191c1d",
-                        "secondary": "#4c5d8d"
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
                     },
                     fontFamily: {
-                        "headline": ["Plus Jakarta Sans"],
-                        "body": ["Manrope"],
-                        "label": ["Manrope"]
+                        "display": ["Inter", "sans-serif"]
                     },
                     borderRadius: {
-                        "DEFAULT": "8px",
-                        "lg": "12px",
-                        "xl": "16px",
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
                         "full": "9999px"
                     },
                 },
@@ -110,207 +67,198 @@
     </script>
 </head>
 
-<body class="bg-surface text-on-surface min-h-screen">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
-
-    <main class="pt-24 pb-32 px-4 max-w-2xl mx-auto">
-        <!-- Search & Discovery Section -->
-        <section class="mb-6">
-
-            <!-- Filter Chips -->
-            <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-                <button
-                    class="flex-none px-5 py-2 rounded-full bg-primary text-on-primary font-label text-sm font-semibold transition-all active:scale-95">Nearest</button>
-                <button
-                    class="flex-none px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-sm font-medium hover:bg-surface-container-highest transition-all active:scale-95">Restaurant</button>
-                <button
-                    class="flex-none px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-sm font-medium hover:bg-surface-container-highest transition-all active:scale-95">Hospital</button>
-                <button
-                    class="flex-none px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label text-sm font-medium hover:bg-surface-container-highest transition-all active:scale-95">Shop</button>
-            </div>
-        </section>
-        <!-- Nearby Places Grid -->
-        <div class="grid grid-cols-2 gap-4">
-            <!-- Card 1 -->
-            <div
-                class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.04)] border border-outline-variant/10 group active:scale-[0.98] transition-all flex flex-col">
-                <div class="relative aspect-square overflow-hidden">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-alt="Hospital building"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpCd2ZIXO6ul31XxYMp15eT5Jhiz2ZkVwmzQzprA7jlFQH3HJiDc3oa1mSrTNsbXQFiIcbs25eauYRVbZL6OmQ2eSY_3RH2n_WySTXVEkQIVhN0kx9HrYTDRDPvjafaRjgl1OK73i2JTr-eSvN6TxdeWA0hnxCbRCMl82uuAXeAgnUMSlXi4vNVElOCPIGjol6A9Gd72XTBZFi-r3CNhKhMwRMhBwNNAJMB0H78jQ0F0VZnPKcyWCVXFxsuf7oU73km2egK_n_yNJe" />
-                    <div class="absolute top-2 left-2 bg-primary/90 backdrop-blur-md px-2 py-0.5 rounded-full">
-                        <span
-                            class="text-[9px] font-bold text-on-primary uppercase tracking-wider font-label">Hospital</span>
-                    </div>
-                    <div
-                        class="absolute bottom-2 right-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-lg border border-primary/10">
-                        <span class="text-[10px] font-bold text-primary font-label">1.2km</span>
-                    </div>
-                </div>
-                <div class="p-3 flex flex-col flex-1 justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-on-surface font-headline leading-tight line-clamp-1 mb-1">
-                            Rumah Sakit ABC</h3>
-                        <p class="text-on-surface-variant text-[11px] font-body line-clamp-1 flex items-center gap-0.5">
-                            <span class="material-symbols-outlined text-[12px]"
-                                data-icon="location_on">location_on</span>
-                            Jl. Merdeka No. 1
-                        </p>
-                        <p class="text-[9px] text-on-surface-variant/50 font-mono mt-1">-6.2088, 106.8456</p>
-                    </div>
+        <main class="flex-1 px-4 py-2 space-y-4">
+            <!-- Search & Discovery Section -->
+            <section class="mb-4">
+                <h2 class="text-lg font-bold mb-4 px-0">Near Me</h2>
+                <!-- Filter Chips -->
+                <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                     <button
-                        class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
-                        <span class="material-symbols-outlined text-[16px]" data-icon="directions"
-                            style="font-variation-settings: 'FILL' 1;">directions</span>
-                        Open Map
-                    </button>
-                </div>
-            </div>
-            <!-- Card 2 -->
-            <div
-                class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.04)] border border-outline-variant/10 group active:scale-[0.98] transition-all flex flex-col">
-                <div class="relative aspect-square overflow-hidden">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-alt="Supermarket interior"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR-op4nlWBaz6_t5evaGrm7XAD69TfTH2_MwIZtyuqfBPFQPZVGUC041cLdoW1XzR1wIPPug-xEyUhiURY3-fL-wD6xq30HlZYZjAVyq-ivUnCLbieLzv_TbsaCN14ranYN9TPGeDGbqH6hDERIwI40WNqiHh_9NB_5h-FhefKyvn1-TBZxHw3Sl0jISDx027AFHXmX3T8gOGp8mnY6HR8yqfMbe-CuCqjUMguwsmmX57JB6EQ7gnEca7EzEdMG5uSoJhSDHV4f2tq" />
-                    <div class="absolute top-2 left-2 bg-secondary/90 backdrop-blur-md px-2 py-0.5 rounded-full">
-                        <span
-                            class="text-[9px] font-bold text-on-secondary uppercase tracking-wider font-label">Shop</span>
-                    </div>
-                    <div
-                        class="absolute bottom-2 right-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-lg border border-primary/10">
-                        <span class="text-[10px] font-bold text-primary font-label">0.5km</span>
-                    </div>
-                </div>
-                <div class="p-3 flex flex-col flex-1 justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-on-surface font-headline leading-tight line-clamp-1 mb-1">
-                            Supermarket ABC</h3>
-                        <p class="text-on-surface-variant text-[11px] font-body line-clamp-1 flex items-center gap-0.5">
-                            <span class="material-symbols-outlined text-[12px]"
-                                data-icon="location_on">location_on</span>
-                            Jl. Sudirman No. 45
-                        </p>
-                        <p class="text-[9px] text-on-surface-variant/50 font-mono mt-1">-6.2146, 106.8277</p>
-                    </div>
+                        class="flex-none px-5 py-2 rounded-full bg-primary text-white font-semibold text-sm transition-all active:scale-95">Nearest</button>
                     <button
-                        class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
-                        <span class="material-symbols-outlined text-[16px]" data-icon="directions"
-                            style="font-variation-settings: 'FILL' 1;">directions</span>
-                        Open Map
-                    </button>
-                </div>
-            </div>
-            <!-- Card 3 -->
-            <div
-                class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.04)] border border-outline-variant/10 group active:scale-[0.98] transition-all flex flex-col">
-                <div class="relative aspect-square overflow-hidden">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-alt="Mini market"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0c3cJr1JOayioAHG6DBjsW15349v9dO62798sFdm5QOW4_QRa-II05YLSx0wf-xjYF3lC3w3xW15YfLGerjOmwVeSq_QAh4NyeG4kBbagOFkGKRPk9k6CYYXI_Dt0MUrJY3bI2w8cFtT5sDO3LpqWSIZQyUpwdfPR-VTsHX0V7wqS5p6hZlfle_v5lm2ynCWLj6N7DuudRDIwRQiM1xEYnI4iIBcHon3gtHe8zM5kQxUgCUVz_XUzkbawOIJRdG9F7m_F4WC1XQPi" />
-                    <div class="absolute top-2 left-2 bg-secondary/90 backdrop-blur-md px-2 py-0.5 rounded-full">
-                        <span
-                            class="text-[9px] font-bold text-on-secondary uppercase tracking-wider font-label">Shop</span>
-                    </div>
-                    <div
-                        class="absolute bottom-2 right-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-lg border border-primary/10">
-                        <span class="text-[10px] font-bold text-primary font-label">0.8km</span>
-                    </div>
-                </div>
-                <div class="p-3 flex flex-col flex-1 justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-on-surface font-headline leading-tight line-clamp-1 mb-1">Mini
-                            Market ABC</h3>
-                        <p class="text-on-surface-variant text-[11px] font-body line-clamp-1 flex items-center gap-0.5">
-                            <span class="material-symbols-outlined text-[12px]"
-                                data-icon="location_on">location_on</span>
-                            Jl. Thamrin No. 12
-                        </p>
-                        <p class="text-[9px] text-on-surface-variant/50 font-mono mt-1">-6.1847, 106.8233</p>
-                    </div>
+                        class="flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95">Restaurant</button>
                     <button
-                        class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
-                        <span class="material-symbols-outlined text-[16px]" data-icon="directions"
-                            style="font-variation-settings: 'FILL' 1;">directions</span>
-                        Open Map
-                    </button>
-                </div>
-            </div>
-            <!-- Card 4 -->
-            <div
-                class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.04)] border border-outline-variant/10 group active:scale-[0.98] transition-all flex flex-col">
-                <div class="relative aspect-square overflow-hidden">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-alt="KFC restaurant"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUH946B-JrVB8eRRRzKy7Vj_Z32b_6JCpRNDL4XcE-Sa9wLXfiADE1vlTRJrG-YfcIlEvml3DnEnmus3FWRGM6k3R6GKhahm0kUxfnUSOQVappoHUfY8Ew7TTxXBTac8JCfzjwD0GIK0VkeSVSrTguUf40ekX4hpXizeOcpKLAIW-pfOhPKD0hIbefN028ge5dOn7jv-Ke7ERBSeFlv9mR6M0iRA4JeZjkQHNdF2sFKE7KsSmUI-cQDwCjLbieMni--ibkkNHa7tpN" />
-                    <div class="absolute top-2 left-2 bg-tertiary/90 backdrop-blur-md px-2 py-0.5 rounded-full">
-                        <span
-                            class="text-[9px] font-bold text-on-tertiary uppercase tracking-wider font-label">Restaurant</span>
-                    </div>
-                    <div
-                        class="absolute bottom-2 right-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-lg border border-primary/10">
-                        <span class="text-[10px] font-bold text-primary font-label">1.5km</span>
-                    </div>
-                </div>
-                <div class="p-3 flex flex-col flex-1 justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-on-surface font-headline leading-tight line-clamp-1 mb-1">KFC
-                            Sudirman</h3>
-                        <p class="text-on-surface-variant text-[11px] font-body line-clamp-1 flex items-center gap-0.5">
-                            <span class="material-symbols-outlined text-[12px]"
-                                data-icon="location_on">location_on</span>
-                            Jl. Gatot Subroto No. 8
-                        </p>
-                        <p class="text-[9px] text-on-surface-variant/50 font-mono mt-1">-6.2341, 106.8189</p>
-                    </div>
+                        class="flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95">Hospital</button>
                     <button
-                        class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
-                        <span class="material-symbols-outlined text-[16px]" data-icon="directions"
-                            style="font-variation-settings: 'FILL' 1;">directions</span>
-                        Open Map
-                    </button>
+                        class="flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95">Shop</button>
+                </div>
+            </section>
+            <!-- Nearby Places Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Card 1 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 group active:scale-[0.98] transition-all flex flex-col">
+                    <div class="relative aspect-square overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Hospital building"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpCd2ZIXO6ul31XxYMp15eT5Jhiz2ZkVwmzQzprA7jlFQH3HJiDc3oa1mSrTNsbXQFiIcbs25eauYRVbZL6OmQ2eSY_3RH2n_WySTXVEkQIVhN0kx9HrYTDRDPvjafaRjgl1OK73i2JTr-eSvN6TxdeWA0hnxCbRCMl82uuAXeAgnUMSlXi4vNVElOCPIGjol6A9Gd72XTBZFi-r3CNhKhMwRMhBwNNAJMB0H78jQ0F0VZnPKcyWCVXFxsuf7oU73km2egK_n_yNJe" />
+                        <div class="absolute top-2 left-2 bg-primary/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-center">
+                            <span class="text-[9px] font-bold text-white uppercase tracking-wider leading-none">Hospital</span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-white/60 backdrop-blur-md px-2 py-1 rounded-lg border border-primary/10 flex items-center justify-center">
+                            <span class="text-[10px] font-bold text-primary leading-none">1.2km</span>
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h3
+                                class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1 mb-1">
+                                Rumah Sakit ABC</h3>
+                            <p
+                                class="text-slate-500 dark:text-slate-400 text-[11px] line-clamp-1 flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-[12px]">location_on</span>
+                                Jl. Merdeka No. 1
+                            </p>
+                        </div>
+                        <button
+                            class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: 'FILL' 1;">directions</span>
+                            Open Map
+                        </button>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 group active:scale-[0.98] transition-all flex flex-col">
+                    <div class="relative aspect-square overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Supermarket interior"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR-op4nlWBaz6_t5evaGrm7XAD69TfTH2_MwIZtyuqfBPFQPZVGUC041cLdoW1XzR1wIPPug-xEyUhiURY3-fL-wD6xq30HlZYZjAVyq-ivUnCLbieLzv_TbsaCN14ranYN9TPGeDGbqH6hDERIwI40WNqiHh_9NB_5h-FhefKyvn1-TBZxHw3Sl0jISDx027AFHXmX3T8gOGp8mnY6HR8yqfMbe-CuCqjUMguwsmmX57JB6EQ7gnEca7EzEdMG5uSoJhSDHV4f2tq" />
+                        <div class="absolute top-2 left-2 bg-slate-500/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-center">
+                            <span class="text-[9px] font-bold text-white uppercase tracking-wider leading-none">Shop</span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-white/60 backdrop-blur-md px-2 py-1 rounded-lg border border-primary/10 flex items-center justify-center">
+                            <span class="text-[10px] font-bold text-primary leading-none">0.5km</span>
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h3
+                                class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1 mb-1">
+                                Supermarket ABC</h3>
+                            <p
+                                class="text-slate-500 dark:text-slate-400 text-[11px] line-clamp-1 flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-[12px]">location_on</span>
+                                Jl. Sudirman No. 45
+                            </p>
+                        </div>
+                        <button
+                            class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: 'FILL' 1;">directions</span>
+                            Open Map
+                        </button>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 group active:scale-[0.98] transition-all flex flex-col">
+                    <div class="relative aspect-square overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Mini market"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0c3cJr1JOayioAHG6DBjsW15349v9dO62798sFdm5QOW4_QRa-II05YLSx0wf-xjYF3lC3w3xW15YfLGerjOmwVeSq_QAh4NyeG4kBbagOFkGKRPk9k6CYYXI_Dt0MUrJY3bI2w8cFtT5sDO3LpqWSIZQyUpwdfPR-VTsHX0V7wqS5p6hZlfle_v5lm2ynCWLj6N7DuudRDIwRQiM1xEYnI4iIBcHon3gtHe8zM5kQxUgCUVz_XUzkbawOIJRdG9F7m_F4WC1XQPi" />
+                        <div class="absolute top-2 left-2 bg-slate-500/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-center">
+                            <span class="text-[9px] font-bold text-white uppercase tracking-wider leading-none">Shop</span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-white/60 backdrop-blur-md px-2 py-1 rounded-lg border border-primary/10 flex items-center justify-center">
+                            <span class="text-[10px] font-bold text-primary leading-none">0.8km</span>
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h3
+                                class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1 mb-1">
+                                Mini
+                                Market ABC</h3>
+                            <p
+                                class="text-slate-500 dark:text-slate-400 text-[11px] line-clamp-1 flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-[12px]">location_on</span>
+                                Jl. Thamrin No. 12
+                            </p>
+                        </div>
+                        <button
+                            class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: 'FILL' 1;">directions</span>
+                            Open Map
+                        </button>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 group active:scale-[0.98] transition-all flex flex-col">
+                    <div class="relative aspect-square overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="KFC restaurant"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUH946B-JrVB8eRRRzKy7Vj_Z32b_6JCpRNDL4XcE-Sa9wLXfiADE1vlTRJrG-YfcIlEvml3DnEnmus3FWRGM6k3R6GKhahm0kUxfnUSOQVappoHUfY8Ew7TTxXBTac8JCfzjwD0GIK0VkeSVSrTguUf40ekX4hpXizeOcpKLAIW-pfOhPKD0hIbefN028ge5dOn7jv-Ke7ERBSeFlv9mR6M0iRA4JeZjkQHNdF2sFKE7KsSmUI-cQDwCjLbieMni--ibkkNHa7tpN" />
+                        <div class="absolute top-2 left-2 bg-orange-500/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-center">
+                            <span class="text-[9px] font-bold text-white uppercase tracking-wider leading-none">Restaurant</span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-white/60 backdrop-blur-md px-2 py-1 rounded-lg border border-primary/10 flex items-center justify-center">
+                            <span class="text-[10px] font-bold text-primary leading-none">1.5km</span>
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h3
+                                class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1 mb-1">
+                                KFC
+                                Sudirman</h3>
+                            <p
+                                class="text-slate-500 dark:text-slate-400 text-[11px] line-clamp-1 flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-[12px]">location_on</span>
+                                Jl. Gatot Subroto No. 8
+                            </p>
+                        </div>
+                        <button
+                            class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: 'FILL' 1;">directions</span>
+                            Open Map
+                        </button>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 group active:scale-[0.98] transition-all flex flex-col">
+                    <div class="relative aspect-square overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="McDonalds dining"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIEqEqw_c_FvgDEK8KOiSvuqEJXHCNWmZmV81IbkGlzRUzaxBuEZhDfv7QKhTFVwEg6SDr_46w1OuZeahU2IqlA4PGAafmuMEu2-31CliO1sh3sthBj_Eph5kj3d8mb34sE5cnuSzrwGqGPiNEixpZRX6KwFUg_s59--5IeZuW6oaXJpFs0DxmOHQlJTKJNeVPEk_t5sW9LY-10y89huaF2l3sCqo6EDSao9Blovn1UI0JR62Mrs-9W2mQbfnazFjKC2fpeonhOy-z" />
+                        <div class="absolute top-2 left-2 bg-orange-500/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-center">
+                            <span class="text-[9px] font-bold text-white uppercase tracking-wider leading-none">Restaurant</span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 bg-white/60 backdrop-blur-md px-2 py-1 rounded-lg border border-primary/10 flex items-center justify-center">
+                            <span class="text-[10px] font-bold text-primary leading-none">2.1km</span>
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h3
+                                class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1 mb-1">
+                                McDonalds</h3>
+                            <p
+                                class="text-slate-500 dark:text-slate-400 text-[11px] line-clamp-1 flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-[12px]">location_on</span>
+                                Jl. Asia Afrika No. 19
+                            </p>
+                        </div>
+                        <button
+                            class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
+                            <span class="material-symbols-outlined text-[16px]"
+                                style="font-variation-settings: 'FILL' 1;">directions</span>
+                            Open Map
+                        </button>
+                    </div>
                 </div>
             </div>
-            <!-- Card 5 -->
-            <div
-                class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.04)] border border-outline-variant/10 group active:scale-[0.98] transition-all flex flex-col">
-                <div class="relative aspect-square overflow-hidden">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-alt="McDonalds dining"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIEqEqw_c_FvgDEK8KOiSvuqEJXHCNWmZmV81IbkGlzRUzaxBuEZhDfv7QKhTFVwEg6SDr_46w1OuZeahU2IqlA4PGAafmuMEu2-31CliO1sh3sthBj_Eph5kj3d8mb34sE5cnuSzrwGqGPiNEixpZRX6KwFUg_s59--5IeZuW6oaXJpFs0DxmOHQlJTKJNeVPEk_t5sW9LY-10y89huaF2l3sCqo6EDSao9Blovn1UI0JR62Mrs-9W2mQbfnazFjKC2fpeonhOy-z" />
-                    <div class="absolute top-2 left-2 bg-tertiary/90 backdrop-blur-md px-2 py-0.5 rounded-full">
-                        <span
-                            class="text-[9px] font-bold text-on-tertiary uppercase tracking-wider font-label">Restaurant</span>
-                    </div>
-                    <div
-                        class="absolute bottom-2 right-2 bg-surface/90 backdrop-blur-md px-2 py-0.5 rounded-lg border border-primary/10">
-                        <span class="text-[10px] font-bold text-primary font-label">2.1km</span>
-                    </div>
-                </div>
-                <div class="p-3 flex flex-col flex-1 justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-on-surface font-headline leading-tight line-clamp-1 mb-1">
-                            McDonalds</h3>
-                        <p class="text-on-surface-variant text-[11px] font-body line-clamp-1 flex items-center gap-0.5">
-                            <span class="material-symbols-outlined text-[12px]"
-                                data-icon="location_on">location_on</span>
-                            Jl. Asia Afrika No. 19
-                        </p>
-                        <p class="text-[9px] text-on-surface-variant/50 font-mono mt-1">-6.2234, 106.8012</p>
-                    </div>
-                    <button
-                        class="mt-3 w-full py-2 border border-primary/20 rounded-full flex items-center justify-center gap-1.5 text-primary font-bold text-[11px] hover:bg-primary/5 transition-colors">
-                        <span class="material-symbols-outlined text-[16px]" data-icon="directions"
-                            style="font-variation-settings: 'FILL' 1;">directions</span>
-                        Open Map
-                    </button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-
-
+            <div class="h-20"></div> <!-- Spacer for Bottom Nav -->
+        </main>
+    </div>
 </body>
 
 </html>
