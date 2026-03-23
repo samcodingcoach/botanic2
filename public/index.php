@@ -149,6 +149,11 @@ $userType = $isUser ? 'User' : 'Guest';
                     </div>
                 </div>
             </section>
+            <!-- Footer -->
+            <footer class="py-6 text-center">
+                <p class="text-xs text-slate-500 dark:text-slate-400">&copy; 2026 Botanic Groups</p>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">Developed by Mahakam Dharma Perkasa</p>
+            </footer>
             <div class="h-20"></div> <!-- Spacer for Bottom Nav -->
         </main>
     </div>
