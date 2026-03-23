@@ -89,19 +89,11 @@ $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
             <section class="mb-4">
                 <h2 class="text-lg font-bold mb-4 px-0">Near Me</h2>
                 <!-- Filter Chips -->
-                <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                <div id="filter-container" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                     <button onclick="filterPlaces('all')"
                         class="filter-btn flex-none px-5 py-2 rounded-full bg-primary text-white font-semibold text-sm transition-all active:scale-95"
                         data-filter="all">All</button>
-                    <button onclick="filterPlaces('Restaurant')"
-                        class="filter-btn flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95"
-                        data-filter="Restaurant">Restaurant</button>
-                    <button onclick="filterPlaces('Hospital')"
-                        class="filter-btn flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95"
-                        data-filter="Hospital">Hospital</button>
-                    <button onclick="filterPlaces('Shop')"
-                        class="filter-btn flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95"
-                        data-filter="Shop">Shop</button>
+                    <!-- Filter buttons will be loaded here -->
                 </div>
             </section>
 
@@ -217,8 +209,61 @@ $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
 
     <script>
         let allPlaces = [];
+        let placeTypes = [];
         const id_cabang = <?php echo $id_cabang; ?>;
         const addressModal = document.getElementById('address-modal');
+
+        // Load places from API
+        async function loadPlaces() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const container = document.getElementById('places-container');
+            const empty = document.getElementById('empty');
+
+            try {
+                const response = await fetch(`../api/nearme/list.php?id_cabang=${id_cabang}&aktif=1`);
+                const result = await response.json();
+
+                loading.classList.add('hidden');
+                error.classList.add('hidden');
+
+                if (result.success && result.data && result.data.length > 0) {
+                    allPlaces = result.data;
+                    
+                    // Get distinct place types
+                    placeTypes = [...new Set(result.data.map(item => item.jenis_area))];
+                    
+                    // Render filter buttons
+                    renderFilterButtons();
+                    
+                    container.classList.remove('hidden');
+                    container.classList.add('grid');
+                    renderPlaces(allPlaces);
+                } else {
+                    empty.classList.remove('hidden');
+                    empty.classList.add('flex');
+                }
+            } catch (err) {
+                loading.classList.add('hidden');
+                error.classList.remove('hidden');
+                error.classList.add('flex');
+                document.getElementById('error-message').textContent = 'Failed to load places. Please check your connection.';
+            }
+        }
+
+        // Render filter buttons
+        function renderFilterButtons() {
+            const container = document.getElementById('filter-container');
+            
+            placeTypes.forEach(type => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn flex-none px-5 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-all active:scale-95';
+                button.dataset.filter = type;
+                button.textContent = type;
+                button.onclick = () => filterPlaces(type);
+                container.appendChild(button);
+            });
+        }
 
         // Show full address modal
         function showFullAddress(placeName, address) {
@@ -249,37 +294,6 @@ $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
                 closeAddressModal();
             }
         });
-
-        // Load places from API
-        async function loadPlaces() {
-            const loading = document.getElementById('loading');
-            const error = document.getElementById('error');
-            const container = document.getElementById('places-container');
-            const empty = document.getElementById('empty');
-
-            try {
-                const response = await fetch(`../api/nearme/list.php?id_cabang=${id_cabang}&aktif=1`);
-                const result = await response.json();
-
-                loading.classList.add('hidden');
-                error.classList.add('hidden');
-
-                if (result.success && result.data && result.data.length > 0) {
-                    allPlaces = result.data;
-                    container.classList.remove('hidden');
-                    container.classList.add('grid');
-                    renderPlaces(allPlaces);
-                } else {
-                    empty.classList.remove('hidden');
-                    empty.classList.add('flex');
-                }
-            } catch (err) {
-                loading.classList.add('hidden');
-                error.classList.remove('hidden');
-                error.classList.add('flex');
-                document.getElementById('error-message').textContent = 'Failed to load places. Please check your connection.';
-            }
-        }
 
         // Render places
         function renderPlaces(places) {
