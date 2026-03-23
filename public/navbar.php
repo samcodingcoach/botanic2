@@ -43,11 +43,67 @@ $id_cabang_nav = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
             </a>
 
             <!-- More -->
-            <a href="more.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
-               class="flex flex-col items-center gap-1 p-3 min-w-[64px] <?php echo $currentPage === 'more' ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
-                <span class="material-symbols-outlined text-[26px] <?php echo $currentPage === 'more' ? 'fill-1' : ''; ?>">more_horiz</span>
-                <span class="nav-text text-[10px] <?php echo $currentPage === 'more' ? 'font-semibold' : 'font-medium'; ?> whitespace-nowrap">More</span>
-            </a>
+            <div class="relative">
+                <button onclick="toggleMoreMenu(event)"
+                    class="flex flex-col items-center gap-1 p-3 min-w-[64px] <?php echo $currentPage === 'more' ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
+                    <span class="material-symbols-outlined text-[26px] <?php echo $currentPage === 'more' ? 'fill-1' : ''; ?>">more_horiz</span>
+                    <span class="nav-text text-[10px] <?php echo $currentPage === 'more' ? 'font-semibold' : 'font-medium'; ?> whitespace-nowrap">More</span>
+                </button>
+
+                <!-- Floating Submenu -->
+                <div id="moreMenu" class="hidden absolute bottom-full right-0 mb-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
+                    <div class="py-2">
+                        <a href="nearme.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-xl">near_me</span>
+                            <span class="text-sm font-medium">Near Me</span>
+                        </a>
+                        <a href="pages.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-xl">description</span>
+                            <span class="text-sm font-medium">Pages</span>
+                        </a>
+                        <a href="other.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-xl">apps</span>
+                            <span class="text-sm font-medium">Other</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    function toggleMoreMenu(event) {
+        event.stopPropagation();
+        const menu = document.getElementById('moreMenu');
+        const isOpen = !menu.classList.contains('hidden');
+        
+        // Close all other menus first
+        document.querySelectorAll('#moreMenu').forEach(m => m.classList.add('hidden'));
+        
+        // Toggle current menu
+        if (!isOpen) {
+            menu.classList.remove('hidden');
+        }
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('moreMenu');
+        const button = event.closest('.relative') || event.target.closest('.relative');
+        
+        if (menu && !menu.contains(event.target) && !button) {
+            menu.classList.add('hidden');
+        }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            document.getElementById('moreMenu').classList.add('hidden');
+        }
+    });
+</script>
