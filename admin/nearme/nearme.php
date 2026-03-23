@@ -34,6 +34,14 @@ $cabangList = [];
 if ($cabangApiData && $cabangApiData['success']) {
     $cabangList = $cabangApiData['data'];
 }
+
+// Get distinct jenis_area values from data
+$jenisAreaList = [];
+if ($apiData && $apiData['success']) {
+    $jenisAreaValues = array_column($apiData['data'], 'jenis_area');
+    $jenisAreaList = array_unique(array_filter($jenisAreaValues));
+    sort($jenisAreaList);
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -126,17 +134,30 @@ if ($cabangApiData && $cabangApiData['success']) {
                     </button>
                 </div>
 
-                <!-- Filter Cabang -->
+                <!-- Filter Cabang & Jenis Area -->
                 <div class="flex items-center gap-4">
                     <div class="relative flex-1 max-w-xs">
                         <span
                             class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">business</span>
-                        <select id="filterCabang" onchange="filterByCabang()"
+                        <select id="filterCabang" onchange="filterData()"
                             class="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm appearance-none cursor-pointer">
-                            <option value="">-- Pilih Cabang --</option>
+                            <option value="">-- Semua Cabang --</option>
                             <?php foreach ($cabangList as $cabang): ?>
                             <option value="<?php echo $cabang['id_cabang']; ?>">
                                 <?php echo htmlspecialchars($cabang['nama_cabang']); ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="relative flex-1 max-w-xs">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">category</span>
+                        <select id="filterJenisArea" onchange="filterData()"
+                            class="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm appearance-none cursor-pointer">
+                            <option value="">-- Semua Jenis --</option>
+                            <?php foreach ($jenisAreaList as $jenisArea): ?>
+                            <option value="<?php echo htmlspecialchars($jenisArea); ?>">
+                                <?php echo htmlspecialchars($jenisArea); ?>
                             </option>
                             <?php endforeach; ?>
                         </select>
@@ -868,12 +889,6 @@ if ($cabangApiData && $cabangApiData['success']) {
         const itemsPerPage = 10;
         let filteredData = [...allData];
         let totalPages = Math.ceil(filteredData.length / itemsPerPage);
-        let selectedCabang = '';
-
-        function filterByCabang() {
-            selectedCabang = document.getElementById('filterCabang').value;
-            filterData();
-        }
 
         function toggleSearch() {
             const searchInput = document.getElementById('searchInput');
@@ -885,13 +900,17 @@ if ($cabangApiData && $cabangApiData['success']) {
 
         function filterData() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedCabang = document.getElementById('filterCabang').value;
+            const selectedJenisArea = document.getElementById('filterJenisArea').value;
+            
             filteredData = allData.filter(item => {
                 const matchesSearch = (
                     (item.nama_area && item.nama_area.toLowerCase().includes(searchTerm)) ||
                     (item.jenis_area && item.jenis_area.toLowerCase().includes(searchTerm))
                 );
                 const matchesCabang = selectedCabang === '' || item.id_cabang == selectedCabang;
-                return matchesSearch && matchesCabang;
+                const matchesJenisArea = selectedJenisArea === '' || item.jenis_area == selectedJenisArea;
+                return matchesSearch && matchesCabang && matchesJenisArea;
             });
             currentPage = 1;
             totalPages = Math.ceil(filteredData.length / itemsPerPage);
