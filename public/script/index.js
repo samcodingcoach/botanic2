@@ -209,6 +209,9 @@ document.addEventListener('keydown', function(e) {
         if (profileModal.classList.contains('active')) {
             closeProfileModal();
         }
+        if (linkModal.classList.contains('active')) {
+            closeLinkModal();
+        }
     }
 });
 
@@ -222,6 +225,46 @@ if (logoutBtn) {
 
 // Make functions globally accessible
 window.closeLogoutModal = closeLogoutModal;
+
+// Link Confirmation Modal
+const linkModal = document.getElementById('link-modal');
+let pendingLinkUrl = '';
+
+// Open link modal
+function openLinkModal(url) {
+    pendingLinkUrl = url;
+    linkModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close link modal
+function closeLinkModal() {
+    linkModal.classList.remove('active');
+    document.body.style.overflow = '';
+    pendingLinkUrl = '';
+}
+
+// Close modal when clicking outside
+if (linkModal) {
+    linkModal.addEventListener('click', function(e) {
+        if (e.target === linkModal) {
+            closeLinkModal();
+        }
+    });
+}
+
+// Handle confirm link button
+document.getElementById('confirm-link-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (pendingLinkUrl) {
+        window.open(pendingLinkUrl, '_blank');
+        closeLinkModal();
+    }
+});
+
+// Make functions globally accessible
+window.openLinkModal = openLinkModal;
+window.closeLinkModal = closeLinkModal;
 
 // Load branches from API
 async function loadBranches() {
@@ -273,6 +316,9 @@ async function loadBranches() {
                     </div>
                 </div>
             `).join('');
+
+            // Load halaman after branches are loaded
+            loadHalaman();
         } else {
             container.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12">
@@ -287,6 +333,35 @@ async function loadBranches() {
         error.classList.add('flex');
         document.getElementById('error-message').textContent = 'Failed to load branches. Please check your connection.';
         container.innerHTML = '';
+    }
+}
+
+// Load halaman from API
+async function loadHalaman() {
+    const section = document.getElementById('follow-us-section');
+    const container = document.getElementById('halaman-container');
+
+    try {
+        const response = await fetch('../api/halaman/list.php?aktif=1');
+        const result = await response.json();
+
+        if (result.success && result.data && result.data.length > 0) {
+            section.classList.remove('hidden');
+            container.innerHTML = result.data.map(item => {
+                const escapedLink = item.link.replace(/'/g, "\\'");
+                return `
+                <a class="shrink-0 block transition-transform active:scale-95" href="#" onclick="openLinkModal('${escapedLink}'); return false;">
+                    <img alt="${item.nama_halaman}"
+                        class="rounded-[10px] w-[270px] h-[90px] object-cover shadow-sm border border-slate-200 dark:border-slate-800"
+                        src="../images/${item.logo || 'default-logo.jpg'}" />
+                </a>
+            `}).join('');
+        } else {
+            section.classList.add('hidden');
+        }
+    } catch (err) {
+        console.error('Error loading halaman:', err);
+        section.classList.add('hidden');
     }
 }
 

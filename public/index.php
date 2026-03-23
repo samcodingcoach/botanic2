@@ -49,6 +49,17 @@ $userType = $isUser ? 'User' : 'Guest';
             },
         }
     </script>
+    <style>
+        /* Hide scrollbar for horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
     <link rel="stylesheet" href="css/index.css" />
 </head>
 
@@ -121,7 +132,49 @@ $userType = $isUser ? 'User' : 'Guest';
 
             <!-- Branches Container -->
             <div id="branches-container" class="space-y-4"></div>
+
+            <!-- Follow Us Section -->
+            <section id="follow-us-section" class="mt-8 mb-4 hidden">
+                <h2 class="text-lg font-bold mb-4 px-0">Follow us</h2>
+                <div class="relative">
+                    <!-- Gradient Overlay Left -->
+                    <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background-light dark:from-background-dark to-transparent pointer-events-none z-10"></div>
+                    <!-- Gradient Overlay Right -->
+                    <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background-light dark:from-background-dark to-transparent pointer-events-none z-10"></div>
+                    <div id="halaman-container" class="flex gap-4 overflow-x-auto no-scrollbar pb-2 px-0">
+                        <!-- Halaman items will be loaded here -->
+                    </div>
+                </div>
+            </section>
+            <div class="h-20"></div> <!-- Spacer for Bottom Nav -->
         </main>
+    </div>
+
+    <!-- Link Confirmation Modal -->
+    <div id="link-modal" class="profile-modal">
+        <div class="profile-modal-content">
+            <!-- BottomSheetHandle -->
+            <div class="flex h-5 w-full items-center justify-center pt-2">
+                <div class="h-1.5 w-12 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+            </div>
+            <!-- Modal Content -->
+            <div class="px-6 py-4 text-center">
+                <div class="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-primary text-3xl">open_in_new</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">Open Link?</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">You will be redirected to an external link.</p>
+                <div class="flex gap-3 px-6">
+                    <button onclick="closeLinkModal()" class="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        No
+                    </button>
+                    <a href="#" id="confirm-link-btn" class="flex-1 px-4 py-3 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">check</span>
+                        Yes
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Profile Modal -->
