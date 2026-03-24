@@ -141,8 +141,12 @@ $currentPage = 'more';
         <div class="h-[73px] shrink-0"></div>
 
         <main class="flex-1 px-4 py-4 space-y-4">
-            <!-- Filter Section -->
+            <!-- Header Section -->
             <section class="mb-4">
+                <h2 class="text-xl font-bold mb-2 px-0 text-primary">
+                    Nearby Places
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">The nearest public and entertainment services are at this branch.</p>
                 <!-- Filter Chips -->
                 <div id="filter-container" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                     <button onclick="filterPlaces('all')"
