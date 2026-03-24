@@ -47,9 +47,9 @@ $id_cabang_nav = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
             <!-- More -->
             <div class="relative">
                 <button onclick="toggleMoreMenu(event)"
-                    class="flex flex-col items-center gap-1 p-3 min-w-[64px] <?php echo $currentPage === 'more' ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
-                    <span class="material-symbols-outlined text-[26px] <?php echo $currentPage === 'more' ? 'fill-1' : ''; ?>">more_horiz</span>
-                    <span class="nav-text text-[10px] <?php echo $currentPage === 'more' ? 'font-semibold' : 'font-medium'; ?> whitespace-nowrap">More</span>
+                    class="flex flex-col items-center gap-1 p-3 min-w-[64px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other') ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
+                    <span class="material-symbols-outlined text-[26px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other') ? 'fill-1' : ''; ?>">more_horiz</span>
+                    <span class="nav-text text-[10px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other') ? 'font-semibold' : 'font-medium'; ?> whitespace-nowrap">More</span>
                 </button>
 
                 <!-- Floating Submenu -->
