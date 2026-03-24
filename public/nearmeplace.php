@@ -12,6 +12,9 @@ if (!$isUser && !$isGuest) {
 
 // Get id_cabang from URL parameter
 $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
+
+// Set current page for navbar
+$currentPage = 'more';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,15 +82,67 @@ $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
             },
         }
     </script>
+    <style type="text/tailwindcss">
+        body {
+            min-height: 100dvh;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Floating header shadow on scroll */
+        #main-header.scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
     <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+        <!-- Floating Header -->
+        <header id="main-header" class="fixed top-0 left-0 right-0 flex items-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 pb-2 justify-between z-50 border-b border-slate-200 dark:border-slate-700 transition-shadow duration-300">
+            <a href="index.php" class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center cursor-pointer">
+                <span class="material-symbols-outlined text-2xl font-bold">arrow_back</span>
+            </a>
 
-        <main class="flex-1 px-4 py-2 space-y-4">
-            <!-- Header -->
+            <!-- Branch name - hides when search is active -->
+            <h2 id="branch-name" class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate px-4 transition-all duration-300">
+                Loading...
+            </h2>
+
+            <!-- Search container - expands to replace branch name -->
+            <div id="search-container" class="flex-1 max-w-md transition-all duration-300 ease-in-out hidden">
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search places..."
+                        class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        autocomplete="off"
+                    />
+                    <button id="clear-search" onclick="clearSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1">
+                        <span class="material-symbols-outlined text-lg">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search toggle button -->
+            <button id="search-btn" onclick="toggleSearch()" class="flex cursor-pointer items-center justify-center rounded-xl h-12 w-12 bg-transparent text-slate-900 dark:text-slate-100 p-0 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0">
+                <span class="material-symbols-outlined text-2xl font-bold">search</span>
+            </button>
+        </header>
+
+        <!-- Spacer for fixed header -->
+        <div class="h-[73px] shrink-0"></div>
+
+        <main class="flex-1 px-4 py-4 space-y-4">
+            <!-- Filter Section -->
             <section class="mb-4">
-                <h2 class="text-lg font-bold mb-4 px-0">Near Me</h2>
                 <!-- Filter Chips -->
                 <div id="filter-container" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                     <button onclick="filterPlaces('all')"
@@ -212,6 +267,77 @@ $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
         let placeTypes = [];
         const id_cabang = <?php echo $id_cabang; ?>;
         const addressModal = document.getElementById('address-modal');
+
+        // Toggle search visibility
+        function toggleSearch() {
+            const searchContainer = document.getElementById('search-container');
+            const branchName = document.getElementById('branch-name');
+            const searchBtn = document.getElementById('search-btn');
+
+            if (searchContainer.classList.contains('hidden')) {
+                searchContainer.classList.remove('hidden');
+                branchName.classList.add('hidden');
+                searchBtn.classList.add('hidden');
+                document.getElementById('search-input').focus();
+            } else {
+                clearSearch();
+            }
+        }
+
+        // Clear search
+        function clearSearch() {
+            const searchContainer = document.getElementById('search-container');
+            const branchName = document.getElementById('branch-name');
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-input');
+
+            searchInput.value = '';
+            searchContainer.classList.add('hidden');
+            branchName.classList.remove('hidden');
+            searchBtn.classList.remove('hidden');
+
+            // Re-render all places
+            renderPlaces(allPlaces);
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = allPlaces.filter(place =>
+                place.nama_area.toLowerCase().includes(searchTerm) ||
+                place.jenis_area.toLowerCase().includes(searchTerm) ||
+                (place.alamat && place.alamat.toLowerCase().includes(searchTerm))
+            );
+            renderPlaces(filtered);
+        });
+
+        // Load branch detail
+        async function loadBranchDetail() {
+            const branchNameEl = document.getElementById('branch-name');
+
+            try {
+                const response = await fetch(`../api/cabang/detail.php?id_cabang=${id_cabang}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    branchNameEl.textContent = result.data.nama_cabang;
+                } else {
+                    branchNameEl.textContent = 'Near Me';
+                }
+            } catch (err) {
+                branchNameEl.textContent = 'Near Me';
+            }
+        }
+
+        // Floating header shadow on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
 
         // Load places from API
         async function loadPlaces() {
@@ -394,7 +520,10 @@ $id_cabang = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
         }
 
         // Load places on page load
-        document.addEventListener('DOMContentLoaded', loadPlaces);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBranchDetail();
+            loadPlaces();
+        });
     </script>
 </body>
 

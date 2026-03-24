@@ -4,8 +4,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Get current page name
-$currentPage = basename($_SERVER['PHP_SELF'], '.php');
+// Get current page name (can be overridden by including file)
+if (!isset($currentPage)) {
+    $currentPage = basename($_SERVER['PHP_SELF'], '.php');
+}
 // Get id_cabang from URL parameter
 $id_cabang_nav = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
 ?>
@@ -54,17 +56,17 @@ $id_cabang_nav = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
                 <div id="moreMenu" class="hidden absolute bottom-full right-0 mb-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
                     <div class="py-2">
                         <a href="nearmeplace.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
-                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors">
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors <?php echo $currentPage === 'nearmeplace' ? 'bg-primary/10 text-primary' : ''; ?>">
                             <span class="material-symbols-outlined text-xl">near_me</span>
                             <span class="text-sm font-medium">Near Me</span>
                         </a>
                         <a href="pages.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
-                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors">
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors <?php echo $currentPage === 'pages' ? 'bg-primary/10 text-primary' : ''; ?>">
                             <span class="material-symbols-outlined text-xl">description</span>
                             <span class="text-sm font-medium">Pages</span>
                         </a>
                         <a href="other.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
-                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors">
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors <?php echo $currentPage === 'other' ? 'bg-primary/10 text-primary' : ''; ?>">
                             <span class="material-symbols-outlined text-xl">apps</span>
                             <span class="text-sm font-medium">Other</span>
                         </a>
