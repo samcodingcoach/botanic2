@@ -37,8 +37,8 @@ async function loadRooms() {
             console.log('✅ Rooms loaded:', allRoomsData.length, 'rooms');
             console.log('Sample data:', allRoomsData[0]);
 
-            // Set branch name from first result
-            branchNameEl.textContent = result.data[0].nama_cabang;
+            // Set branch name from first result with "Room" prefix
+            branchNameEl.textContent = 'Room ' + result.data[0].nama_cabang;
 
             // Clear existing content
             const existingCards = container.querySelectorAll('.room-card, .no-results-message');
@@ -53,7 +53,7 @@ async function loadRooms() {
             // Initialize read more buttons
             initReadMoreButtons();
         } else {
-            branchNameEl.textContent = 'No Rooms Found';
+            branchNameEl.textContent = 'Room - No Rooms Found';
             container.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12">
                     <span class="material-symbols-outlined text-slate-400 text-5xl mb-4">meeting_room</span>

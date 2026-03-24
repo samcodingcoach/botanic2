@@ -109,7 +109,15 @@ if ($id_cabang <= 0) {
         <div class="h-[73px] shrink-0"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 pb-24 px-4 space-y-6 mt-4" id="rooms-container">
+        <main class="flex-1 pb-24 px-4 space-y-6" id="rooms-container">
+            <!-- Header Section -->
+            <section class="pt-4 pb-1">
+                <h2 class="text-xl font-bold text-primary">
+                    Rooms
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">List of room categories at this branch.</p>
+            </section>
+
             <!-- Loading State -->
             <div id="loading" class="flex flex-col items-center justify-center py-12">
                 <div class="spinner w-10 h-10 mb-4"></div>
