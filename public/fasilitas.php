@@ -155,7 +155,15 @@ if ($id_cabang <= 0) {
         <div class="h-[73px] shrink-0"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 pb-24 space-y-6 mt-4" id="facilities-container">
+        <main class="flex-1 pb-24 space-y-6" id="facilities-container">
+            <!-- Header Section -->
+            <section class="px-4 pt-4 pb-2">
+                <h2 class="text-xl font-bold text-primary">
+                    Facilities
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">List of active facilities at this branch, enjoy various facilities available from free to friendly prices</p>
+            </section>
+
             <!-- Loading State -->
             <div id="loading" class="flex flex-col items-center justify-center py-12">
                 <div class="spinner w-10 h-10 mb-4"></div>

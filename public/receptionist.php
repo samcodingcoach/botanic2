@@ -124,8 +124,14 @@ if ($id_cabang <= 0) {
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pb-24" id="fo-container">
-           
-            
+            <!-- Header Section -->
+            <section class="px-4 py-4">
+                <h2 class="text-xl font-bold mb-2 px-0 text-primary">
+                    Receptionists
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">List of active receptionists at this branch, select and chat using WhatsApp for hotel services.</p>
+            </section>
+
             <!-- Loading State -->
             <div id="loading" class="flex flex-col items-center justify-center py-12">
                 <div class="spinner w-10 h-10 mb-4"></div>
@@ -141,8 +147,11 @@ if ($id_cabang <= 0) {
                 </button>
             </div>
 
+            <!-- Front Office Cards Container -->
+            <div id="fo-cards" class="space-y-4 px-4"></div>
+
             <!-- Emergency Info -->
-            <div class="p-4 mt-4 mx-4">
+            <div class="px-4 mt-4">
                 <div class="bg-amber-100 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 rounded-xl flex items-start gap-3">
                     <span class="material-symbols-outlined text-amber-600 dark:text-amber-500">warning</span>
                     <div>
@@ -153,9 +162,6 @@ if ($id_cabang <= 0) {
                     </div>
                 </div>
             </div>
-
-            <!-- Front Office Cards Container -->
-            <div id="fo-cards" class="space-y-4 px-4"></div>
         </main>
 
         <?php include __DIR__ . '/navbar.php'; ?>

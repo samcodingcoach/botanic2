@@ -121,6 +121,14 @@ if ($id_cabang <= 0) {
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pb-20">
             <div class="px-4 py-4">
+                <!-- Header Section -->
+                <section class="mb-4">
+                    <h2 class="text-xl font-bold mb-2 px-0 text-primary">
+                        Housekeeping
+                    </h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">List of active Housekeeping at this branch, Select and chat using WhatsApp for room service</p>
+                </section>
+
                 <div id="staff-list" class="space-y-4">
                     <!-- Staff items will be loaded here -->
                 </div>

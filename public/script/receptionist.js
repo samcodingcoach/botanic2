@@ -97,16 +97,22 @@ function createFOCard(fo, index) {
 // Format phone number for display
 function formatPhoneNumber(phoneNumber) {
     if (!phoneNumber) return 'Not available';
-    
-    // Remove all non-numeric characters except +
-    const cleanNumber = phoneNumber.replace(/[^\d+]/g, '');
-    
-    // Try to format if it matches pattern
-    const match = cleanNumber.match(/(\+\d{1})(\d{3})(\d{3})(\d{4})/);
-    if (match) {
-        return `${match[1]} (${match[2]}) ${match[3]}-${match[4]}`;
+
+    // Remove all non-numeric characters
+    let cleanNumber = phoneNumber.replace(/\D/g, '');
+
+    // Convert leading '0' to '+62'
+    if (cleanNumber.startsWith('0')) {
+        cleanNumber = '62' + cleanNumber.substring(1);
     }
-    
+
+    // Format as +62 852 4747 1234
+    const match = cleanNumber.match(/(\d{2})(\d{3})(\d{3})(\d{4})/);
+    if (match) {
+        return `+${match[1]} ${match[2]} ${match[3]} ${match[4]}`;
+    }
+
+    // Fallback for other formats
     return phoneNumber;
 }
 
