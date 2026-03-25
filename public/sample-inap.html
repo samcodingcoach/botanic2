@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error-container": "#93000a",
+                        "outline": "#737685",
+                        "on-background": "#191c1d",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface-variant": "#434654",
+                        "inverse-primary": "#b2c5ff",
+                        "error": "#ba1a1a",
+                        "background": "#f8fafb",
+                        "on-surface": "#191c1d",
+                        "surface-container-high": "#e6e8e9",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#ffc6b2",
+                        "surface-tint": "#0c56d0",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "on-primary-container": "#c4d2ff",
+                        "on-secondary-container": "#415382",
+                        "outline-variant": "#c3c6d6",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "tertiary": "#7b2600",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "tertiary-container": "#a33500",
+                        "surface-dim": "#d8dadb",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#4c5d8d",
+                        "surface-bright": "#f8fafb",
+                        "secondary-fixed-dim": "#b4c5fb",
+                        "on-primary-fixed": "#001848",
+                        "error-container": "#ffdad6",
+                        "primary": "#003d9b",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f2f4f5",
+                        "on-secondary-fixed-variant": "#344573",
+                        "on-secondary-fixed": "#021945",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-container": "#eceeef",
+                        "surface": "#f8fafb",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "inverse-on-surface": "#eff1f2",
+                        "secondary-fixed": "#dae2ff",
+                        "primary-fixed": "#dae2ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "secondary-container": "#b6c8fe",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "on-error": "#ffffff",
+                        "primary-container": "#0052cc"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen">
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <main class="flex-1 px-4 py-2 space-y-4">
+        <!-- Filter Section -->
+        <div class="mb-8">
+            <p class="text-on-surface-variant font-body text-sm tracking-wide uppercase font-semibold mb-2">Journey
+                Timeline</p>
+            <h2 class="text-3xl font-headline font-extrabold text-primary tracking-tight">Your Stay Overview</h2>
+        </div>
+        <div class="space-y-6">
+            <!-- Stay Card 1 -->
+            <div
+                class="bg-surface-container-lowest rounded-xl p-4 flex transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-outline-variant/20">
+                <div class="flex flex-col justify-between flex-grow">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.15em] mb-1">
+                                    Grand Resort Bali</p>
+                                <h3 class="font-headline font-bold text-lg text-on-surface leading-tight">Deluxe Ocean
+                                    Suite</h3>
+                                <p class="text-xs font-semibold text-primary/70 uppercase tracking-widest mt-0.5">Room
+                                    302</p>
+                            </div>
+                            <span
+                                class="bg-surface-container-low px-2 py-0.5 rounded text-[10px] font-bold text-on-secondary-fixed-variant uppercase tracking-tighter">Traveloka</span>
+                        </div>
+                        <p class="text-xs font-body text-on-surface-variant mt-3 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs"
+                                style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                            12 Oct - 15 Oct 2023
+                        </p>
+                    </div>
+                    <div class="flex justify-between items-end mt-4">
+                        <div class="flex items-center gap-1.5 bg-red-100 dark:bg-red-900/30 px-3 py-1.5 rounded-full">
+                            <span
+                                class="material-symbols-outlined text-red-700 dark:text-red-400 text-sm">home_work</span>
+                            <span
+                                class="text-[11px] font-bold text-red-700 dark:text-red-400 font-label uppercase tracking-widest">STAYING</span>
+                        </div>
+                        <button
+                            class="flex items-center gap-1 border border-emerald-600 text-emerald-700 px-3 py-1.5 rounded-lg transition-all text-[11px] font-bold font-label uppercase tracking-wider active:scale-95">
+                            <span class="material-symbols-outlined text-base">download</span>
+                            Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Stay Card 2 -->
+            <div
+                class="bg-surface-container-lowest rounded-xl p-4 flex transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-outline-variant/20">
+                <div class="flex flex-col justify-between flex-grow">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.15em] mb-1">
+                                    The Urban Loft Downtown</p>
+                                <h3 class="font-headline font-bold text-lg text-on-surface leading-tight">Urban
+                                    Industrial Loft</h3>
+                                <p class="text-xs font-semibold text-primary/70 uppercase tracking-widest mt-0.5">Room
+                                    105</p>
+                            </div>
+                            <span
+                                class="bg-surface-container-low px-2 py-0.5 rounded text-[10px] font-bold text-on-secondary-fixed-variant uppercase tracking-tighter">Hotels.com</span>
+                        </div>
+                        <p class="text-xs font-body text-on-surface-variant mt-3 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs"
+                                style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                            02 Sep - 05 Sep 2023
+                        </p>
+                    </div>
+                    <div class="flex justify-between items-end mt-4">
+                        <div class="flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/30 px-3 py-1.5 rounded-full">
+                            <span
+                                class="material-symbols-outlined text-blue-700 dark:text-blue-400 text-sm">hotel</span>
+                            <span
+                                class="text-[11px] font-bold text-blue-700 dark:text-blue-400 font-label uppercase tracking-widest">COMPLETED</span>
+                        </div>
+                        <button
+                            class="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition-all text-xs font-bold font-label uppercase tracking-wider active:scale-95 shadow-sm">
+                            <span class="material-symbols-outlined text-base">download</span>
+                            Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+</body>
+
+</html>
