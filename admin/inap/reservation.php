@@ -146,12 +146,6 @@ if (!isset($_SESSION['id_users'])) {
                                         Tamu</th>
                                     <th
                                         class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                                        Cabang</th>
-                                    <th
-                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                                        Tipe Kamar</th>
-                                    <th
-                                        class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                         Room No</th>
                                     <th
                                         class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -848,8 +842,6 @@ if (!isset($_SESSION['id_users'])) {
                         <div class="font-semibold text-slate-900 dark:text-white">${item.nama_lengkap || '-'}</div>
                         <div class="text-xs text-slate-500">${item.username || '-'}</div>
                     </td>
-                    <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${item.nama_cabang || '-'}</td>
-                    <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${item.nama_tipe || '-'}</td>
                     <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${item.nomor_kamar || '-'}</td>
                     <td class="px-6 py-4 text-xs text-slate-500">
                         <div>In: ${formatDate(item.tanggal_in)}</div>
@@ -888,7 +880,6 @@ if (!isset($_SESSION['id_users'])) {
                     </div>
                     <div class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
                         <div class="font-semibold">${item.nama_lengkap || '-'}</div>
-                        <div>${item.nama_cabang || '-'} - ${item.nama_tipe || '-'}</div>
                         <div>Room: ${item.nomor_kamar || '-'}</div>
                         <div>In: ${formatDate(item.tanggal_in)} | Out: ${formatDate(item.tanggal_out)}</div>
                     </div>
