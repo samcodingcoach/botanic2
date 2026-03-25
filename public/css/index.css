@@ -210,3 +210,20 @@ body {
 .stay-receipt-btn.no-receipt:hover {
     background: rgba(5, 150, 105, 0.1);
 }
+
+/* Stay Bottom Sheet Styles */
+#stay-bottom-sheet {
+    background: #f6f6f8;
+}
+
+.dark #stay-bottom-sheet {
+    background: #101622;
+}
+
+#stay-bottom-sheet .border-b {
+    border-color: rgba(19, 91, 236, 0.1);
+}
+
+.dark #stay-bottom-sheet .border-b {
+    border-color: rgba(255, 255, 255, 0.1);
+}

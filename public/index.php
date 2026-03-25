@@ -322,6 +322,89 @@ $userType = $isUser ? 'User' : 'Guest';
         </div>
     </div>
 
+    <!-- Stay Details Bottom Sheet -->
+    <div id="stay-bs-overlay" class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-[2px] hidden"></div>
+    <div id="stay-bottom-sheet" class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest rounded-t-[24px] shadow-[0_-12px_40px_rgba(0,0,0,0.08)] transform transition-transform duration-500 translate-y-full max-h-[85vh] overflow-hidden flex flex-col">
+        <!-- Handle -->
+        <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
+            <div class="w-10 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+        </div>
+        <!-- Sheet Header -->
+        <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
+            <h2 class="font-display font-bold text-lg tracking-tight text-primary">Reservation Details</h2>
+            <button onclick="closeStayBottomSheet()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                <span class="material-symbols-outlined text-slate-500">close</span>
+            </button>
+        </div>
+        <div class="px-4 py-4 overflow-y-auto flex-1 pb-24">
+            <!-- Property Hero Card -->
+            <div class="relative w-full h-40 rounded-xl overflow-hidden mb-6 flex-shrink-0">
+                <img id="bs-foto" alt="Property Image" class="w-full h-full object-cover" src="" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+                <div class="absolute bottom-3 left-3">
+                    <span id="bs-status" class="bg-red-500 text-white px-2 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase mb-1 inline-block">STAYING</span>
+                    <h3 id="bs-nama-cabang" class="text-white font-display font-bold text-xl"></h3>
+                </div>
+            </div>
+            <!-- Details Grid -->
+            <div class="grid grid-cols-2 gap-y-6 gap-x-3">
+                <!-- Room Type -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Room Type</p>
+                    <p id="bs-nama-tipe" class="font-display font-semibold text-slate-900 dark:text-slate-100 text-sm"></p>
+                </div>
+                <!-- Travel Agent -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Travel Agent</p>
+                    <p id="bs-ota" class="font-display font-semibold text-primary text-sm"></p>
+                </div>
+                <!-- Room Number -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Room Number</p>
+                    <p id="bs-nomor-kamar" class="font-display font-bold text-slate-900 dark:text-slate-100 text-base"></p>
+                </div>
+                <!-- Dates -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Date Reservation</p>
+                    <p id="bs-tanggal" class="font-display font-semibold text-slate-900 dark:text-slate-100 text-sm"></p>
+                </div>
+                <!-- Reservation Number -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Reservation ID</p>
+                    <p id="bs-kode-booking" class="font-body text-slate-500 dark:text-slate-400 text-xs"></p>
+                </div>
+                <!-- Status -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Current Status</p>
+                    <div class="flex items-center gap-1.5">
+                        <div id="bs-status-dot" class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
+                        <p id="bs-status-text" class="font-display font-bold text-red-500 text-sm"></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Concierge PIC -->
+            <div class="mt-8 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary flex-shrink-0 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-lg">person</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 uppercase">Personal in charge</p>
+                    <p id="bs-username" class="font-display font-bold text-slate-900 dark:text-slate-100 text-sm truncate"></p>
+                </div>
+                <button class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white shadow-lg flex-shrink-0">
+                    <span class="material-symbols-outlined text-base">chat</span>
+                </button>
+            </div>
+            <!-- Action Button -->
+            <div class="mt-6">
+                <a id="bs-receipt-btn" href="#" target="_blank" class="w-full bg-[#2e7d32] hover:bg-[#1b5e20] text-white font-display font-bold py-3.5 rounded-full flex items-center justify-center gap-2 shadow-xl transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-base">download</span>
+                    Download Receipt
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script src="script/index.js"></script>
     <script>
         // Pass guest ID from session to JavaScript

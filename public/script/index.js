@@ -439,9 +439,10 @@ async function loadStays() {
                 const statusClass = stay.status === 0 ? 'staying' : 'completed';
                 const statusIcon = stay.status === 0 ? 'home_work' : 'hotel';
                 const hasReceipt = stay.link_receipt && stay.link_receipt !== null;
+                const fotoUrl = stay.foto ? `../images/${stay.foto}` : 'https://via.placeholder.com/512x512?text=No+Image';
 
                 return `
-                <div class="stay-card">
+                <div class="stay-card cursor-pointer" onclick="openStayBottomSheet(${JSON.stringify(stay).replace(/"/g, '&quot;')})">
                     <div class="flex flex-col justify-between flex-grow w-full">
                         <div>
                             <div class="flex justify-between items-start">
@@ -469,14 +470,14 @@ async function loadStays() {
                                 <span>${statusClass}</span>
                             </div>
                             ${hasReceipt 
-                                ? `<a href="../receipt/${stay.link_receipt}" target="_blank" class="stay-receipt-btn has-receipt">
+                                ? `<span class="stay-receipt-btn has-receipt">
                                     <span class="material-symbols-outlined text-base">download</span>
                                     Receipt
-                                   </a>`
-                                : `<button class="stay-receipt-btn no-receipt" onclick="showToast('Receipt not available', 'error')">
+                                   </span>`
+                                : `<span class="stay-receipt-btn no-receipt">
                                     <span class="material-symbols-outlined text-base">download</span>
                                     Receipt
-                                   </button>`
+                                   </span>`
                             }
                         </div>
                     </div>
@@ -515,3 +516,69 @@ function formatDate(dateString) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
+
+// Stay Bottom Sheet Functions
+const stayBottomSheet = document.getElementById('stay-bottom-sheet');
+const stayBsOverlay = document.getElementById('stay-bs-overlay');
+
+function openStayBottomSheet(stay) {
+    // Populate bottom sheet with stay data
+    const fotoUrl = stay.foto ? `../images/${stay.foto}` : 'https://via.placeholder.com/512x512?text=No+Image';
+    document.getElementById('bs-foto').src = fotoUrl;
+    document.getElementById('bs-nama-cabang').textContent = stay.nama_cabang || '';
+    document.getElementById('bs-nama-tipe').textContent = stay.nama_tipe || '';
+    document.getElementById('bs-ota').textContent = stay.ota || 'N/A';
+    document.getElementById('bs-nomor-kamar').textContent = stay.nomor_kamar || '';
+    document.getElementById('bs-tanggal').textContent = `${formatDate(stay.tanggal_in)} - ${formatDate(stay.tanggal_out)}`;
+    document.getElementById('bs-kode-booking').textContent = stay.kode_booking || '';
+    
+    // Set status
+    const statusClass = stay.status === 0 ? 'staying' : 'completed';
+    const statusLabel = stay.status === 0 ? 'STAYING' : 'COMPLETED';
+    const statusColor = stay.status === 0 ? 'bg-red-500' : 'bg-blue-500';
+    const statusTextColor = stay.status === 0 ? 'text-red-500' : 'text-blue-500';
+    
+    const statusBadge = document.getElementById('bs-status');
+    statusBadge.textContent = statusLabel;
+    statusBadge.className = `${statusColor} text-white px-2 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase mb-1 inline-block`;
+    
+    const statusDot = document.getElementById('bs-status-dot');
+    statusDot.className = `w-1.5 h-1.5 rounded-full ${statusColor} animate-pulse`;
+    
+    const statusText = document.getElementById('bs-status-text');
+    statusText.textContent = statusLabel;
+    statusText.className = `font-display font-bold ${statusTextColor} text-sm`;
+    
+    // Set username (personal in charge)
+    document.getElementById('bs-username').textContent = stay.username || 'N/A';
+    
+    // Set receipt button
+    const receiptBtn = document.getElementById('bs-receipt-btn');
+    if (stay.link_receipt && stay.link_receipt !== null) {
+        receiptBtn.href = `../receipt/${stay.link_receipt}`;
+        receiptBtn.style.display = 'flex';
+    } else {
+        receiptBtn.style.display = 'none';
+    }
+    
+    // Show bottom sheet
+    stayBsOverlay.classList.remove('hidden');
+    stayBottomSheet.classList.remove('translate-y-full');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeStayBottomSheet() {
+    stayBottomSheet.classList.add('translate-y-full');
+    stayBsOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Close bottom sheet when clicking overlay
+stayBsOverlay?.addEventListener('click', closeStayBottomSheet);
+
+// Close bottom sheet on ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !stayBottomSheet.classList.contains('translate-y-full')) {
+        closeStayBottomSheet();
+    }
+});
