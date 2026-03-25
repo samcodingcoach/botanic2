@@ -434,11 +434,6 @@ async function loadStays() {
         if (result.success && result.data && result.data.length > 0) {
             // Show section and take only top 3
             const stays = result.data.slice(0, 3);
-            const totalStays = result.data.length;
-
-            // Update stay count label
-            const countLabel = document.getElementById('stay-count');
-            countLabel.textContent = totalStays + ' Stay' + (totalStays !== 1 ? 's' : '');
 
             container.innerHTML = stays.map(stay => {
                 const statusClass = stay.status === 0 ? 'staying' : 'completed';

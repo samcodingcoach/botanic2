@@ -134,13 +134,15 @@ $userType = $isUser ? 'User' : 'Guest';
             <div id="branches-container" class="space-y-4"></div>
 
             <!-- Your Stay Section -->
-            <section id="your-stay-section" class="mt-12 mb-4">
+            <section id="your-stay-section" class="mt-12 mb-4 py-2">
                 <div class="flex items-center justify-between mb-4 px-0">
                     <div>
                         <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1">Journey Timeline</p>
                         <h2 class="text-lg font-bold">Your Stay Overview</h2>
                     </div>
-                    <span id="stay-count" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mr-2">0 Stays</span>
+                    <button id="view-all-stay" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium hover:text-primary transition-colors mr-2">
+                        View All
+                    </button>
                 </div>
                 <div id="stay-loading" class="flex flex-col items-center justify-center py-8">
                     <div class="spinner w-8 h-8 mb-3"></div>
