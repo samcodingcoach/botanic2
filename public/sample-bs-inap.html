@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <title>Booking Details - Stay History</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#f8fafb",
+                        "primary-container": "#0052cc",
+                        "primary": "#003d9b",
+                        "on-secondary-container": "#415382",
+                        "secondary": "#4c5d8d",
+                        "on-secondary-fixed-variant": "#344573",
+                        "tertiary-container": "#a33500",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#0c56d0",
+                        "surface-container-low": "#f2f4f5",
+                        "on-primary-container": "#c4d2ff",
+                        "on-background": "#191c1d",
+                        "inverse-on-surface": "#eff1f2",
+                        "surface-container-high": "#e6e8e9",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#dae2ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-container": "#ffc6b2",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d8dadb",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "secondary-fixed-dim": "#b4c5fb",
+                        "surface-container": "#eceeef",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-surface": "#191c1d",
+                        "inverse-primary": "#b2c5ff",
+                        "primary-fixed": "#dae2ff",
+                        "tertiary-fixed": "#ffdbcf",
+                        "on-surface-variant": "#434654",
+                        "background": "#f8fafb",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "tertiary": "#7b2600",
+                        "secondary-container": "#b6c8fe",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "surface": "#f8fafb",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#737685",
+                        "on-secondary-fixed": "#021945",
+                        "outline-variant": "#c3c6d6",
+                        "on-primary-fixed": "#001848"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: 100dvh;
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased min-h-screen">
+    <!-- Background Stay History List (Blurred/Dimmed) -->
+    <main class="fixed inset-0 overflow-hidden filter blur-sm brightness-75 bg-surface-container-low px-4 pt-20">
+
+    </main>
+    <!-- Bottom Sheet Overlay Container -->
+    <div class="fixed inset-0 z-40 bg-on-background/20 backdrop-blur-[2px]"></div>
+    <!-- Bottom Sheet Content -->
+    <section
+        class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest rounded-t-[24px] shadow-[0_-12px_40px_rgba(0,0,0,0.08)] transform transition-transform duration-500 max-h-[85vh] overflow-hidden flex flex-col">
+        <!-- Handle -->
+        <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
+            <div class="w-10 h-1 bg-outline-variant/40 rounded-full"></div>
+        </div>
+        <!-- Sheet Header -->
+        <div class="px-4 py-3 flex items-center justify-between border-b border-surface-container-low flex-shrink-0">
+            <h2 class="font-headline font-bold text-lg tracking-tight text-primary">Reservation Details</h2>
+            <button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+                <span class="material-symbols-outlined text-on-surface-variant">close</span>
+            </button>
+        </div>
+        <div class="px-4 py-4 overflow-y-auto flex-1 pb-24">
+            <!-- Property Hero Card -->
+            <div class="relative w-full h-40 rounded-xl overflow-hidden mb-6 flex-shrink-0">
+                <img alt="Grand Resort Bali Ocean View" class="w-full h-full object-cover"
+                    data-alt="luxury infinity pool overlooking the turquoise ocean in Bali at sunset with palm trees and elegant cabanas"
+                    src="<!-- foto -->" />
+                <div class="absolute inset-0 bg-gradient-to-t from-on-background/60 to-transparent"></div>
+                <div class="absolute bottom-3 left-3">
+                    <span
+                        class="bg-error text-on-error px-2 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase mb-1 inline-block"><!-- status --></span>
+                    <h3 class="text-white font-headline font-bold text-xl"><!-- nama_cabang --></h3>
+                </div>
+            </div>
+            <!-- Details Grid -->
+            <div class="grid grid-cols-2 gap-y-6 gap-x-3">
+                <!-- Room Type -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Room Type</p>
+                    <p class="font-headline font-semibold text-on-surface text-sm"><!-- nama_tipe --></p>
+                </div>
+                <!-- Travel Agent -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Travel Agent</p>
+                    <p class="font-headline font-semibold text-primary text-sm"><!-- ota --></p>
+                </div>
+                <!-- Room Number -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Room Number</p>
+                    <p class="font-headline font-bold text-on-surface text-base">ROOM <!-- nomor_kamar --></p>
+                </div>
+                <!-- Dates -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Date Reservation
+                    </p>
+                    <p class="font-headline font-semibold text-on-surface text-sm"><!-- tanggal_in --> -
+                        <!-- tanggal_out --></p>
+                </div>
+                <!-- Reservation Number -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Reservation ID
+                    </p>
+                    <p class="font-body text-on-surface-variant text-xs"><!-- kode_booking --></p>
+                </div>
+                <!-- Status -->
+                <div class="space-y-0.5">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Current Status
+                    </p>
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></div>
+                        <p class="font-headline font-bold text-error text-sm"><!-- status --></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Concierge PIC -->
+            <div class="mt-8 p-3 bg-surface-container-low rounded-xl flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container flex-shrink-0">
+                    <img alt="Sarah Jenkins Concierge" class="w-full h-full object-cover"
+                        data-alt="professional portrait of a friendly concierge woman with a warm smile in formal uniform"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuABP0GinNsDo5mb9SRMFSqABC3huzPRb95St8sgRaivKRI12K_w8VxuDrVDpc6ePrMw5-8zwmwtIW4KtcG5g1dKIENhDeOFoie8-wMj8LRi9d1HW1fXUjewMl9H-iF6wMVmCP4N9KqckLfeOidh6jYpZeE6zEfpeod5qJA-yglMcM2WINT-CfwHevERAmHtd47LF7rweNnWwGbmQpl7jPCKFhVhhFhDk6826vCiGAEibMnCY3zcy3cw-_R3x6G6b9GlwwbFIEi251P2" />
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-[9px] font-bold tracking-widest text-on-surface-variant uppercase">Personal
+                        in charge</p>
+                    <p class="font-headline font-bold text-on-surface text-sm truncate"><!-- username --></p>
+                </div>
+                <button
+                    class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-lg flex-shrink-0">
+                    <span class="material-symbols-outlined text-base">chat</span>
+                </button>
+            </div>
+            <!-- Action Button -->
+            <div class="mt-6">
+                <button
+                    class="w-full bg-[#2e7d32] hover:bg-[#1b5e20] text-white font-headline font-bold py-3.5 rounded-full flex items-center justify-center gap-2 shadow-xl transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-base">download</span>
+                    Download Receipt
+                </button>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
