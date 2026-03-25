@@ -296,4 +296,7 @@ INNER JOIN
 users
 ON
 inap.id_users = users.id_users
-================================
+
+# untuk link_receipt menyimpan foto / pdf simpan di folder receipt/
+
+# untuk status 0=staying 1=completed , tanggal_in, tanggal_out, tampilkan tanggal saja
