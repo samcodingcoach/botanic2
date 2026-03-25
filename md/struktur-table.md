@@ -240,3 +240,60 @@ ON
 near_area.id_cabang = cabang.id_cabang
 
 =======================
+
+table: inap
+id_inap int pk auto increment
+id_cabang int
+id_akomodasi int
+id_guest int
+kode_booking varchar
+nomor_kamar varchar
+tanggal_in datetime
+tanggal_out datetime
+status tinyint 0=staying 1=completed
+ota varchar
+link_receipt
+
+query list
+
+SELECT
+inap.id_inap,
+inap.id_cabang,
+cabang.nama_cabang,
+inap.id_akomodasi,
+tipe_kamar.nama_tipe,
+inap.id_guest,
+guest.nama_lengkap,
+inap.kode_booking,
+inap.nomor_kamar,
+inap.tanggal_in,
+inap.tanggal_out,
+inap.`status`,
+inap.ota,
+inap.link_receipt,
+inap.created_date,
+inap.id_users,
+users.username
+FROM
+inap
+INNER JOIN
+cabang
+ON
+inap.id_cabang = cabang.id_cabang
+INNER JOIN
+cabang_tipe
+ON
+inap.id_akomodasi = cabang_tipe.id_akomodasi
+INNER JOIN
+tipe_kamar
+ON
+cabang_tipe.id_tipe = tipe_kamar.id_tipe
+INNER JOIN
+guest
+ON
+inap.id_guest = guest.id_guest
+INNER JOIN
+users
+ON
+inap.id_users = users.id_users
+================================
