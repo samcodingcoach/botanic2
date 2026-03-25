@@ -32,6 +32,7 @@ try {
         inap.id_inap,
         inap.id_cabang,
         cabang.nama_cabang,
+        cabang.foto,
         inap.id_akomodasi,
         tipe_kamar.nama_tipe,
         inap.id_guest,
