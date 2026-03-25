@@ -8,6 +8,25 @@ require_once __DIR__ . '/../../config/koneksi.php';
 
 $response = [];
 
+// Get id_guest from query parameter or session
+$id_guest = null;
+
+// Check if id_guest is passed as query parameter
+if (isset($_GET['id_guest'])) {
+    $id_guest = (int) $_GET['id_guest'];
+}
+
+// Validate id_guest
+if (!$id_guest || $id_guest <= 0) {
+    $response = [
+        "success" => false,
+        "message" => "id_guest tidak valid"
+    ];
+    echo json_encode($response);
+    $conn->close();
+    exit;
+}
+
 try {
     $query = "SELECT
         inap.id_inap,
@@ -49,9 +68,13 @@ try {
         users
         ON
         inap.id_users = users.id_users
+        WHERE inap.id_guest = ?
         ORDER BY inap.id_inap DESC";
 
-    $result = $conn->query($query);
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_guest);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result) {
         $data = [];

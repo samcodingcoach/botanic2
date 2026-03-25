@@ -133,6 +133,30 @@ $userType = $isUser ? 'User' : 'Guest';
             <!-- Branches Container -->
             <div id="branches-container" class="space-y-4"></div>
 
+            <!-- Your Stay Section -->
+            <section id="your-stay-section" class="mt-12 mb-4">
+                <div class="flex items-center justify-between mb-4 px-0">
+                    <div>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1">Journey Timeline</p>
+                        <h2 class="text-lg font-bold">Your Stay Overview</h2>
+                    </div>
+                    <span id="stay-count" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mr-2">0 Stays</span>
+                </div>
+                <div id="stay-loading" class="flex flex-col items-center justify-center py-8">
+                    <div class="spinner w-8 h-8 mb-3"></div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">Loading your stays...</p>
+                </div>
+                <div id="stay-error" class="hidden flex-col items-center justify-center py-8">
+                    <span class="material-symbols-outlined text-red-500 text-4xl mb-2">error</span>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm text-center" id="stay-error-message"></p>
+                </div>
+                <div id="stay-container" class="space-y-4"></div>
+                <div id="stay-empty" class="hidden flex-col items-center justify-center py-8">
+                    <span class="material-symbols-outlined text-slate-400 text-4xl mb-2">event_busy</span>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">No stays found</p>
+                </div>
+            </section>
+
             <!-- Follow Us Section -->
             <section id="follow-us-section" class="mt-8 mb-4 hidden">
                 <div class="flex items-center justify-between mb-4 px-0">
@@ -297,6 +321,14 @@ $userType = $isUser ? 'User' : 'Guest';
     </div>
 
     <script src="script/index.js"></script>
+    <script>
+        // Pass guest ID from session to JavaScript
+        <?php if ($isGuest): ?>
+        window.sessionGuestId = <?php echo (int) $_SESSION['id_guest']; ?>;
+        <?php else: ?>
+        window.sessionGuestId = null;
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>

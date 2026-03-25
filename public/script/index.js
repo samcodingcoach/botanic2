@@ -317,7 +317,9 @@ async function loadBranches() {
                 </div>
             `).join('');
 
-            // Load halaman after branches are loaded
+            // Load stays after branches are loaded
+            loadStays();
+            // Load halaman after stays are loaded
             loadHalaman();
         } else {
             container.innerHTML = `
@@ -402,3 +404,119 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 
 // Load branches on page load
 document.addEventListener('DOMContentLoaded', loadBranches);
+
+// Load your stays from API
+async function loadStays() {
+    const loading = document.getElementById('stay-loading');
+    const error = document.getElementById('stay-error');
+    const container = document.getElementById('stay-container');
+    const empty = document.getElementById('stay-empty');
+    const section = document.getElementById('your-stay-section');
+
+    // Get id_guest from session (passed from PHP)
+    const idGuest = window.sessionGuestId || null;
+
+    if (!idGuest) {
+        loading.classList.add('hidden');
+        container.classList.add('hidden');
+        empty.classList.remove('hidden');
+        empty.classList.add('flex');
+        return;
+    }
+
+    try {
+        const response = await fetch(`../api/inap/list.php?id_guest=${idGuest}`);
+        const result = await response.json();
+
+        loading.classList.add('hidden');
+        error.classList.add('hidden');
+
+        if (result.success && result.data && result.data.length > 0) {
+            // Show section and take only top 3
+            const stays = result.data.slice(0, 3);
+            const totalStays = result.data.length;
+
+            // Update stay count label
+            const countLabel = document.getElementById('stay-count');
+            countLabel.textContent = totalStays + ' Stay' + (totalStays !== 1 ? 's' : '');
+
+            container.innerHTML = stays.map(stay => {
+                const statusClass = stay.status === 0 ? 'staying' : 'completed';
+                const statusIcon = stay.status === 0 ? 'home_work' : 'hotel';
+                const hasReceipt = stay.link_receipt && stay.link_receipt !== null;
+
+                return `
+                <div class="stay-card">
+                    <div class="flex flex-col justify-between flex-grow w-full">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mb-1">
+                                        ${escapeHtml(stay.nama_cabang)}
+                                    </p>
+                                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-slate-100 leading-tight">
+                                        ${escapeHtml(stay.nama_tipe)}
+                                    </h3>
+                                    <p class="text-xs font-semibold text-primary/70 uppercase tracking-widest mt-0.5">
+                                        Room ${escapeHtml(stay.nomor_kamar)}
+                                    </p>
+                                </div>
+                                ${stay.ota ? `<span class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tighter">${escapeHtml(stay.ota)}</span>` : ''}
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                                ${formatDate(stay.tanggal_in)} - ${formatDate(stay.tanggal_out)}
+                            </p>
+                        </div>
+                        <div class="flex justify-between items-end mt-4">
+                            <div class="flex items-center gap-1.5 stay-status ${statusClass}">
+                                <span class="material-symbols-outlined text-sm">${statusIcon}</span>
+                                <span>${statusClass}</span>
+                            </div>
+                            ${hasReceipt 
+                                ? `<a href="../receipt/${stay.link_receipt}" target="_blank" class="stay-receipt-btn has-receipt">
+                                    <span class="material-symbols-outlined text-base">download</span>
+                                    Receipt
+                                   </a>`
+                                : `<button class="stay-receipt-btn no-receipt" onclick="showToast('Receipt not available', 'error')">
+                                    <span class="material-symbols-outlined text-base">download</span>
+                                    Receipt
+                                   </button>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            container.classList.remove('hidden');
+            empty.classList.add('hidden');
+        } else {
+            loading.classList.add('hidden');
+            container.classList.add('hidden');
+            empty.classList.remove('hidden');
+            empty.classList.add('flex');
+        }
+    } catch (err) {
+        loading.classList.add('hidden');
+        error.classList.remove('hidden');
+        error.classList.add('flex');
+        document.getElementById('stay-error-message').textContent = 'Failed to load stays. Please check your connection.';
+        container.classList.add('hidden');
+    }
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
