@@ -188,7 +188,7 @@ if (!isset($_SESSION['id_users'])) {
     <!-- Add Reservation Modal -->
     <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="add-reservation-modal">
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
         <!-- Modal Content -->
         <div
             class="relative bg-white dark:bg-background-dark w-full max-w-2xl mx-4 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
@@ -347,7 +347,7 @@ if (!isset($_SESSION['id_users'])) {
     <!-- Edit Reservation Modal -->
     <div class="fixed inset-0 z-50 flex items-center justify-center hidden" id="edit-reservation-modal">
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeEditModal()"></div>
         <!-- Modal Content -->
         <div
             class="relative bg-white dark:bg-background-dark w-full max-w-2xl mx-4 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
@@ -1016,35 +1016,60 @@ if (!isset($_SESSION['id_users'])) {
             formData.append('tanggal_out', tanggalOut);
             formData.append('status', status);
             formData.append('ota', ota);
-            formData.append('id_users', '<?php echo $_SESSION['id_users']; ?>');
+            const idUsers = '<?php echo isset($_SESSION['id_users']) ? htmlspecialchars($_SESSION['id_users']) : ''; ?>';
+            console.log('id_users from session:', idUsers);
+            formData.append('id_users', idUsers);
             if (receiptFile) {
                 formData.append('link_receipt', receiptFile);
             }
 
             const btn = this;
+            const originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<span class="material-symbols-outlined spinner text-sm">sync</span><span>Menyimpan...</span>';
 
             try {
+                console.log('Sending data:', Object.fromEntries(formData));
                 const response = await fetch(`${API_BASE}/inap/new.php`, {
                     method: 'POST',
                     body: formData
                 });
-                const result = await response.json();
+                
+                // Check if response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Get response text first to check if it's valid JSON
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                
+                // Try to parse JSON
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('JSON parse error:', parseError);
+                    console.error('Response was:', responseText.substring(0, 500));
+                    throw new Error('Server returned invalid JSON: ' + responseText.substring(0, 200));
+                }
+                
+                console.log('API Response:', result);
 
                 if (result.success) {
                     showToast('Reservasi berhasil ditambahkan', 'success');
                     closeModal();
                     loadReservasi();
                 } else {
-                    showToast(result.message || 'Gagal menyimpan reservasi', 'error');
+                    showToast('Error: ' + (result.message || 'Gagal menyimpan reservasi'), 'error');
                 }
             } catch (err) {
-                showToast('Error menyimpan reservasi', 'error');
+                console.error('Error saving reservation:', err);
+                showToast('Error menyimpan reservasi: ' + err.message, 'error');
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span><span>Simpan</span>';
+            btn.innerHTML = originalText;
         });
 
         // Update Reservation
@@ -1072,35 +1097,42 @@ if (!isset($_SESSION['id_users'])) {
             formData.append('tanggal_out', tanggalOut);
             formData.append('status', status);
             formData.append('ota', ota);
-            formData.append('id_users', '<?php echo $_SESSION['id_users']; ?>');
+            const editIdUsers = '<?php echo isset($_SESSION['id_users']) ? htmlspecialchars($_SESSION['id_users']) : ''; ?>';
+            console.log('edit id_users from session:', editIdUsers);
+            formData.append('id_users', editIdUsers);
             if (receiptFile) {
                 formData.append('link_receipt', receiptFile);
             }
 
             const btn = this;
+            const originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<span class="material-symbols-outlined spinner text-sm">sync</span><span>Updating...</span>';
 
             try {
+                console.log('Updating data:', Object.fromEntries(formData));
                 const response = await fetch(`${API_BASE}/inap/update.php`, {
                     method: 'POST',
                     body: formData
                 });
+                
                 const result = await response.json();
+                console.log('API Response:', result);
 
                 if (result.success) {
                     showToast('Reservasi berhasil diupdate', 'success');
                     closeEditModal();
                     loadReservasi();
                 } else {
-                    showToast(result.message || 'Gagal mengupdate reservasi', 'error');
+                    showToast('Error: ' + (result.message || 'Gagal mengupdate reservasi'), 'error');
                 }
             } catch (err) {
-                showToast('Error mengupdate reservasi', 'error');
+                console.error('Error updating reservation:', err);
+                showToast('Error mengupdate reservasi: ' + err.message, 'error');
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span><span>Update</span>';
+            btn.innerHTML = originalText;
         });
 
         // Delete Reservation
@@ -1131,11 +1163,13 @@ if (!isset($_SESSION['id_users'])) {
             document.getElementById('add-reservation-modal').classList.add('hidden');
             document.getElementById('formTambahReservasi').reset();
             clearGuestSelection();
+            document.body.style.overflow = '';
         }
 
         function closeEditModal() {
             document.getElementById('edit-reservation-modal').classList.add('hidden');
             document.getElementById('formEditReservasi').reset();
+            document.body.style.overflow = '';
         }
 
         // Event Listeners for modal close buttons
@@ -1145,6 +1179,12 @@ if (!isset($_SESSION['id_users'])) {
 
         document.querySelectorAll('.btn-close-edit-modal').forEach(btn => {
             btn.addEventListener('click', closeEditModal);
+        });
+
+        // Open Add Modal
+        document.getElementById('btnTambahReservasi')?.addEventListener('click', function() {
+            document.getElementById('add-reservation-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         });
 
         // File upload preview for receipt
