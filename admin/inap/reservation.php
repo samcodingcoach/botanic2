@@ -853,7 +853,9 @@ if (!isset($_SESSION['id_users'])) {
                         <div>Out: ${formatDate(item.tanggal_out)}</div>
                     </td>
                     <td class="px-6 py-4 text-center">
-                        <span class="px-2 py-1 rounded-full text-xs font-bold ${item.status == 0 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}">
+                        <span onclick="toggleStatus(${item.id_inap})" 
+                            class="px-2 py-1 rounded-full text-xs font-bold cursor-pointer hover:opacity-80 transition-opacity ${item.status == 0 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}"
+                            title="Klik untuk mengubah status">
                             ${item.status == 0 ? 'STAYING' : 'COMPLETED'}
                         </span>
                     </td>
@@ -879,7 +881,9 @@ if (!isset($_SESSION['id_users'])) {
                             <div class="font-semibold text-slate-900 dark:text-white">${item.kode_booking || '-'}</div>
                             <div class="text-xs text-slate-500">${item.ota || 'Direct'}</div>
                         </div>
-                        <span class="px-2 py-1 rounded-full text-xs font-bold ${item.status == 0 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}">
+                        <span onclick="toggleStatus(${item.id_inap})"
+                            class="px-2 py-1 rounded-full text-xs font-bold cursor-pointer hover:opacity-80 transition-opacity ${item.status == 0 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}"
+                            title="Klik untuk mengubah status">
                             ${item.status == 0 ? 'STAYING' : 'COMPLETED'}
                         </span>
                     </div>
@@ -1194,6 +1198,29 @@ if (!isset($_SESSION['id_users'])) {
                 }
             } catch (err) {
                 showToast('Error menghapus reservasi', 'error');
+            }
+        }
+
+        // Toggle Status (Staying <-> Completed)
+        async function toggleStatus(idInap) {
+            if (!confirm('Yakin ingin mengubah status reservasi ini?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/inap/toggle_status.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_inap: idInap })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast(`Status berhasil diubah menjadi ${result.data.status_label}`, 'success');
+                    loadReservasi();
+                } else {
+                    showToast(result.message || 'Gagal mengubah status', 'error');
+                }
+            } catch (err) {
+                showToast('Error mengubah status', 'error');
             }
         }
 
