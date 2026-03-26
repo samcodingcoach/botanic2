@@ -668,10 +668,10 @@ if (!isset($_SESSION['id_users'])) {
         async function editLoadTipeKamar() {
             const idCabang = document.getElementById('edit_id_cabang').value;
             const select = document.getElementById('edit_id_akomodasi');
-            
+
             if (!idCabang) {
                 select.innerHTML = '<option value="">-- Pilih cabang terlebih dahulu --</option>';
-                return;
+                return Promise.resolve([]);
             }
 
             select.innerHTML = '<option value="">Loading...</option>';
@@ -679,16 +679,21 @@ if (!isset($_SESSION['id_users'])) {
             try {
                 const response = await fetch(`${API_BASE}/cabang_tipe/list.php?id_cabang=${idCabang}`);
                 const result = await response.json();
-                
+
                 if (result.success && result.data && result.data.length > 0) {
                     select.innerHTML = '<option value="">-- Pilih Tipe Kamar --</option>' +
                         result.data.map(t => `<option value="${t.id_akomodasi}">${t.nama_tipe}</option>`).join('');
+                    select.disabled = false;
                 } else {
                     select.innerHTML = '<option value="">-- Tidak ada tipe kamar --</option>';
+                    select.disabled = true;
                 }
+                return result.data || [];
             } catch (err) {
                 select.innerHTML = '<option value="">-- Error loading data --</option>';
+                select.disabled = true;
                 showToast('Gagal memuat tipe kamar', 'error');
+                return [];
             }
         }
 
@@ -949,34 +954,68 @@ if (!isset($_SESSION['id_users'])) {
 
         // Open Edit Modal
         async function openEditModal(idInap) {
-            const item = currentData.find(i => i.id_inap === idInap);
-            if (!item) return;
+            console.log('openEditModal called with idInap:', idInap);
+            console.log('currentData:', currentData);
+            console.log('Available id_inap values:', currentData.map(item => item.id_inap));
+            
+            const item = currentData.find(i => {
+                console.log('Checking item id_inap:', i.id_inap, '==', idInap, '?', i.id_inap == idInap);
+                return i.id_inap == idInap;
+            });
+            
+            if (!item) {
+                console.error('No reservation found with id_inap:', idInap);
+                console.log('Available IDs:', currentData.map(i => i.id_inap));
+                showToast('Data reservasi tidak ditemukan', 'error');
+                return;
+            }
+            
+            console.log('Found item:', item);
 
             // Populate form
             document.getElementById('edit_id_inap').value = item.id_inap;
             document.getElementById('edit_id_guest').value = item.id_guest;
-            document.getElementById('edit_guest_name').textContent = item.nama_lengkap;
-            document.getElementById('edit_kode_booking').value = item.kode_booking;
-            document.getElementById('edit_nomor_kamar').value = item.nomor_kamar;
-            document.getElementById('edit_tanggal_in').value = item.tanggal_in.split(' ')[0];
-            document.getElementById('edit_tanggal_out').value = item.tanggal_out.split(' ')[0];
+            document.getElementById('edit_guest_name').textContent = item.nama_lengkap || '-';
+            document.getElementById('edit_kode_booking').value = item.kode_booking || '';
+            document.getElementById('edit_nomor_kamar').value = item.nomor_kamar || '';
+            document.getElementById('edit_tanggal_in').value = item.tanggal_in ? item.tanggal_in.split(' ')[0] : '';
+            document.getElementById('edit_tanggal_out').value = item.tanggal_out ? item.tanggal_out.split(' ')[0] : '';
             document.getElementById('edit_ota').value = item.ota || '';
-            document.getElementById('edit_status').value = item.status;
-            document.getElementById('edit_id_cabang').value = item.id_cabang;
-            
-            // Load tipe kamar for this cabang
+            document.getElementById('edit_status').value = item.status != null ? item.status : 0;
+            document.getElementById('edit_id_cabang').value = item.id_cabang || '';
+
+            // Load tipe kamar for this cabang first, then set the value
             await editLoadTipeKamar();
-            document.getElementById('edit_id_akomodasi').value = item.id_akomodasi;
+
+            // Set id_akomodasi after loading tipe kamar options
+            document.getElementById('edit_id_akomodasi').value = item.id_akomodasi || '';
 
             // Show current receipt
             const currentReceiptDiv = document.getElementById('edit_current_receipt');
+            const receiptPreview = document.getElementById('edit_receipt_preview');
+            const receiptPreviewImg = document.getElementById('edit_receipt_preview_img');
+
             if (item.link_receipt) {
-                currentReceiptDiv.innerHTML = `Current: <a href="../../receipt/${item.link_receipt}" target="_blank" class="text-primary">${item.link_receipt}</a>`;
+                currentReceiptDiv.innerHTML = `Current: <a href="../../receipt/${item.link_receipt}" target="_blank" class="text-primary underline">${item.link_receipt}</a>`;
+                // Show image preview if it's an image file
+                const ext = item.link_receipt.split('.').pop().toLowerCase();
+                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+                    receiptPreviewImg.src = `../../receipt/${item.link_receipt}`;
+                    receiptPreview.classList.remove('hidden');
+                } else {
+                    receiptPreview.classList.add('hidden');
+                }
             } else {
                 currentReceiptDiv.textContent = 'No receipt uploaded';
+                receiptPreview.classList.add('hidden');
             }
 
-            document.getElementById('edit-reservation-modal').classList.remove('hidden');
+            const modal = document.getElementById('edit-reservation-modal');
+            console.log('Modal element:', modal);
+            console.log('Modal classList before:', modal.classList);
+            modal.classList.remove('hidden');
+            console.log('Modal classList after:', modal.classList);
+            console.log('Edit modal opened');
         }
 
         // Save Reservation
