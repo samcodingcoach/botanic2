@@ -300,3 +300,35 @@ inap.id_users = users.id_users
 # untuk link_receipt menyimpan foto / pdf simpan di folder receipt/
 
 # untuk status 0=staying 1=completed , tanggal_in, tanggal_out, tampilkan tanggal saja
+
+table: teknisi
+id_teknisi int PK Auto Increment
+kode_teknisi varchar
+nama_teknisi varchar
+id_cabang int
+jabatan varchar
+jenis_kelamin tinyint
+wa varchar
+aktif tinyint
+created_date datetime <<- tidak perlu di cantumkan dalam new.php,kecuali update.php
+
+query list
+
+SELECT
+teknisi.id_teknisi,
+teknisi.kode_teknisi,
+teknisi.nama_teknisi,
+teknisi.id_cabang,
+cabang.nama_cabang,
+teknisi.jabatan,
+teknisi.jenis_kelamin, '1' Pria, '0' Wanita
+teknisi.wa,
+teknisi.aktif, '1' aktif, '0' non aktif
+teknisi.created_date,
+teknisi.spesialis
+FROM
+teknisi
+INNER JOIN
+cabang
+ON
+teknisi.id_cabang = cabang.id_cabang
