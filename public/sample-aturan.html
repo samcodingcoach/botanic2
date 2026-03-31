@@ -21,67 +21,21 @@
             theme: {
                 extend: {
                     colors: {
-                        "surface": "#f8fafb",
-                        "on-secondary-container": "#415382",
-                        "secondary-container": "#b6c8fe",
-                        "primary-fixed-dim": "#b2c5ff",
-                        "on-secondary-fixed-variant": "#344573",
-                        "outline": "#737685",
-                        "error-container": "#ffdad6",
-                        "surface-variant": "#e1e3e4",
-                        "background": "#f8fafb",
-                        "tertiary-fixed-dim": "#ffb59b",
-                        "primary-fixed": "#dae2ff",
-                        "surface-container-low": "#f2f4f5",
-                        "on-background": "#191c1d",
-                        "inverse-on-surface": "#eff1f2",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary": "#ffffff",
-                        "on-error-container": "#93000a",
-                        "surface-dim": "#d8dadb",
-                        "surface-container": "#eceeef",
-                        "tertiary-container": "#a33500",
-                        "outline-variant": "#c3c6d6",
-                        "on-secondary-fixed": "#021945",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container-highest": "#e1e3e4",
-                        "surface-container-high": "#e6e8e9",
-                        "inverse-surface": "#2e3132",
-                        "secondary": "#4c5d8d",
-                        "on-surface-variant": "#434654",
-                        "primary": "#003d9b",
-                        "on-tertiary-container": "#ffc6b2",
-                        "tertiary": "#7b2600",
-                        "on-primary-fixed": "#001848",
-                        "secondary-fixed-dim": "#b4c5fb",
-                        "surface-bright": "#f8fafb",
-                        "on-error": "#ffffff",
-                        "on-tertiary-fixed-variant": "#812800",
-                        "on-primary-container": "#c4d2ff",
-                        "primary-container": "#0052cc",
-                        "secondary-fixed": "#dae2ff",
-                        "error": "#ba1a1a",
-                        "on-tertiary-fixed": "#380d00",
-                        "tertiary-fixed": "#ffdbcf",
-                        "surface-tint": "#0c56d0",
-                        "inverse-primary": "#b2c5ff",
-                        "on-primary": "#ffffff",
-                        "on-surface": "#191c1d",
-                        "on-primary-fixed-variant": "#0040a2"
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
                     },
                     fontFamily: {
-                        "headline": ["Plus Jakarta Sans"],
-                        "body": ["Manrope"],
-                        "label": ["Manrope"]
+                        "display": ["Inter"]
                     },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
                 },
             },
         }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        body {
+            min-height: 100dvh;
         }
 
         .hide-scrollbar::-webkit-scrollbar {
@@ -92,145 +46,98 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-
-        .active-tab-indicator {
-            view-transition-name: active-tab;
-        }
-    </style>
-    <style>
-        body {
-            min-height: max(884px, 100dvh);
-        }
     </style>
 </head>
 
-<body class="bg-surface font-body text-on-surface">
-    <!-- TopAppBar -->
-    <header
-        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none">
-        <div class="flex items-center justify-between px-6 h-16 w-full">
-            <div class="flex items-center gap-4">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+    <div
+        class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+        <!-- Header -->
+
+        <!-- Main Content -->
+        <main class="flex-1 pb-24 space-y-6 mt-4">
+            <!-- Hero Section -->
+            <div class="relative rounded-xl overflow-hidden mb-8 h-48 bg-slate-100 dark:bg-slate-800 shadow-sm mx-4">
+                <img class="absolute inset-0 w-full h-full object-cover opacity-90"
+                    data-alt="sophisticated hotel lobby with marble floors, gold accents, and a minimal concierge desk"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAa0HzDnJOdh4RpQ8Dr0TGGzFPRu8bDTXnBhy_mD7Q1hD8G5oChMsVN0CK6SDMgSWTV1Jf9GgngjIPcgqSN9wNZ0t05O9GSGRg59S-oijeVbnFC2FqbFjBimfEBekQWN2dbM9aMspRaqnpSjFvlf88x96BFHy09JX6kDrHlV3srPaDkQVUtLOucAeVlQDxVVAsTMjKKIDUlGRvNIfxQg1pE9loN1MhnA3fbSt9_pkZZhzP-93wvxXeKbkR2L_cKOI1ccGtZoDhmiF" />
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+                    <span class="text-white/80 text-xs uppercase tracking-widest mb-1">Botanic Hotel</span>
+                    <h2 class="text-white font-display text-2xl font-bold">Approval of overnight guests</h2>
+                </div>
+            </div>
+            <!-- Tabbed Interface -->
+            <nav class="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full mb-8 mx-4">
                 <button
-                    class="material-symbols-outlined text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded-full p-2 active:scale-95 transition-transform"
-                    data-icon="close">close</button>
-                <h1 class="font-headline font-bold tracking-tight text-slate-900 dark:text-slate-50 text-xl">Guest
-                    Agreement</h1>
+                    class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all bg-white text-primary shadow-sm">
+                    <!-- {categories}.{label} -->
+                </button>
+                <button
+                    class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all text-slate-500 hover:bg-white/50">
+                    <!-- {categories}.{label} -->
+                </button>
+                <button
+                    class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all text-slate-500 hover:bg-white/50">
+                    <!-- {categories}.{label} -->
+                </button>
+            </nav>
+            <!-- Section 0: Content -->
+            <div class="space-y-4 mx-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-blue-700" data-icon="schedule">schedule</span>
+                    <h3 class="font-display font-bold text-lg text-slate-900"><!-- {categories}.{label} 0 --></h3>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Please review and acknowledge
+                    the timing
+                    policies to ensure a smooth transition for all our guests.</p>
+                <!-- Checklist Item 1 -->
+                <label
+                    class="group flex items-start gap-4 p-5 rounded-xl bg-white border border-transparent hover:border-blue-100 transition-all cursor-pointer shadow-sm active:scale-[0.99]">
+                    <div class="relative flex items-center pt-1">
+                        <input
+                            class="peer h-6 w-6 rounded-md border-slate-300 text-blue-700 focus:ring-blue-500 transition-colors"
+                            type="checkbox" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span
+                            class="font-semibold text-slate-900 group-hover:text-blue-700 transition-colors"><!-- nama_aturan --></span>
+                        <span class="text-sm text-slate-500"><!-- deskripsi --></span>
+                    </div>
+                </label>
+
             </div>
-            <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
-                <img class="w-full h-full object-cover"
-                    data-alt="luxury hotel facade with warm lighting and tropical palm trees at twilight"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA04BsLLWfy7lH17KeR9DMPr6nVsGSM26lhjIeuX_uu_bXCylq7LtYPVgCmHyWfPJKRq_Tm0NW49C_-ZOIHjUA1qhv23OcOJFWoRG05G2N45kWemlDr3jx3bdVodyzJWG26oXJYBCfVRIaRu1syAJKSwDrJNTGfL5HcL1cibnjkLsX8ACzgfKGI5e9EkNMCbbXIcHfvDPaZYvX3KXqx_sKa6g50wshde-lTa6NHGY3jovYdjDK2ky3vG-4Cp_NGeO5YIb88-C_DBgvz" />
+            <!-- Info Note -->
+            <div class="mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100 flex gap-3 mx-4">
+                <span class="material-symbols-outlined text-blue-700 text-xl" data-icon="info">info</span>
+                <p class="text-xs text-blue-800 leading-tight">By checking these items, you acknowledge that you have
+                    read
+                    and understood the residency protocols for this section.</p>
             </div>
-        </div>
-        <div class="bg-slate-100 dark:bg-slate-800 h-px w-full"></div>
-    </header>
-    <main class="pt-20 pb-32 px-4 max-w-lg mx-auto">
-        <!-- Hero Section -->
-        <div class="relative rounded-xl overflow-hidden mb-8 h-48 surface-container-lowest shadow-sm">
-            <img class="absolute inset-0 w-full h-full object-cover opacity-90"
-                data-alt="sophisticated hotel lobby with marble floors, gold accents, and a minimal concierge desk"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAa0HzDnJOdh4RpQ8Dr0TGGzFPRu8bDTXnBhy_mD7Q1hD8G5oChMsVN0CK6SDMgSWTV1Jf9GgngjIPcgqSN9wNZ0t05O9GSGRg59S-oijeVbnFC2FqbFjBimfEBekQWN2dbM9aMspRaqnpSjFvlf88x96BFHy09JX6kDrHlV3srPaDkQVUtLOucAeVlQDxVVAsTMjKKIDUlGRvNIfxQg1pE9loN1MhnA3fbSt9_pkZZhzP-93wvxXeKbkR2L_cKOI1ccGtZoDhmiF" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
-                <span class="text-white/80 font-label text-xs uppercase tracking-widest mb-1">Azure Nomad
-                    Residency</span>
-                <h2 class="text-white font-headline text-2xl font-bold">Standard of Excellence</h2>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <footer
+            class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-2xl z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] border-t border-slate-100 dark:border-slate-800">
+            <div class="flex justify-around items-center px-4 py-3">
+                <!-- Decline Tab -->
+                <button
+                    class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:opacity-90 active:scale-[0.98] duration-200">
+                    <span class="material-symbols-outlined text-2xl mb-1" data-icon="cancel">cancel</span>
+                    <span class="text-xs font-semibold">Decline</span>
+                </button>
+                <!-- I Agree Tab (Active) -->
+                <button
+                    class="flex flex-col items-center justify-center bg-primary text-white rounded-full px-8 py-3 mx-2 w-full hover:opacity-90 active:scale-[0.98] duration-200">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-xl" data-icon="check_circle"
+                            style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        <span class="text-sm font-bold tracking-wide">I Agree</span>
+                    </div>
+                </button>
             </div>
-        </div>
-        <!-- Tabbed Interface -->
-        <nav class="flex space-x-1 bg-surface-container-low p-1.5 rounded-full mb-8">
-            <button
-                class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all bg-white text-blue-700 shadow-sm">
-                Section A
-            </button>
-            <button
-                class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all text-slate-500 hover:bg-white/50">
-                Section B
-            </button>
-            <button
-                class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all text-slate-500 hover:bg-white/50">
-                Section C
-            </button>
-        </nav>
-        <!-- Section A: Content -->
-        <div class="space-y-4">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="material-symbols-outlined text-blue-700" data-icon="schedule">schedule</span>
-                <h3 class="font-headline font-bold text-lg text-slate-900">Check-in &amp; Check-out</h3>
-            </div>
-            <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">Please review and acknowledge the timing
-                policies to ensure a smooth transition for all our guests.</p>
-            <!-- Checklist Item 1 -->
-            <label
-                class="group flex items-start gap-4 p-5 rounded-xl bg-white border border-transparent hover:border-blue-100 transition-all cursor-pointer shadow-sm active:scale-[0.99]">
-                <div class="relative flex items-center pt-1">
-                    <input
-                        class="peer h-6 w-6 rounded-md border-slate-300 text-blue-700 focus:ring-blue-500 transition-colors"
-                        type="checkbox" />
-                </div>
-                <div class="flex flex-col gap-1">
-                    <span class="font-semibold text-slate-900 group-hover:text-blue-700 transition-colors">Deposit
-                        Requirement</span>
-                    <span class="text-sm text-slate-500">Rp100.000 cash at start (refunded at check-out).</span>
-                </div>
-            </label>
-            <!-- Checklist Item 2 -->
-            <label
-                class="group flex items-start gap-4 p-5 rounded-xl bg-white border border-transparent hover:border-blue-100 transition-all cursor-pointer shadow-sm active:scale-[0.99]">
-                <div class="relative flex items-center pt-1">
-                    <input
-                        class="peer h-6 w-6 rounded-md border-slate-300 text-blue-700 focus:ring-blue-500 transition-colors"
-                        type="checkbox" />
-                </div>
-                <div class="flex flex-col gap-1">
-                    <span class="font-semibold text-slate-900 group-hover:text-blue-700 transition-colors">Check-in
-                        Time</span>
-                    <span class="text-sm text-slate-500">Starting 14.00 WITA. (Early check-in fee:
-                        Rp25.000/hour).</span>
-                </div>
-            </label>
-            <!-- Checklist Item 3 -->
-            <label
-                class="group flex items-start gap-4 p-5 rounded-xl bg-white border border-transparent hover:border-blue-100 transition-all cursor-pointer shadow-sm active:scale-[0.99]">
-                <div class="relative flex items-center pt-1">
-                    <input
-                        class="peer h-6 w-6 rounded-md border-slate-300 text-blue-700 focus:ring-blue-500 transition-colors"
-                        type="checkbox" />
-                </div>
-                <div class="flex flex-col gap-1">
-                    <span class="font-semibold text-slate-900 group-hover:text-blue-700 transition-colors">Check-out
-                        Time</span>
-                    <span class="text-sm text-slate-500">Maximum 12.00 WITA. (Late fee: Rp25.000/hour).</span>
-                </div>
-            </label>
-        </div>
-        <!-- Info Note -->
-        <div class="mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100 flex gap-3">
-            <span class="material-symbols-outlined text-blue-700 text-xl" data-icon="info">info</span>
-            <p class="text-xs text-blue-800 leading-tight">By checking these items, you acknowledge that you have read
-                and understood the residency protocols for Section A.</p>
-        </div>
-    </main>
-    <!-- BottomNavBar -->
-    <footer
-        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-2xl z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] border-t border-slate-100 dark:border-slate-800">
-        <div class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe-offset-4 pt-2">
-            <!-- Decline Tab -->
-            <button
-                class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:opacity-90 active:scale-[0.98] duration-200">
-                <span class="material-symbols-outlined text-2xl mb-1" data-icon="cancel">cancel</span>
-                <span class="font-['Manrope'] text-xs font-semibold">Decline</span>
-            </button>
-            <!-- I Agree Tab (Active Indicator) -->
-            <button
-                class="flex flex-col items-center justify-center bg-blue-700 text-white rounded-full px-8 py-3 mx-2 my-2 w-full hover:opacity-90 active:scale-[0.98] duration-200">
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-xl" data-icon="check_circle"
-                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    <span class="font-['Manrope'] text-sm font-bold tracking-wide">I Agree</span>
-                </div>
-            </button>
-        </div>
-    </footer>
+        </footer>
+    </div>
 </body>
 
 </html>
