@@ -332,3 +332,12 @@ INNER JOIN
 cabang
 ON
 teknisi.id_cabang = cabang.id_cabang
+====================================
+table: aturan
+id_aturan int 11 Primary Key Autoincrement
+kategori tinyint 0=Ketentuan Check-in & Check-out, 1=Denda & Biaya Tambahan, 2=Larangan Keras (Tanpa Toleransi)
+nama_aturan varchar
+deskripsi text
+denda tinyint 0=tidak, 1=ya denda
+aktif tinyint 0=tidak aktif, 1=aktif
+created_date timestamp
