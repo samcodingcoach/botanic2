@@ -160,15 +160,13 @@ $userType = $isUser ? 'User' : 'Guest';
             </section>
 
             <!-- House Rules Section -->
-            <section id="house-rules-section" class="mt-8 mb-4 pb-24">
-                <div class="flex items-center justify-between mb-4 px-4">
+            <section id="house-rules-section" class="mt-8 mb-4">
+                <div class="flex items-center justify-between mb-4">
                     <div>
                         <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1">Guest Agreement</p>
                         <h2 class="text-lg font-bold">House Rules & Regulations</h2>
                     </div>
-                    <button id="view-rules-btn" class="text-[10px] text-primary font-medium hover:text-primary/80 transition-colors mr-2">
-                        View All
-                    </button>
+                    <span id="rules-count" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mr-2">0 Rules</span>
                 </div>
                 
                 <!-- Loading State -->
@@ -214,16 +212,16 @@ $userType = $isUser ? 'User' : 'Guest';
                 </div>
 
                 <!-- Bottom Navigation Bar (Fixed) -->
-                <footer id="rules-footer" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-2xl z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] border-t border-slate-100 dark:border-slate-800 hidden">
+                <footer id="rules-footer" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-2xl z-[100] shadow-[0_-8px_24px_rgba(0,0,0,0.06)] border-t border-slate-100 dark:border-slate-800">
                     <div class="flex justify-around items-center px-4 py-3">
                         <!-- Decline Tab -->
-                        <button
+                        <button id="btn-decline"
                             class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:opacity-90 active:scale-[0.98] duration-200">
                             <span class="material-symbols-outlined text-2xl mb-1" data-icon="cancel">cancel</span>
                             <span class="text-xs font-semibold">Decline</span>
                         </button>
                         <!-- I Agree Tab (Active) -->
-                        <button
+                        <button id="btn-agree"
                             class="flex flex-col items-center justify-center bg-primary text-white rounded-full px-8 py-3 mx-2 w-full hover:opacity-90 active:scale-[0.98] duration-200">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-xl" data-icon="check_circle"
@@ -236,7 +234,7 @@ $userType = $isUser ? 'User' : 'Guest';
             </section>
 
             <!-- Follow Us Section -->
-            <section id="follow-us-section" class="mt-8 mb-4 hidden">
+            <section id="follow-us-section" class="mt-8 mb-4">
                 <div class="flex items-center justify-between mb-4 px-0">
                     <h2 class="text-lg font-bold">Follow us</h2>
                     <span id="halaman-count" class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mr-2">0 Pages</span>
@@ -490,6 +488,62 @@ $userType = $isUser ? 'User' : 'Guest';
         window.sessionGuestId = null;
         <?php endif; ?>
 
+        // House Rules Section - Cookie Management (for future use)
+        const COOKIE_NAME = 'guest_agreement_accepted';
+        const COOKIE_EXPIRY_DAYS = 365;
+
+        // Set cookie
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+        }
+
+        // Get cookie
+        function getCookie(name) {
+            const nameEQ = name + '=';
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 left-1/2 -translate-x-1/2 z-[200] px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 transition-all duration-300 ${
+                type === 'success' 
+                    ? 'bg-green-500 text-white' 
+                    : 'bg-red-500 text-white'
+            }`;
+            
+            const icon = type === 'success' ? 'check_circle' : 'error';
+            toast.innerHTML = `
+                <span class="material-symbols-outlined">${icon}</span>
+                <span class="text-sm font-semibold">${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, -20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Create toast container if not exists
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            document.body.appendChild(container);
+            return container;
+        }
+
         // House Rules Section
         let currentRulesCategory = 0;
         let rulesData = null;
@@ -525,10 +579,11 @@ $userType = $isUser ? 'User' : 'Guest';
         function renderHouseRules(result) {
             const tabsContainer = document.getElementById('rules-tabs');
             const contentContainer = document.getElementById('rules-content');
-            const footer = document.getElementById('rules-footer');
+            const rulesCount = document.getElementById('rules-count');
 
-            // Show footer when rules are loaded
-            footer.classList.remove('hidden');
+            // Update rules count (sum of all categories)
+            const totalRules = Object.values(result.data).reduce((sum, arr) => sum + arr.length, 0);
+            rulesCount.textContent = `${totalRules} Rules`;
 
             // Render tabs
             tabsContainer.innerHTML = result.categories.map((cat, index) => `
@@ -542,6 +597,9 @@ $userType = $isUser ? 'User' : 'Guest';
 
             // Render content for first category
             renderRulesContent(0);
+            
+            // Show rules container
+            document.getElementById('rules-container').classList.remove('hidden');
         }
 
         // Switch rules category
@@ -611,27 +669,48 @@ $userType = $isUser ? 'User' : 'Guest';
 
         // Initialize house rules on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Load house rules
             loadHouseRules();
 
-            // Hide footer when scrolling away from house rules section
-            const rulesSection = document.getElementById('house-rules-section');
-            const rulesFooter = document.getElementById('rules-footer');
+            // Add event listeners for Agree/Decline buttons
+            const btnAgree = document.getElementById('btn-agree');
+            const btnDecline = document.getElementById('btn-decline');
             
-            if (rulesSection && rulesFooter) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (!entry.isIntersecting) {
-                            rulesFooter.classList.add('hidden');
-                        }
-                    });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '-100px'
-                });
-
-                observer.observe(rulesSection);
+            if (btnAgree) {
+                btnAgree.addEventListener('click', handleAgree);
+            }
+            
+            if (btnDecline) {
+                btnDecline.addEventListener('click', handleDecline);
             }
         });
+
+        // Handle Agree button
+        function handleAgree() {
+            setCookie(COOKIE_NAME, 'true', COOKIE_EXPIRY_DAYS);
+            
+            // Show success message
+            showToast('Guest agreement accepted. Thank you!', 'success');
+            
+            // Hide footer
+            const rulesFooter = document.getElementById('rules-footer');
+            rulesFooter.classList.add('hidden');
+            
+            // Hide house rules section
+            const rulesSection = document.getElementById('house-rules-section');
+            rulesSection.classList.add('hidden');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle Decline button
+        function handleDecline() {
+            // Redirect to logout
+            if (confirm('If you decline the guest agreement, you will be logged out. Continue?')) {
+                window.location.href = 'logout.php';
+            }
+        }
     </script>
 </body>
 
