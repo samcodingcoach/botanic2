@@ -47,14 +47,19 @@ $id_cabang_nav = isset($_GET['id_cabang']) ? (int) $_GET['id_cabang'] : 0;
             <!-- More -->
             <div class="relative">
                 <button onclick="toggleMoreMenu(event)"
-                    class="flex flex-col items-center gap-1 p-3 min-w-[64px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other') ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
-                    <span class="material-symbols-outlined text-[26px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other') ? 'fill-1' : ''; ?>">more_horiz</span>
-                    <span class="nav-text text-[10px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other') ? 'font-semibold' : 'font-medium'; ?> whitespace-nowrap">More</span>
+                    class="flex flex-col items-center gap-1 p-3 min-w-[64px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other' || $currentPage === 'technician') ? 'text-primary' : 'text-slate-400 hover:text-primary transition-colors'; ?>">
+                    <span class="material-symbols-outlined text-[26px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other' || $currentPage === 'technician') ? 'fill-1' : ''; ?>">more_horiz</span>
+                    <span class="nav-text text-[10px] <?php echo ($currentPage === 'more' || $currentPage === 'pages' || $currentPage === 'nearmeplace' || $currentPage === 'other' || $currentPage === 'technician') ? 'font-semibold' : 'font-medium'; ?> whitespace-nowrap">More</span>
                 </button>
 
                 <!-- Floating Submenu -->
                 <div id="moreMenu" class="hidden absolute bottom-full right-0 mb-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-50">
                     <div class="py-2">
+                        <a href="technician.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
+                           class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors <?php echo $currentPage === 'technician' ? 'bg-primary/10 text-primary' : ''; ?>">
+                            <span class="material-symbols-outlined text-xl">engineering</span>
+                            <span class="text-sm font-medium">Technician</span>
+                        </a>
                         <a href="nearmeplace.php<?php echo $id_cabang_nav > 0 ? '?id_cabang=' . $id_cabang_nav : ''; ?>"
                            class="flex items-center gap-3 px-4 py-3 text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors <?php echo $currentPage === 'nearmeplace' ? 'bg-primary/10 text-primary' : ''; ?>">
                             <span class="material-symbols-outlined text-xl">near_me</span>
