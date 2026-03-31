@@ -182,10 +182,10 @@ if ($id_cabang > 0) {
                                     class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-[#25D366] text-white text-xs font-bold hover:opacity-90 transition-opacity">
                                     <span class="material-symbols-outlined text-sm">chat</span>Chat
                                 </a>
-                                <a href="tel:<?= $tech['wa'] ?>"
+                                <button onclick="openCallModal('<?= $tech['wa'] ?>')"
                                     class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border border-primary text-primary text-xs font-bold hover:bg-primary/5 transition-colors">
                                     <span class="material-symbols-outlined text-sm">call</span>Call
-                                </a>
+                                </button>
                             </div>
                             <?php else: ?>
                             <div class="flex flex-col gap-2 w-full">
@@ -217,6 +217,95 @@ if ($id_cabang > 0) {
     </div>
 
     <?php include __DIR__ . '/navbar.php'; ?>
+
+    <!-- WhatsApp Call Confirmation Modal -->
+    <div id="call-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden" onclick="closeCallModal()">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all"
+                onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Confirm WhatsApp Call</h3>
+                    <button onclick="closeCallModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                        style="background-color: rgba(37, 211, 102, 0.1);">
+                        <span class="material-symbols-outlined text-3xl" style="color: #25D366;">call</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-2">
+                        You are about to initiate a WhatsApp call to:
+                    </p>
+                    <p id="modal-phone-number" class="text-primary font-bold text-lg mb-4">
+                        +1 (555) 010-1234
+                    </p>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs">
+                        This will open WhatsApp and start a call with the technician.
+                    </p>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex gap-3 p-4 bg-slate-50 dark:bg-slate-800/50">
+                    <button onclick="closeCallModal()"
+                        class="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        Cancel
+                    </button>
+                    <button onclick="confirmCall()"
+                        class="flex-1 px-4 py-3 text-sm font-bold text-white rounded-lg transition-colors flex items-center justify-center gap-2 hover:opacity-90"
+                        style="background-color: #25D366;">
+                        <span class="material-symbols-outlined text-sm text-white">call</span>
+                        Call Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhoneNumber = '';
+
+        // Open WhatsApp call confirmation modal
+        function openCallModal(phoneNumber) {
+            currentPhoneNumber = phoneNumber;
+            const modal = document.getElementById('call-modal');
+            const modalPhone = document.getElementById('modal-phone-number');
+
+            // Format phone number for display
+            const cleanNumber = phoneNumber.replace(/[^\d+]/g, '');
+            const formattedNumber = cleanNumber.replace(/(\+\d{1})(\d{3})(\d{3})(\d{4})/, '$1 ($2) $3-$4');
+            modalPhone.textContent = formattedNumber || phoneNumber;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Close modal
+        function closeCallModal() {
+            const modal = document.getElementById('call-modal');
+            modal.classList.add('hidden');
+            currentPhoneNumber = '';
+        }
+
+        // Confirm call - open WhatsApp
+        function confirmCall() {
+            if (currentPhoneNumber) {
+                const cleanNumber = currentPhoneNumber.replace(/[^\d+]/g, '');
+                const waNumber = cleanNumber.startsWith('0') ? '62' + cleanNumber.substring(1) : cleanNumber;
+                window.open(`https://wa.me/${waNumber}`, '_blank');
+                closeCallModal();
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCallModal();
+            }
+        });
+    </script>
 </body>
 
 </html>
