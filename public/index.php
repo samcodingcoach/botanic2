@@ -159,6 +159,82 @@ $userType = $isUser ? 'User' : 'Guest';
                 </div>
             </section>
 
+            <!-- House Rules Section -->
+            <section id="house-rules-section" class="mt-8 mb-4 pb-24">
+                <div class="flex items-center justify-between mb-4 px-4">
+                    <div>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1">Guest Agreement</p>
+                        <h2 class="text-lg font-bold">House Rules & Regulations</h2>
+                    </div>
+                    <button id="view-rules-btn" class="text-[10px] text-primary font-medium hover:text-primary/80 transition-colors mr-2">
+                        View All
+                    </button>
+                </div>
+                
+                <!-- Loading State -->
+                <div id="rules-loading" class="flex flex-col items-center justify-center py-8">
+                    <div class="spinner w-8 h-8 mb-3"></div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm">Loading house rules...</p>
+                </div>
+                
+                <!-- Error State -->
+                <div id="rules-error" class="hidden flex-col items-center justify-center py-8">
+                    <span class="material-symbols-outlined text-red-500 text-4xl mb-2">error</span>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm text-center" id="rules-error-message"></p>
+                </div>
+                
+                <!-- Rules Content -->
+                <div id="rules-container" class="hidden space-y-4">
+                    <!-- Hero Section -->
+                    <div class="relative rounded-xl overflow-hidden h-48">
+                        <img class="absolute inset-0 w-full h-full object-cover opacity-90"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAa0HzDnJOdh4RpQ8Dr0TGGzFPRu8bDTXnBhy_mD7Q1hD8G5oChMsVN0CK6SDMgSWTV1Jf9GgngjIPcgqSN9wNZ0t05O9GSGRg59S-oijeVbnFC2FqbFjBimfEBekQWN2dbM9aMspRaqnpSjFvlf88x96BFHy09JX6kDrHlV3srPaDkQVUtLOucAeVlQDxVVAsTMjKKIDUlGRvNIfxQg1pE9loN1MhnA3fbSt9_pkZZhzP-93wvxXeKbkR2L_cKOI1ccGtZoDhmiF"
+                            alt="Hotel lobby" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+                            <span class="text-white/80 text-xs uppercase tracking-widest mb-1">Botanic Hotel</span>
+                            <h3 class="text-white font-display text-2xl font-bold">Approval of overnight guests</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Navigation -->
+                    <nav id="rules-tabs" class="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full">
+                        <!-- Tabs will be loaded here -->
+                    </nav>
+                    
+                    <!-- Rules Content by Category -->
+                    <div id="rules-content">
+                        <!-- Content will be loaded here -->
+                    </div>
+                    
+                    <!-- Info Note -->
+                    <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800 flex gap-3">
+                        <span class="material-symbols-outlined text-blue-700 dark:text-blue-400 text-xl">info</span>
+                        <p class="text-xs text-blue-800 dark:text-blue-300 leading-tight">By checking these items, you acknowledge that you have read and understood the residency protocols for this section.</p>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation Bar (Fixed) -->
+                <footer id="rules-footer" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-2xl z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] border-t border-slate-100 dark:border-slate-800 hidden">
+                    <div class="flex justify-around items-center px-4 py-3">
+                        <!-- Decline Tab -->
+                        <button
+                            class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:opacity-90 active:scale-[0.98] duration-200">
+                            <span class="material-symbols-outlined text-2xl mb-1" data-icon="cancel">cancel</span>
+                            <span class="text-xs font-semibold">Decline</span>
+                        </button>
+                        <!-- I Agree Tab (Active) -->
+                        <button
+                            class="flex flex-col items-center justify-center bg-primary text-white rounded-full px-8 py-3 mx-2 w-full hover:opacity-90 active:scale-[0.98] duration-200">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-xl" data-icon="check_circle"
+                                    style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                <span class="text-sm font-bold tracking-wide">I Agree</span>
+                            </div>
+                        </button>
+                    </div>
+                </footer>
+            </section>
+
             <!-- Follow Us Section -->
             <section id="follow-us-section" class="mt-8 mb-4 hidden">
                 <div class="flex items-center justify-between mb-4 px-0">
@@ -413,6 +489,149 @@ $userType = $isUser ? 'User' : 'Guest';
         <?php else: ?>
         window.sessionGuestId = null;
         <?php endif; ?>
+
+        // House Rules Section
+        let currentRulesCategory = 0;
+        let rulesData = null;
+
+        // Load house rules
+        async function loadHouseRules() {
+            const loading = document.getElementById('rules-loading');
+            const error = document.getElementById('rules-error');
+            const container = document.getElementById('rules-container');
+            const errorMessage = document.getElementById('rules-error-message');
+
+            try {
+                const response = await fetch('../api/aturan/list.php');
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    rulesData = result.data;
+                    renderHouseRules(result);
+                    loading.classList.add('hidden');
+                    container.classList.remove('hidden');
+                } else {
+                    throw new Error(result.message || 'Failed to load house rules');
+                }
+            } catch (error) {
+                console.error('Error loading house rules:', error);
+                loading.classList.add('hidden');
+                error.classList.remove('hidden');
+                errorMessage.textContent = error.message;
+            }
+        }
+
+        // Render house rules
+        function renderHouseRules(result) {
+            const tabsContainer = document.getElementById('rules-tabs');
+            const contentContainer = document.getElementById('rules-content');
+            const footer = document.getElementById('rules-footer');
+
+            // Show footer when rules are loaded
+            footer.classList.remove('hidden');
+
+            // Render tabs
+            tabsContainer.innerHTML = result.categories.map((cat, index) => `
+                <button
+                    onclick="switchRulesCategory(${cat.key})"
+                    class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all ${index === 0 ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:bg-white/50'}"
+                    data-category="${cat.key}">
+                    ${cat.label}
+                </button>
+            `).join('');
+
+            // Render content for first category
+            renderRulesContent(0);
+        }
+
+        // Switch rules category
+        function switchRulesCategory(categoryKey) {
+            currentRulesCategory = categoryKey;
+            
+            // Update tabs
+            document.querySelectorAll('#rules-tabs button').forEach(btn => {
+                const isActive = parseInt(btn.dataset.category) === categoryKey;
+                btn.className = `flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all ${isActive ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:bg-white/50'}`;
+            });
+
+            // Render content
+            renderRulesContent(categoryKey);
+        }
+
+        // Render rules content
+        function renderRulesContent(categoryKey) {
+            const contentContainer = document.getElementById('rules-content');
+            const rules = rulesData[categoryKey] || [];
+            const categories = [
+                { label: 'Ketentuan Check-in & Check-out', icon: 'schedule' },
+                { label: 'Denda & Biaya Tambahan', icon: 'payments' },
+                { label: 'Larangan Keras', icon: 'block' }
+            ];
+            const category = categories[categoryKey];
+
+            if (rules.length === 0) {
+                contentContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl mb-2">rule</span>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">No rules in this category</p>
+                    </div>
+                `;
+                return;
+            }
+
+            contentContainer.innerHTML = `
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-blue-700 dark:text-blue-400">${category.icon}</span>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-slate-100">${category.label}</h3>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Please review and acknowledge the policies to ensure a smooth transition for all our guests.</p>
+                <div class="space-y-4">
+                    ${rules.map(rule => `
+                        <label class="group flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-blue-100 dark:hover:border-blue-800 transition-all cursor-pointer shadow-sm active:scale-[0.99]">
+                            <div class="relative flex items-center pt-1">
+                                <input class="peer h-6 w-6 rounded-md border-slate-300 text-primary focus:ring-primary transition-colors" type="checkbox" />
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${escapeHtml(rule.nama_aturan)}</span>
+                                <span class="text-sm text-slate-500 dark:text-slate-400">${escapeHtml(rule.deskripsi)}</span>
+                            </div>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize house rules on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHouseRules();
+
+            // Hide footer when scrolling away from house rules section
+            const rulesSection = document.getElementById('house-rules-section');
+            const rulesFooter = document.getElementById('rules-footer');
+            
+            if (rulesSection && rulesFooter) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            rulesFooter.classList.add('hidden');
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '-100px'
+                });
+
+                observer.observe(rulesSection);
+            }
+        });
     </script>
 </body>
 
