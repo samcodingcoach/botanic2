@@ -547,6 +547,7 @@ $userType = $isUser ? 'User' : 'Guest';
         // House Rules Section
         let currentRulesCategory = 0;
         let rulesData = null;
+        let checkedRules = {}; // Store checked state for all rules by id_aturan
 
         // Load house rules
         async function loadHouseRules() {
@@ -623,7 +624,7 @@ $userType = $isUser ? 'User' : 'Guest';
             const categories = [
                 { label: 'Ketentuan Check-in & Check-out', icon: 'schedule' },
                 { label: 'Denda & Biaya Tambahan', icon: 'payments' },
-                { label: 'Larangan Keras', icon: 'block' }
+                { label: 'Larangan Keras (Tanpa Toleransi)', icon: 'block' }
             ];
             const category = categories[categoryKey];
 
@@ -647,7 +648,7 @@ $userType = $isUser ? 'User' : 'Guest';
                     ${rules.map(rule => `
                         <label class="group flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-blue-100 dark:hover:border-blue-800 transition-all cursor-pointer shadow-sm active:scale-[0.99]">
                             <div class="relative flex items-center pt-1">
-                                <input class="peer h-6 w-6 rounded-md border-slate-300 text-primary focus:ring-primary transition-colors" type="checkbox" />
+                                <input class="peer h-6 w-6 rounded-md border-slate-300 text-primary focus:ring-primary transition-colors" type="checkbox" data-id="${rule.id_aturan}" ${checkedRules[rule.id_aturan] ? 'checked' : ''} onchange="toggleRuleCheck(${rule.id_aturan}, this.checked)" />
                             </div>
                             <div class="flex flex-col gap-1">
                                 <span class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">${escapeHtml(rule.nama_aturan)}</span>
@@ -657,6 +658,15 @@ $userType = $isUser ? 'User' : 'Guest';
                     `).join('')}
                 </div>
             `;
+            
+            // Update agree button state after rendering
+            setTimeout(updateAgreeButton, 100);
+        }
+
+        // Toggle rule check state
+        function toggleRuleCheck(id_aturan, isChecked) {
+            checkedRules[id_aturan] = isChecked;
+            updateAgreeButton();
         }
 
         // Escape HTML to prevent XSS
@@ -667,19 +677,147 @@ $userType = $isUser ? 'User' : 'Guest';
             return div.innerHTML;
         }
 
+        // Check if all checkboxes are checked (across ALL categories)
+        function checkAllRulesChecked() {
+            if (!rulesData) return false;
+            
+            // Get all rules from all categories
+            let allRulesCount = 0;
+            for (const catKey in rulesData) {
+                allRulesCount += rulesData[catKey].length;
+            }
+            
+            if (allRulesCount === 0) return false;
+            
+            // Count how many rules are checked
+            let checkedCount = 0;
+            for (const id_aturan in checkedRules) {
+                if (checkedRules[id_aturan]) checkedCount++;
+            }
+            
+            // All rules must be checked
+            return checkedCount === allRulesCount;
+        }
+
+        // Update Agree button state
+        function updateAgreeButton() {
+            const btnAgree = document.getElementById('btn-agree');
+            const allChecked = checkAllRulesChecked();
+            
+            if (btnAgree) {
+                btnAgree.disabled = !allChecked;
+                if (allChecked) {
+                    btnAgree.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    btnAgree.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        // Check if user has already agreed (from cookie)
+        function checkAgreementStatus() {
+            const hasAgreed = getCookie(COOKIE_NAME);
+            if (hasAgreed === 'true') {
+                showAlreadyAgreed();
+            }
+        }
+
+        // Show already agreed view
+        function showAlreadyAgreed() {
+            // Hide the agreement form and footer
+            document.getElementById('agreement-form').classList.add('hidden');
+            document.getElementById('rules-footer').classList.add('hidden');
+            
+            // Show already agreed view
+            const alreadyAgreed = document.getElementById('already-agreed');
+            alreadyAgreed.classList.remove('hidden');
+            
+            // Load tabs and content for viewing (read-only)
+            loadAgreedTabsAndContent();
+        }
+
+        // Load tabs and content for already agreed view
+        function loadAgreedTabsAndContent() {
+            if (!rulesData) return;
+            
+            const tabsContainer = document.getElementById('rules-tabs-agreed');
+            const contentContainer = document.getElementById('rules-content-agreed');
+            const categories = [
+                { label: 'Ketentuan Check-in & Check-out', icon: 'schedule' },
+                { label: 'Denda & Biaya Tambahan', icon: 'payments' },
+                { label: 'Larangan Keras (Tanpa Toleransi)', icon: 'block' }
+            ];
+            
+            // Render tabs
+            tabsContainer.innerHTML = categories.map((cat, index) => `
+                <button
+                    onclick="loadAgreedContent(${index})"
+                    class="flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all ${index === 0 ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:bg-white/50'}"
+                    data-category="${index}">
+                    ${cat.label}
+                </button>
+            `).join('');
+            
+            // Load first category content
+            loadAgreedContent(0);
+        }
+
+        // Load agreed content (read-only)
+        function loadAgreedContent(categoryKey) {
+            const tabsContainer = document.getElementById('rules-tabs-agreed');
+            const contentContainer = document.getElementById('rules-content-agreed');
+            const categories = [
+                { label: 'Ketentuan Check-in & Check-out', icon: 'schedule' },
+                { label: 'Denda & Biaya Tambahan', icon: 'payments' },
+                { label: 'Larangan Keras (Tanpa Toleransi)', icon: 'block' }
+            ];
+            const category = categories[categoryKey];
+            const rules = rulesData[categoryKey] || [];
+            
+            // Update tabs
+            tabsContainer.querySelectorAll('button').forEach((btn, index) => {
+                btn.className = `flex-1 py-2 px-4 rounded-full text-sm font-semibold transition-all ${index === categoryKey ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:bg-white/50'}`;
+            });
+            
+            // Render content (read-only with checkmarks)
+            contentContainer.innerHTML = `
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-green-700 dark:text-green-400">${category.icon}</span>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-slate-100">${category.label}</h3>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">You have agreed to these policies.</p>
+                <div class="space-y-4">
+                    ${rules.map(rule => `
+                        <div class="group flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 border border-green-200 dark:border-green-800 transition-all cursor-default shadow-sm">
+                            <div class="flex items-center pt-1">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-2xl">check_circle</span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="font-semibold text-slate-900 dark:text-slate-100">${escapeHtml(rule.nama_aturan)}</span>
+                                <span class="text-sm text-slate-500 dark:text-slate-400">${escapeHtml(rule.deskripsi)}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
         // Initialize house rules on page load
         document.addEventListener('DOMContentLoaded', function() {
             // Load house rules
             loadHouseRules();
+            
+            // Check if user has already agreed
+            checkAgreementStatus();
 
             // Add event listeners for Agree/Decline buttons
             const btnAgree = document.getElementById('btn-agree');
             const btnDecline = document.getElementById('btn-decline');
-            
+
             if (btnAgree) {
                 btnAgree.addEventListener('click', handleAgree);
             }
-            
+
             if (btnDecline) {
                 btnDecline.addEventListener('click', handleDecline);
             }
@@ -687,21 +825,20 @@ $userType = $isUser ? 'User' : 'Guest';
 
         // Handle Agree button
         function handleAgree() {
-            setCookie(COOKIE_NAME, 'true', COOKIE_EXPIRY_DAYS);
+            // Verify all checkboxes are checked
+            if (!checkAllRulesChecked()) {
+                showToast('Please check all rules to agree', 'error');
+                return;
+            }
             
+            // Set cookie
+            setCookie(COOKIE_NAME, 'true', COOKIE_EXPIRY_DAYS);
+
             // Show success message
             showToast('Guest agreement accepted. Thank you!', 'success');
-            
-            // Hide footer
-            const rulesFooter = document.getElementById('rules-footer');
-            rulesFooter.classList.add('hidden');
-            
-            // Hide house rules section
-            const rulesSection = document.getElementById('house-rules-section');
-            rulesSection.classList.add('hidden');
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Show already agreed view
+            showAlreadyAgreed();
         }
 
         // Handle Decline button
