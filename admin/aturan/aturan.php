@@ -175,6 +175,14 @@ if ($apiData && $apiData['success']) {
                         <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600 mb-4">gavel</span>
                         <p class="text-slate-500 dark:text-slate-400">Tidak ada data aturan</p>
                     </div>
+                    <!-- Pagination Footer -->
+                    <div id="paginationContainer"
+                        class="hidden bg-slate-50 dark:bg-slate-800/50 px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 dark:border-slate-800">
+                        <p id="showingText" class="text-xs text-slate-500 dark:text-slate-400">Showing 0 of 0 results</p>
+                        <div class="flex items-center gap-2" id="paginationButtons">
+                            <!-- Pagination buttons will be loaded here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -427,18 +435,32 @@ if ($apiData && $apiData['success']) {
             const tableBody = document.getElementById('tableBody');
             const mobileView = document.getElementById('mobileView');
             const noData = document.getElementById('noData');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const showingText = document.getElementById('showingText');
+            const paginationButtons = document.getElementById('paginationButtons');
 
             if (filteredData.length === 0) {
                 tableBody.innerHTML = '';
                 mobileView.innerHTML = '';
                 noData.classList.remove('hidden');
+                paginationContainer.classList.add('hidden');
                 return;
             }
 
             noData.classList.add('hidden');
+            paginationContainer.classList.remove('hidden');
+
+            // Pagination
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
+            const paginatedData = filteredData.slice(startIndex, endIndex);
+
+            // Update showing text
+            showingText.textContent = `Showing ${startIndex + 1}-${endIndex} of ${filteredData.length} results`;
 
             // Desktop table
-            tableBody.innerHTML = filteredData.map(item => `
+            tableBody.innerHTML = paginatedData.map(item => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td class="px-6 py-4 text-sm font-semibold text-slate-900 dark:text-white">${escapeHtml(item.nama_aturan)}</td>
                     <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${escapeHtml(item.deskripsi)}</td>
@@ -468,7 +490,7 @@ if ($apiData && $apiData['success']) {
             `).join('');
 
             // Mobile cards
-            mobileView.innerHTML = filteredData.map(item => `
+            mobileView.innerHTML = paginatedData.map(item => `
                 <div class="p-4 space-y-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
@@ -491,6 +513,57 @@ if ($apiData && $apiData['success']) {
                     </div>
                 </div>
             `).join('');
+
+            // Render pagination buttons
+            renderPagination(totalPages);
+        }
+
+        // Render pagination buttons
+        function renderPagination(totalPages) {
+            const paginationButtons = document.getElementById('paginationButtons');
+            
+            if (totalPages <= 1) {
+                paginationButtons.innerHTML = '';
+                return;
+            }
+
+            let buttons = '';
+
+            // Previous button
+            buttons += `<button onclick="changePage(${currentPage - 1})" 
+                class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}"
+                ${currentPage === 1 ? 'disabled' : ''}>
+                Previous
+            </button>`;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    buttons += `<button onclick="changePage(${i})" 
+                        class="px-3 py-1.5 rounded-lg text-sm font-semibold ${i === currentPage ? 'bg-primary text-white' : 'border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'}">
+                        ${i}
+                    </button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    buttons += `<span class="px-2 text-slate-400">...</span>`;
+                }
+            }
+
+            // Next button
+            buttons += `<button onclick="changePage(${currentPage + 1})" 
+                class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}"
+                ${currentPage === totalPages ? 'disabled' : ''}>
+                Next
+            </button>`;
+
+            paginationButtons.innerHTML = buttons;
+        }
+
+        // Change page
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTable();
         }
 
         // Escape HTML
@@ -699,48 +772,12 @@ if ($apiData && $apiData['success']) {
         /* Toast styles */
         #toastContainer {
             position: fixed;
-            top: 1rem;
-            right: 1rem;
+            top: 20px;
+            right: 20px;
             z-index: 9999;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-        }
-
-        .toast {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border-left: 4px solid #4b774d;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .dark .toast {
-            background-color: #1e293b;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .toast-icon {
-            color: #4b774d;
-            font-size: 1.25rem;
-        }
-
-        .toast-error {
-            border-left-color: #ef4444;
-        }
-
-        .toast-error .toast-icon {
-            color: #ef4444;
         }
     </style>
 </body>
