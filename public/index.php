@@ -183,31 +183,73 @@ $userType = $isUser ? 'User' : 'Guest';
                 
                 <!-- Rules Content -->
                 <div id="rules-container" class="hidden space-y-4">
-                    <!-- Hero Section -->
-                    <div class="relative rounded-xl overflow-hidden h-48">
-                        <img class="absolute inset-0 w-full h-full object-cover opacity-90"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAa0HzDnJOdh4RpQ8Dr0TGGzFPRu8bDTXnBhy_mD7Q1hD8G5oChMsVN0CK6SDMgSWTV1Jf9GgngjIPcgqSN9wNZ0t05O9GSGRg59S-oijeVbnFC2FqbFjBimfEBekQWN2dbM9aMspRaqnpSjFvlf88x96BFHy09JX6kDrHlV3srPaDkQVUtLOucAeVlQDxVVAsTMjKKIDUlGRvNIfxQg1pE9loN1MhnA3fbSt9_pkZZhzP-93wvxXeKbkR2L_cKOI1ccGtZoDhmiF"
-                            alt="Hotel lobby" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
-                            <span class="text-white/80 text-xs uppercase tracking-widest mb-1">Botanic Hotel</span>
-                            <h3 class="text-white font-display text-2xl font-bold">Approval of overnight guests</h3>
+                    <!-- Already Agreed Status (Hidden by default) -->
+                    <div id="already-agreed" class="hidden space-y-4">
+                        <!-- Hero Section -->
+                        <div class="relative rounded-xl overflow-hidden h-48">
+                            <img class="absolute inset-0 w-full h-full object-cover opacity-90"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAa0HzDnJOdh4RpQ8Dr0TGGzFPRu8bDTXnBhy_mD7Q1hD8G5oChMsVN0CK6SDMgSWTV1Jf9GgngjIPcgqSN9wNZ0t05O9GSGRg59S-oijeVbnFC2FqbFjBimfEBekQWN2dbM9aMspRaqnpSjFvlf88x96BFHy09JX6kDrHlV3srPaDkQVUtLOucAeVlQDxVVAsTMjKKIDUlGRvNIfxQg1pE9loN1MhnA3fbSt9_pkZZhzP-93wvxXeKbkR2L_cKOI1ccGtZoDhmiF"
+                                alt="Hotel lobby" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs uppercase tracking-widest mb-1">Botanic Hotel</span>
+                                <h3 class="text-white font-display text-2xl font-bold">Approval of overnight guests</h3>
+                            </div>
+                        </div>
+
+                        <!-- Success Status -->
+                        <div class="flex flex-col items-center justify-center py-8">
+                            <div class="w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-5xl">check_circle</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">You Have Agreed</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 text-center mb-4">You have accepted the House Rules & Regulations</p>
+                        </div>
+
+                        <!-- Tab Navigation -->
+                        <nav id="rules-tabs-agreed" class="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full">
+                            <!-- Tabs will be loaded here -->
+                        </nav>
+
+                        <!-- Rules Content by Category -->
+                        <div id="rules-content-agreed">
+                            <!-- Content will be loaded here -->
+                        </div>
+
+                        <!-- Info Note -->
+                        <div class="mt-8 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-100 dark:border-green-800 flex gap-3">
+                            <span class="material-symbols-outlined text-green-700 dark:text-green-400 text-xl">verified</span>
+                            <p class="text-xs text-green-800 dark:text-green-300 leading-tight">You have acknowledged and agreed to abide by the residency protocols for all sections.</p>
                         </div>
                     </div>
-                    
-                    <!-- Tab Navigation -->
-                    <nav id="rules-tabs" class="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full">
-                        <!-- Tabs will be loaded here -->
-                    </nav>
-                    
-                    <!-- Rules Content by Category -->
-                    <div id="rules-content">
-                        <!-- Content will be loaded here -->
-                    </div>
-                    
-                    <!-- Info Note -->
-                    <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800 flex gap-3">
-                        <span class="material-symbols-outlined text-blue-700 dark:text-blue-400 text-xl">info</span>
-                        <p class="text-xs text-blue-800 dark:text-blue-300 leading-tight">By checking these items, you acknowledge that you have read and understood the residency protocols for this section.</p>
+
+                    <!-- Agreement Form (shown when not agreed yet) -->
+                    <div id="agreement-form" class="space-y-4">
+                        <!-- Hero Section -->
+                        <div class="relative rounded-xl overflow-hidden h-48">
+                            <img class="absolute inset-0 w-full h-full object-cover opacity-90"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAa0HzDnJOdh4RpQ8Dr0TGGzFPRu8bDTXnBhy_mD7Q1hD8G5oChMsVN0CK6SDMgSWTV1Jf9GgngjIPcgqSN9wNZ0t05O9GSGRg59S-oijeVbnFC2FqbFjBimfEBekQWN2dbM9aMspRaqnpSjFvlf88x96BFHy09JX6kDrHlV3srPaDkQVUtLOucAeVlQDxVVAsTMjKKIDUlGRvNIfxQg1pE9loN1MhnA3fbSt9_pkZZhzP-93wvxXeKbkR2L_cKOI1ccGtZoDhmiF"
+                                alt="Hotel lobby" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+                                <span class="text-white/80 text-xs uppercase tracking-widest mb-1">Botanic Hotel</span>
+                                <h3 class="text-white font-display text-2xl font-bold">Approval of overnight guests</h3>
+                            </div>
+                        </div>
+
+                        <!-- Tab Navigation -->
+                        <nav id="rules-tabs" class="flex space-x-1 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full">
+                            <!-- Tabs will be loaded here -->
+                        </nav>
+
+                        <!-- Rules Content by Category -->
+                        <div id="rules-content">
+                            <!-- Content will be loaded here -->
+                        </div>
+
+                        <!-- Info Note -->
+                        <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800 flex gap-3">
+                            <span class="material-symbols-outlined text-blue-700 dark:text-blue-400 text-xl">info</span>
+                            <p class="text-xs text-blue-800 dark:text-blue-300 leading-tight">By checking these items, you acknowledge that you have read and understood the residency protocols for this section.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -565,6 +607,9 @@ $userType = $isUser ? 'User' : 'Guest';
                     renderHouseRules(result);
                     loading.classList.add('hidden');
                     container.classList.remove('hidden');
+                    
+                    // Check if user has already agreed AFTER rules are loaded
+                    checkAgreementStatus();
                 } else {
                     throw new Error(result.message || 'Failed to load house rules');
                 }
@@ -724,14 +769,41 @@ $userType = $isUser ? 'User' : 'Guest';
 
         // Show already agreed view
         function showAlreadyAgreed() {
-            // Hide the agreement form and footer
-            document.getElementById('agreement-form').classList.add('hidden');
-            document.getElementById('rules-footer').classList.add('hidden');
-            
+            // Hide the agreement form
+            const agreementForm = document.getElementById('agreement-form');
+            if (agreementForm) {
+                agreementForm.classList.add('hidden');
+            }
+
             // Show already agreed view
             const alreadyAgreed = document.getElementById('already-agreed');
-            alreadyAgreed.classList.remove('hidden');
-            
+            if (alreadyAgreed) {
+                alreadyAgreed.classList.remove('hidden');
+            }
+
+            // Change Agree button to Download Agreement
+            const btnAgree = document.getElementById('btn-agree');
+            if (btnAgree) {
+                btnAgree.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-xl">download</span>
+                        <span class="text-sm font-bold tracking-wide">Download Agreement</span>
+                    </div>
+                `;
+                btnAgree.classList.remove('disabled:opacity-50', 'disabled:cursor-not-allowed');
+                btnAgree.disabled = false;
+                btnAgree.onclick = downloadAgreement;
+            }
+
+            // Disable Decline button
+            const btnDecline = document.getElementById('btn-decline');
+            if (btnDecline) {
+                btnDecline.style.opacity = '0.5';
+                btnDecline.style.cursor = 'not-allowed';
+                btnDecline.disabled = true;
+                btnDecline.onclick = null;
+            }
+
             // Load tabs and content for viewing (read-only)
             loadAgreedTabsAndContent();
         }
@@ -760,6 +832,99 @@ $userType = $isUser ? 'User' : 'Guest';
             
             // Load first category content
             loadAgreedContent(0);
+        }
+
+        // Download Agreement PDF
+        function downloadAgreement() {
+            // Get guest name from display name
+            const guestName = '<?php echo addslashes($displayName); ?>';
+            
+            const currentDate = new Date().toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Build HTML content for PDF
+            let contentHtml = '';
+            const categories = [
+                { label: 'Ketentuan Check-in & Check-out', icon: 'schedule' },
+                { label: 'Denda & Biaya Tambahan', icon: 'payments' },
+                { label: 'Larangan Keras (Tanpa Toleransi)', icon: 'block' }
+            ];
+
+            categories.forEach((cat, index) => {
+                const rules = rulesData[index] || [];
+                if (rules.length > 0) {
+                    let rulesHtml = rules.map(function(rule) {
+                        return '<div style="display: flex; gap: 12px; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #135bec;">' +
+                            '<div style="min-width: 20px;"><span style="color: #135bec; font-weight: bold;">✓</span></div>' +
+                            '<div>' +
+                            '<p style="font-weight: 600; color: #1e293b; margin: 0 0 4px 0;">' + escapeHtml(rule.nama_aturan) + '</p>' +
+                            '<p style="font-size: 13px; color: #64748b; margin: 0;">' + escapeHtml(rule.deskripsi) + '</p>' +
+                            '</div></div>';
+                    }).join('');
+
+                    contentHtml += '<div style="margin-bottom: 24px;">' +
+                        '<h3 style="font-size: 16px; font-weight: bold; color: #1e293b; margin-bottom: 12px;">' + cat.label + '</h3>' +
+                        '<div style="display: flex; flex-direction: column; gap: 12px;">' + rulesHtml + '</div></div>';
+                }
+            });
+
+            // Create print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write('<!DOCTYPE html>' +
+                '<html lang="id">' +
+                '<head>' +
+                '<meta charset="UTF-8">' +
+                '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+                '<title>House Rules Agreement - Botanic Hotel</title>' +
+                '<style>' +
+                '@page { size: A4; margin: 20mm; }' +
+                '@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }' +
+                'body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #1e293b; max-width: 800px; margin: 0 auto; padding: 20px; }' +
+                '.header { text-align: center; padding: 30px 0; border-bottom: 3px solid #135bec; margin-bottom: 30px; }' +
+                '.header h1 { font-size: 28px; font-weight: 800; color: #135bec; margin: 0 0 8px 0; }' +
+                '.header p { font-size: 14px; color: #64748b; margin: 0; }' +
+                '.guest-info { background: linear-gradient(135deg, #135bec 0%, #0d47a1 100%); color: white; padding: 20px; border-radius: 12px; margin-bottom: 30px; }' +
+                '.guest-info h2 { font-size: 18px; margin: 0 0 12px 0; opacity: 0.9; }' +
+                '.guest-detail { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }' +
+                '.guest-detail-item { flex: 1; min-width: 200px; }' +
+                '.guest-detail-item label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; display: block; margin-bottom: 4px; }' +
+                '.guest-detail-item p { font-size: 16px; font-weight: 600; margin: 0; }' +
+                '.agreement-statement { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 12px; padding: 20px; margin-bottom: 30px; }' +
+                '.agreement-statement h3 { color: #16a34a; font-size: 16px; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; }' +
+                '.agreement-statement p { font-size: 14px; color: #166534; margin: 0; line-height: 1.8; }' +
+                '.footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; font-size: 12px; color: #94a3b8; }' +
+                '.signature-section { margin-top: 40px; display: flex; justify-content: space-between; gap: 40px; }' +
+                '.signature-box { flex: 1; text-align: center; padding: 20px; border: 2px dashed #cbd5e1; border-radius: 8px; }' +
+                '.signature-box p { font-size: 12px; color: #64748b; margin: 0 0 40px 0; }' +
+                '.signature-line { border-top: 2px solid #1e293b; padding-top: 8px; font-size: 14px; font-weight: 600; color: #1e293b; }' +
+                '</style>' +
+                '</head>' +
+                '<body>' +
+                '<div class="header"><h1>Botanic Hotel</h1><p>House Rules & Regulations Agreement</p></div>' +
+                '<div class="guest-info"><h2>Guest Information</h2>' +
+                '<div class="guest-detail">' +
+                '<div class="guest-detail-item"><label>Guest Name</label><p>' + guestName + '</p></div>' +
+                '<div class="guest-detail-item"><label>Agreement Date</label><p>' + currentDate + '</p></div>' +
+                '</div></div>' +
+                '<div class="agreement-statement"><h3>✓ Agreement Statement</h3>' +
+                '<p>I, <strong>' + guestName + '</strong>, hereby acknowledge that I have read, understood, and agreed to abide by all the House Rules & Regulations of Botanic Hotel as listed below. I understand that failure to comply with these rules may result in penalties, additional charges, or termination of my stay without refund.</p>' +
+                '</div>' +
+                '<h2 style="font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 20px;">House Rules & Regulations</h2>' +
+                contentHtml +
+                '<div class="signature-section">' +
+                '<div class="signature-box"><p>Guest Signature</p><div class="signature-line">' + guestName + '</div></div>' +
+                '<div class="signature-box"><p>Date Signed</p><div class="signature-line">' + currentDate + '</div></div>' +
+                '</div>' +
+                '<div class="footer"><p>This is a legally binding agreement between the guest and Botanic Hotel.</p>' +
+                '<p>Generated on ' + currentDate + ' | Botanic Groups © 2026</p></div>' +
+                '<script>window.onload = function() { window.print(); }<\/script>' +
+                '</body></html>');
+            printWindow.document.close();
         }
 
         // Load agreed content (read-only)
@@ -804,11 +969,8 @@ $userType = $isUser ? 'User' : 'Guest';
 
         // Initialize house rules on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Load house rules
+            // Load house rules first
             loadHouseRules();
-            
-            // Check if user has already agreed
-            checkAgreementStatus();
 
             // Add event listeners for Agree/Decline buttons
             const btnAgree = document.getElementById('btn-agree');
@@ -830,7 +992,7 @@ $userType = $isUser ? 'User' : 'Guest';
                 showToast('Please check all rules to agree', 'error');
                 return;
             }
-            
+
             // Set cookie
             setCookie(COOKIE_NAME, 'true', COOKIE_EXPIRY_DAYS);
 
